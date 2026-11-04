@@ -1,43 +1,105 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MotionConfig } from "motion/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import App from "./App";
 beforeEach(() => {
-  const stored = new Map<string, string>();
-  vi.stubGlobal("localStorage", { getItem: (key: string) => stored.get(key) ?? null, setItem: (key: string, value: string) => { stored.set(key, value); } });
-  Object.defineProperty(window, "matchMedia", { writable: true, value: (query: string) => ({ matches: false, media: query, addEventListener() {}, removeEventListener() {} }) });
+  const values = new Map<string, string>();
+  vi.stubGlobal("localStorage", {
+    getItem: (k: string) => values.get(k) ?? null,
+    setItem: (k: string, v: string) => {
+      values.set(k, v);
+    },
+  });
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: (media: string) => ({
+      media,
+      matches: media.includes("reduced-motion"),
+      addEventListener() {},
+      removeEventListener() {},
+    }),
+  });
 });
 afterEach(cleanup);
-function openShop() { return render(<MotionConfig reducedMotion="always"><App /></MotionConfig>); }
-describe("real interactive experience", () => {
-  it("lets a visitor replace the machine, invert the dependency, and actually make coffee", async () => {
-    openShop();
-    fireEvent.click(screen.getByRole("button", { name: /Фильтр-машина/ }));
-    expect((screen.getByRole("button", { name: "Приготовить кофе" }) as HTMLButtonElement).disabled).toBe(true);
-    expect(screen.getByText("Новая машина. Старые инструкции.")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Перевернуть зависимость" }));
-    await waitFor(() => expect(screen.getByText("Договор")).toBeTruthy());
-    fireEvent.click(screen.getByRole("button", { name: "Приготовить кофе" }));
-    expect(screen.getByText("Приготовлено чашек: 1")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: /Просто чайник/ }));
-    expect((screen.getByRole("button", { name: "Приготовить кофе" }) as HTMLButtonElement).disabled).toBe(true);
-    expect(screen.getByText("Горячая вода — ещё не кофе.")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Начать заново" }));
-    expect(screen.getByText("Проверим на практике")).toBeTruthy();
+describe("DIP film user journeys", () => {
+  it("inverts contract ownership through the actual scene action", async () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 4:/ }));
+    expect(
+      document.querySelector('[data-node-id="publish-port"]')?.textContent,
+    ).toContain("TelegramClient");
+    fireEvent.click(
+      screen.getByRole("button", { name: "Поднять Publisher к сценарию" }),
+    );
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-node-id="publish-port"]')?.textContent,
+      ).toContain("Publisher"),
+    );
+    expect(
+      screen.getByText(/Теперь сценарий → Publisher ← Telegram/),
+    ).toBeTruthy();
   });
-  it("gives different meaningful feedback for both quiz answers", () => {
-    openShop();
-    fireEvent.click(screen.getByRole("button", { name: /Особенности конкретного банка/ }));
-    expect(screen.getByText(/Тогда смена банка/)).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: /Договор «принять оплату»/ }));
-    expect(screen.getByText("Именно. Банки меняются. Смысл магазина — нет.")).toBeTruthy();
+  it("does not accept an incorrect explanation of inversion", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Да, интерфейс же появился" }),
+    );
+    expect(screen.getByText(/Не совсем. Сценарий/)).toBeTruthy();
+    expect(
+      (
+        screen.getByRole("button", {
+          name: "Следующий кадр",
+        }) as HTMLButtonElement
+      ).disabled,
+    ).toBe(true);
   });
-  it("switches both design system themes", () => {
-    openShop();
-    fireEvent.click(screen.getByRole("button", { name: "Включить тёмную тему" }));
+  it("switches code dependency view to execution without changing the scene", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Выполнение" }));
+    expect(
+      screen.getByRole("button", { name: "Блок Согласовать. Подробнее" }),
+    ).toBeTruthy();
+    expect(document.querySelector(".film")?.getAttribute("data-scene")).toBe(
+      "first",
+    );
+  });
+  it("runs selected integrations and renders actual artifacts", async () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
+    fireEvent.change(screen.getByLabelText("Публикация"), {
+      target: { value: "both" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Прогнать выпуск" }));
+    expect(screen.getByText(/Выпуск собран и записан/)).toBeTruthy();
+    expect(screen.getByText(/<article><h1>/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText("Согласование"), {
+      target: { value: "no" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Прогнать выпуск" }));
+    await waitFor(() =>
+      expect(
+        screen.getByText(/Без согласования выпуск не опубликован/),
+      ).toBeTruthy(),
+    );
+    expect(screen.queryByText(/<article><h1>/)).toBeNull();
+  });
+  it("switches both system themes", () => {
+    render(<App />);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Включить тёмную тему" }),
+    );
     expect(document.documentElement.dataset.theme).toBe("dark");
-    fireEvent.click(screen.getByRole("button", { name: "Включить светлую тему" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Включить светлую тему" }),
+    );
     expect(document.documentElement.dataset.theme).toBe("light");
   });
 });
