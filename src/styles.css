@@ -82,6 +82,35 @@ footer {
 .wordmark strong {
   font-weight: 650;
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 7px;
+  border-radius: 2px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  transition: background-color 200ms;
+}
+.home-link:hover {
+  background: var(--surface-raised);
+}
+@media (max-width: 520px) {
+  .header-actions {
+    gap: 7px;
+  }
+  .home-link {
+    font-size: 10px;
+    gap: 4px;
+    padding: 0 3px;
+  }
+}
 .brand-mark {
   font-size: 27px;
   line-height: 1;

@@ -28,6 +28,12 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 describe("DIP film user journeys", () => {
+  it("links the header back to the main website", () => {
+    render(<App />);
+    const link = screen.getByRole("link", { name: "vanya-arc.dev" });
+    expect(link.getAttribute("href")).toBe("https://vanya-arc.dev/");
+    expect(link.closest("header")).toBeTruthy();
+  });
   it("inverts contract ownership through the actual scene action", async () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 4:/ }));

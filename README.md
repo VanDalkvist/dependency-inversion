@@ -1,5 +1,7 @@
 # Простые вещи — архитектура, которую можно потрогать
 
+Публичный сайт: **https://ioc.vanya-arc.dev**. В шапке — ссылка на https://vanya-arc.dev/.
+
 Интерактивный фильм об **инверсии зависимостей** для опытных вайбкодеров.
 Сюжет: RSS → редакционный сценарий → дайджест → каналы публикации.
 
@@ -14,6 +16,12 @@ npm run build
 
 Vite: http://localhost:4178. Нужен соседний checkout `../vanya-ui` для локального пакета Hearth & Wave.
 React 19 · Motion 14 · Vite 8 · TypeScript.
+
+## Публикация на Cloudflare
+
+`npm run deploy` собирает статику и публикует assets-only Worker `ioc` на `ioc.vanya-arc.dev`. Конфигурация — `cloudflare.config.ts`, сборка через официальный Cloudflare Vite plugin. Артефакты находятся в `.cloudflare/output/v0/`, они исключены из git. Custom Domain управляет DNS и сертификатом; локальный dev-сервер для публичного сайта не нужен.
+
+Для повторного деплоя нужен вход `cf auth login` или авторизованная переменная `CLOUDFLARE_API_TOKEN`. Секреты не входят в конфигурацию или репозиторий. Команда использует `--prebuilt --mode production`, чтобы публиковать уже проверенную production-сборку.
 
 ## Что можно делать
 

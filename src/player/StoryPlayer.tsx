@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowRight,
+  ArrowUpRight,
   ArrowDown,
   Maximize2,
   Moon,
@@ -58,17 +59,25 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
             Архитектура, которую можно потрогать
           </span>
         </a>
-        <button
-          className="icon-button"
-          aria-label={
-            resolvedTheme === "dark"
-              ? "Включить светлую тему"
-              : "Включить тёмную тему"
-          }
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-        >
-          {resolvedTheme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-        </button>
+        <div className="header-actions">
+          <a className="home-link" href="https://vanya-arc.dev/">
+            vanya-arc.dev
+            <ArrowUpRight size={13} />
+          </a>
+          <button
+            className="icon-button"
+            aria-label={
+              resolvedTheme === "dark"
+                ? "Включить светлую тему"
+                : "Включить тёмную тему"
+            }
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
+          >
+            {resolvedTheme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+        </div>
       </header>
       <main>
         <section className="intro">
