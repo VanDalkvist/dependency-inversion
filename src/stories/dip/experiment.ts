@@ -63,7 +63,7 @@ export function runExperiment(
   };
 }
 export const experiment: ExperimentDefinition = {
-  title: "Твоя редакция. Твои детали.",
+  title: "Песочница: замена сервисов в пайплайне",
   description:
     "Это детерминированная симуляция: без вызовов моделей и настоящих публикаций. Меняй реализации — внутри исполняется один и тот же сценарий runDigest.",
   choices: [

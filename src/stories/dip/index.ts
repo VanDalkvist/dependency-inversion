@@ -3,18 +3,19 @@ import { scenes } from "./scenes";
 import { experiment } from "./experiment";
 export const dependencyInversionStory: StoryDefinition = {
   id: "dependency-inversion",
-  title: "От скрипта — к своей редакции.",
-  subtitle: "Инверсия зависимостей на примере агентского пайплайна.",
+  title: "Инверсия зависимостей",
+  subtitle:
+    "Как менять источники, AI-модели и каналы публикации, не переписывая сценарий выпуска дайджеста.",
   topic: "dependency inversion principle",
   viewLabels: { code: "Зависимости кода", runtime: "Выполнение" },
   conclusion: {
-    title: "Не «всё должно быть абстрактным».",
-    body: "Сначала — конкретная задача. Затем — её контракт. А детали работают на этих условиях.",
+    title: "Интеграции зависят от контрактов сценария",
+    body: "Сценарий описывает нужные ему операции. Конкретные источники, AI-редакторы и каналы публикации реализуют эти интерфейсы.",
   },
   chapters: [
-    { id: "direct", title: "Сделали в лоб" },
-    { id: "inversion", title: "Перевернули зависимости" },
-    { id: "proof", title: "Проверили в деле" },
+    { id: "direct", title: "Зависимость от сервисов" },
+    { id: "inversion", title: "Контракты сценария" },
+    { id: "proof", title: "Замена сервисов" },
   ],
   scenes,
   experiment,

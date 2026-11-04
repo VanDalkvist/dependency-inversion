@@ -28,6 +28,18 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 describe("DIP film user journeys", () => {
+  it("shows the lesson subject in the page heading", () => {
+    render(<App />);
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Инверсия зависимостей" }),
+    ).toBeTruthy();
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Сценарий знает API всех сервисов",
+      }),
+    ).toBeTruthy();
+  });
   it("links the header back to the main website", () => {
     render(<App />);
     const link = screen.getByRole("link", { name: "vanya-arc.dev" });
