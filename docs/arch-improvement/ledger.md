@@ -13,3 +13,15 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Verification: 27 tests passed; production build passed; audit reports zero. Chrome generated 2 documents from 3 unique materials and 0 on denial.
 - Review: author source-level and product passes recorded in verification.md, not independent review. Fixed stale intermediate source labels, prototype config keys, rewind state, cross-story session state.
 - Residual P3: graph declaration kept together slightly above guideline size. No durable new workspace rule introduced.
+
+## 2026-11-05 — content factory copy
+
+- Request: audit remaining copy and use a content factory as the example; retain DIP focus, accepted headings and visual system.
+- Updated scene bodies, captions, actions, feedback, inspector explanations, teaching materials, output labels, playback statuses and metadata. The concrete product is a digest factory with sources, AI writer, approval and Telegram/site publication.
+- Fixed a misleading website inspector: before inversion it no longer claims the site already implements Publisher. Details now reflect the current scene.
+- Made runLabel application-owned and optional, with a neutral generic fallback; two tests cover both cases. Core runDigest, port signatures, scene timings, action IDs and transitions unchanged.
+- RED: 4 new copy contract tests failed before edits. Final: 38 tests PASS and production build PASS.
+- Production: https://ioc.vanya-arc.dev/; deployed source 53a2774; version 83a83c75-470c-46f3-bb38-b929196f55aa. HTML title and both JS/CSS hashes verified against the local production output.
+- Public Chrome: all 9 scenes at 1440px and 390px; no page/text overflow. Actual Publisher inversion and runtime view checked; 4 received materials → 3 selected → 2 local documents on approval; 0 documents on denial.
+- Author review only; no independent reviewer was spawned. No external model or publication calls were added. Existing unrelated workspace WIP preserved.
+- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/content-factory/.

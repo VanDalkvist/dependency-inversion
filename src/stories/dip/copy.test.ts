@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { dependencyInversionStory as story } from "./index";
 import { runExperiment } from "./experiment";
+import { architecture } from "./graphs";
 
 describe("content factory explanation",()=>{
   it("establishes the content factory and concrete workflow before introducing contracts",()=>{
@@ -24,6 +25,13 @@ describe("content factory explanation",()=>{
     expect(r.artifacts.every(a=>a.body.includes("Фабрика контента"))).toBe(true);
     expect(r.artifacts[0].body).toContain("Как собрать фабрику контента");
   });
+  it("explains the website according to the current contract ownership", () => {
+    const before = architecture({ website: true }).nodes.find(n => n.id === "website")!;
+    const after = architecture({ website: true, publisher: true }).nodes.find(n => n.id === "website")!;
+    expect(before.detail).toContain("До инверсии");
+    expect(after.detail).toContain("реализует Publisher");
+  });
+
   it("preserves the same source links and approval gate when the factory is reconfigured",()=>{
     const r=runExperiment({source:"aggregate",writer:"local",publisher:"both",approval:"no"});
     expect(r.artifacts).toEqual([]);
