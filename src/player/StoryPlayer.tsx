@@ -54,7 +54,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
             </span>
           </a>
           <div className="header-actions">
-            <a className="home-link" href="https://vanya-arc.dev/">
+            <a className="home-link" href="https://vanya-arc.dev/" target="_blank" rel="noopener noreferrer">
               vanya-arc.dev
               <ArrowUpRight size={13} />
             </a>

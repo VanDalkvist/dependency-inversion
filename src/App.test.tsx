@@ -96,6 +96,8 @@ describe("DIP film user journeys", () => {
     render(<App />);
     const link = screen.getByRole("link", { name: "vanya-arc.dev" });
     expect(link.getAttribute("href")).toBe("https://vanya-arc.dev/");
+    expect(link.getAttribute("target")).toBe("_blank");
+    expect(link.getAttribute("rel")?.split(/\s+/)).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
     expect(link.closest("header")).toBeTruthy();
   });
   it("inverts contract ownership through the actual scene action", async () => {
