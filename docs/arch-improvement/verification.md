@@ -75,3 +75,26 @@ Author review, not independent acceptance. Reviewed the changed source and produ
 ### Verification
 - 44 tests and production build passed; public 1440px/390px browser checks cover every code-dependency scene and resolved states, API inspector, both themes and withheld publication.
 - Deployment 52723fd9-a963-44de-93ef-4dee2944c022, deployed source 71f3d9a, exact public/local JS and CSS equality. Evidence in thread-storage scenario-card/.
+
+## Viewport player — 2026-11-05
+
+- Request: fit the main lesson on one screen, except the late-appearing final block.
+- New layout: bounded lesson-screen with header/title/scene/transport/footer; final experiment is a sibling outside the frame. No body-level overflow hiding. Narrow layouts expose Schema/Text panels; full narrative, answers and optional material remain accessible.
+- Supplemental material: native dialogs for inspector, insight and conclusion/sources. Focus explicitly returns to the invoking HTML/SVG control. Narrative feedback replaces, rather than stacks beneath, the original explanation; the reader can switch back.
+- Controls: one bottom transport, including gated Next; the duplicate narrative Next control was removed without changing playback transitions.
+- Verification: 49 tests PASS, production build PASS. Public browser checks covered 139 before/after/pane states at 1920×1080, 1440×900, 1366×768, 1280×720, 900×768, 390×844 and 375×667; no page scroll before the final scene, text clipping or offscreen transport.
+- Native Escape/focus return, runtime view, fullscreen, SVG keyboard inspection, and two approved / zero denied publication documents verified publicly. Reset removes the extra block and returns the page to one viewport.
+- Deployment: source e68f117, version d5e55b00-31ff-4ae7-a1c2-c0ca4d2f0385; public asset hashes match the production build.
+- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/viewport/. The long browser matrix was split into bounded batches after the host RPC deadline stopped the first public run; the four completed public batches are the acceptance evidence.
+- Author review only; no independent reviewer was spawned. Extreme dimensions/zoom outside the listed matrix are not claimed as verified.
+
+### Architecture verification for viewport slice
+- Passed: AP-020, AP-028, AP-046, AP-051, AP-052, AP-053, AP-054, AP-068, AP-069, AP-074, AP-076.
+- Semantic probes: App still injects the story; StoryPlayer renders its generic Stage/Narration/Experiment. Dialog actually invokes the browser top-layer API and restores the captured opener. Final experiment calls the unchanged runExperiment/runDigest path. One production renderer remains; no migrated parallel entrypoint or domain shortcut was added.
+- [P2] Evidence: before the change, at 1366×768 the document was 1478px high and transport ended at y=1201. Impact: the core movie controls required page scrolling. Rule: AP-054. Fix decision: fix-now; viewport frame and browser bounds checks.
+- [P2] Evidence: the first native-dialog version returned focus to body after Escape. Impact: keyboard users lost their place. Rule: AP-069. Fix decision: fix-now; capture/restore the connected opener with preventScroll, two RED tests then GREEN, verified in Chrome for HTML and SVG controls.
+- API/model contracts, story timings and domain invariants are unchanged. New UI state is local to the player/narration; dialogs do not own playback or domain state.
+- Native dialog API is emulated only in jsdom test setup; production/browser acceptance uses real dialogs and actual output documents.
+- Design verdict: PASS for author review; existing warm palette, hairlines and micro-radii retained, accent coverage remains low (visual estimate, not measured). Responsive disclosures replace unsafe text shrinking or hidden content in the tested matrix.
+- Residual risk: author-only review; geometry is verified only at the seven listed sizes, not arbitrary zoom/very short windows. Existing large stylesheet/graph-declaration P3 debt remains log-only.
+- VERDICT: PASS for author source and product review of the validated slice.

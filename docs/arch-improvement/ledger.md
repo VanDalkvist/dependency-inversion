@@ -35,3 +35,15 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Existing approval path still produces two local documents and none on denial. Light/dark captures retained.
 - Deployment source 71f3d9a; version 52723fd9-a963-44de-93ef-4dee2944c022. Both public entry assets exactly match the checked build.
 - Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/scenario-card/. Author review only, no independent acceptance claim.
+
+## Viewport player — 2026-11-05
+
+- Request: fit the main lesson on one screen, except the late-appearing final block.
+- New layout: bounded lesson-screen with header/title/scene/transport/footer; final experiment is a sibling outside the frame. No body-level overflow hiding. Narrow layouts expose Schema/Text panels; full narrative, answers and optional material remain accessible.
+- Supplemental material: native dialogs for inspector, insight and conclusion/sources. Focus explicitly returns to the invoking HTML/SVG control. Narrative feedback replaces, rather than stacks beneath, the original explanation; the reader can switch back.
+- Controls: one bottom transport, including gated Next; the duplicate narrative Next control was removed without changing playback transitions.
+- Verification: 49 tests PASS, production build PASS. Public browser checks covered 139 before/after/pane states at 1920×1080, 1440×900, 1366×768, 1280×720, 900×768, 390×844 and 375×667; no page scroll before the final scene, text clipping or offscreen transport.
+- Native Escape/focus return, runtime view, fullscreen, SVG keyboard inspection, and two approved / zero denied publication documents verified publicly. Reset removes the extra block and returns the page to one viewport.
+- Deployment: source e68f117, version d5e55b00-31ff-4ae7-a1c2-c0ca4d2f0385; public asset hashes match the production build.
+- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/viewport/. The long browser matrix was split into bounded batches after the host RPC deadline stopped the first public run; the four completed public batches are the acceptance evidence.
+- Author review only; no independent reviewer was spawned. Extreme dimensions/zoom outside the listed matrix are not claimed as verified.
