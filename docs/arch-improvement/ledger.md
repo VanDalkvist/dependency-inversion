@@ -25,3 +25,13 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Public Chrome: all 9 scenes at 1440px and 390px; no page/text overflow. Actual Publisher inversion and runtime view checked; 4 received materials → 3 selected → 2 local documents on approval; 0 documents on denial.
 - Author review only; no independent reviewer was spawned. No external model or publication calls were added. Existing unrelated workspace WIP preserved.
 - Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/content-factory/.
+
+## Scenario card — 2026-11-05
+
+- Approved: primary readable rules, secondary code dependencies, API details in inspector.
+- Shipped: generic StageNode.body / linesLabel and NodeContent renderer; three fixed rules, per-boundary dependency summaries, conditional API explanations. Card is 255×216 at (45,153), preserving its original center y=261. Primary sans copy is 13px; dependency copy remains 10px mono.
+- RED: initial Stage/App hierarchy/inspector checks and graph boundary checks failed before implementation. Full verification: 44 tests pass; production build passes.
+- Public Chrome: all nine scenes plus seven resolved states at 1440px; all nine at 390px. No clipped SVG text, page overflow or raw API fields in the visible policy card. Inspector exposes the original API specifics and code; full inversion retains rules while showing MaterialSource / DraftWriter / Publisher.
+- Existing approval path still produces two local documents and none on denial. Light/dark captures retained.
+- Deployment source 71f3d9a; version 52723fd9-a963-44de-93ef-4dee2944c022. Both public entry assets exactly match the checked build.
+- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/scenario-card/. Author review only, no independent acceptance claim.

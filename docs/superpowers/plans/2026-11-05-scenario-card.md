@@ -15,12 +15,12 @@
 - The taller card stays inside its region; all SVG text fits the node at desktop and mobile scales. Keep its center at y=261 so dependency arrow anchors remain stable.
 
 ## Single bounded slice
-- [ ] RED: generic Stage body/dependency ordering and legacy-node behavior; actual App journey from primary card to inspector; boundary-sensitive inspector/label behavior.
-- [ ] Add StageNode.body?: string[] and linesLabel?: string. Create NodeContent.tsx; preserve legacy baseline y=77, use sans primary copy and quieter dependency labels.
-- [ ] Update graphs.ts: 255×216 card at (45,153), fixed rules, stage-sensitive dependency labels and inspector details. Keep code fragments and edges.
-- [ ] Run full tests and production build; inspect source-level boundaries (AP-020/046/051/074/076). Author review only.
-- [ ] Chrome: initial / partial / full inversion, inspector, rewind, light/dark and 390px; verify text bounds and publication approval behavior.
-- [ ] Commit/push, deploy prebuilt assets, verify public JS/CSS and browser, preserve parent workspace WIP and update the submodule pointer.
+- [x] RED: generic Stage body/dependency ordering and legacy-node behavior; actual App journey from primary card to inspector; boundary-sensitive inspector/label behavior.
+- [x] Add StageNode.body?: string[] and linesLabel?: string. Create NodeContent.tsx; preserve legacy baseline y=77, use sans primary copy and quieter dependency labels.
+- [x] Update graphs.ts: 255×216 card at (45,153), fixed rules, stage-sensitive dependency labels and inspector details. Keep code fragments and edges.
+- [x] Run full tests and production build; inspect source-level boundaries (AP-020/046/051/074/076). Author review only.
+- [x] Chrome: initial / partial / full inversion, inspector, rewind, light/dark and 390px; verify text bounds and publication approval behavior.
+- [x] Commit/push, deploy prebuilt assets, verify public JS/CSS and browser, preserve parent workspace WIP and update the submodule pointer.
 
 ## Plan review
 Scope is one vertical UI slice through story → injected generic node contract → rendered SVG → inspector. Existing end-to-end pipeline is retained. No new subsystem or protocol migration, no additional independent approval needed for the already approved layout. Prior P3 graph declaration size remains log-only.

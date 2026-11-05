@@ -52,3 +52,26 @@ Author review, not independent acceptance. Reviewed the changed source and produ
 - Public Chrome traversed every scene at 1440px and 390px with no page/heading/body/action overflow; exercised inversion, runtime view and approved/denied generation.
 - Public HTTP 200, factory title, and exact JS/CSS asset equality verified after deployment 83a83c75-470c-46f3-bb38-b929196f55aa.
 - Evidence is retained under thread storage content-factory/; no credentials are included.
+
+## Scenario card review — 2026-11-05
+
+### Findings
+- [P3] Evidence: the policy node previously rendered only RSS/provider/Telegram protocol expressions in its body. Impact: readers saw implementation coupling without the scenario's responsibilities. Rule: AP-054. Fix decision: fix-now; primary rules and a separate dependency layer are now rendered, while API specifics remain inspectable.
+
+### Semantic probes
+- Dependency traceability: production App injects the story; StoryPlayer passes its StageView to Stage; Stage invokes NodeContent with each node; NodeContent reads body, linesLabel and lines and actually renders them. No lesson import was added to the generic player.
+- Runtime completeness: there is one active Stage → NodeContent path, with backwards-compatible support for old code-only nodes. No alternate renderer or new pipeline was added.
+- Entry point wiring: the public production browser displays the new node body through the existing main → App → StoryPlayer entrypoint and opens its real inspector.
+- Anti-gaming: no pipeline calls, validation, approval logic or playback gates were removed. Tests verify primary/secondary rendering, legacy layout, generic body-only nodes, actual inspector behavior and stage-dependent coupling. Browser checks inspect SVG text bounds and actual generated documents.
+
+### Architecture verification
+- Passed for changed slice: AP-020, AP-028, AP-046, AP-051, AP-054, AP-068, AP-069, AP-074, AP-076.
+- Compatibility: optional StageNode fields; legacy lines retain y=77. Story-owned details/labels are injected; renderer contains no factory/DIP terminology.
+- Not applicable: database, authentication, backend side effects or migration rules. This is a presentation change, not a protocol migration or new subsystem.
+- Residual risk: author review only; known P3 declaration size in graphs.ts; no external API acceptance implied.
+- Design check: existing tokens/radii/animation preserved. Accent coverage remains low (visual estimate below 1%, not a measurement). Main body uses the existing sans family and stronger hierarchy than dependency metadata. Verdict: PASS for author design review.
+- VERDICT: PASS for author source/product review only.
+
+### Verification
+- 44 tests and production build passed; public 1440px/390px browser checks cover every code-dependency scene and resolved states, API inspector, both themes and withheld publication.
+- Deployment 52723fd9-a963-44de-93ef-4dee2944c022, deployed source 71f3d9a, exact public/local JS and CSS equality. Evidence in thread-storage scenario-card/.
