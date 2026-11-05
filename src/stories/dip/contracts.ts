@@ -1,4 +1,4 @@
-// Owned by the editorial application, not by an integration.
+// Owned by the content factory scenario, not by an integration.
 export interface Material {
   id: string;
   title: string;

@@ -26,17 +26,17 @@ export default function Narration({
         {scene.gate && !answered ? (
           <>
             <Pause size={12} />
-            Твоё действие
+            Выбери действие
           </>
         ) : answered ? (
           <>
             <Check size={13} />
-            Проверено
+            Шаг завершён
           </>
         ) : (
           <>
             <span className="status-dot" />
-            {playing ? "История идёт" : "История ждёт"}
+            {playing ? "Воспроизведение" : "На паузе"}
           </>
         )}
       </div>
@@ -87,7 +87,7 @@ export default function Narration({
             onClick={() => onNext()}
             disabled={!!scene.gate && !answered}
           >
-            Следующий кадр
+            К следующей сцене
             <ArrowRight size={16} />
           </button>
         )}

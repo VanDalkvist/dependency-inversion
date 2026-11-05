@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { runExperiment } from "./experiment";
-describe("real in-memory editorial pipeline", () => {
+describe("in-memory content factory scenario", () => {
   it("rejects inherited object keys as configuration", () => {
     expect(() =>
       runExperiment({
@@ -20,7 +20,7 @@ describe("real in-memory editorial pipeline", () => {
     });
     expect(r.artifacts).toHaveLength(1);
     expect(r.artifacts[0].body).toContain("https://example.com/agents");
-    expect(r.artifacts[0].body).toContain("Агентские инструменты");
+    expect(r.artifacts[0].body).toContain("Как собрать фабрику контента");
   });
   it("does not publish without approval", () => {
     const r = runExperiment({
@@ -30,7 +30,7 @@ describe("real in-memory editorial pipeline", () => {
       approval: "no",
     });
     expect(r.artifacts).toEqual([]);
-    expect(r.summary).toContain("не опубликован");
+    expect(r.summary).toContain("публикации не созданы");
   });
   it("deduplicates before writing, whichever source is used", () => {
     const r = runExperiment({
@@ -41,7 +41,7 @@ describe("real in-memory editorial pipeline", () => {
     });
     expect(r.artifacts).toHaveLength(2);
     expect(
-      r.facts.find((f) => f.label === "Уникальных материалов")?.value,
+      r.facts.find((f) => f.label === "Материалов в выпуске")?.value,
     ).toBe("3");
     expect(r.artifacts[1].body).toContain("<article>");
   });

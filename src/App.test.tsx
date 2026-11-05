@@ -53,7 +53,7 @@ describe("DIP film user journeys", () => {
       document.querySelector('[data-node-id="publish-port"]')?.textContent,
     ).toContain("TelegramClient");
     fireEvent.click(
-      screen.getByRole("button", { name: "Поднять Publisher к сценарию" }),
+      screen.getByRole("button", { name: "Задать Publisher на стороне сценария" }),
     );
     await waitFor(() =>
       expect(
@@ -68,20 +68,20 @@ describe("DIP film user journeys", () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
     fireEvent.click(
-      screen.getByRole("button", { name: "Да, интерфейс же появился" }),
+      screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }),
     );
-    expect(screen.getByText(/Не совсем. Сценарий/)).toBeTruthy();
+    expect(screen.getByText(/Отдельный интерфейс ещё не решает задачу/)).toBeTruthy();
     expect(
       (
         screen.getByRole("button", {
-          name: "Следующий кадр",
+          name: "К следующей сцене",
         }) as HTMLButtonElement
       ).disabled,
     ).toBe(true);
   });
   it("switches code dependency view to execution without changing the scene", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Выполнение" }));
+    fireEvent.click(screen.getByRole("button", { name: "Порядок работы" }));
     expect(
       screen.getByRole("button", { name: "Блок Согласовать. Подробнее" }),
     ).toBeTruthy();
@@ -92,19 +92,19 @@ describe("DIP film user journeys", () => {
   it("runs selected integrations and renders actual artifacts", async () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
-    fireEvent.change(screen.getByLabelText("Публикация"), {
+    fireEvent.change(screen.getByLabelText("Каналы публикации"), {
       target: { value: "both" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Прогнать выпуск" }));
-    expect(screen.getByText(/Выпуск собран и записан/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Запустить выпуск" }));
+    expect(screen.getByText(/Учебный выпуск готов/)).toBeTruthy();
     expect(screen.getByText(/<article><h1>/)).toBeTruthy();
-    fireEvent.change(screen.getByLabelText("Согласование"), {
+    fireEvent.change(screen.getByLabelText("Согласование выпуска"), {
       target: { value: "no" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Прогнать выпуск" }));
+    fireEvent.click(screen.getByRole("button", { name: "Запустить выпуск" }));
     await waitFor(() =>
       expect(
-        screen.getByText(/Без согласования выпуск не опубликован/),
+        screen.getByText(/Выпуск не согласован/),
       ).toBeTruthy(),
     );
     expect(screen.queryByText(/<article><h1>/)).toBeNull();

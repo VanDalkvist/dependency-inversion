@@ -36,7 +36,7 @@ export function architecture(o: Options = {}): StageView {
     node(
       "policy",
       "Сценарий выпуска",
-      "Редакционные правила",
+      "Правила фабрики контента",
       45,
       195,
       "policy",
@@ -50,7 +50,7 @@ export function architecture(o: Options = {}): StageView {
           o.publisher ? "publisher.publish(draft)" : "Telegram: parse_mode",
         ],
         detail:
-          "Это высокоуровневая политика: что считать выпуском, как отбирать материалы и когда разрешать публикацию.",
+          "Сценарий фабрики связывает сбор материалов, подготовку черновика и публикацию. Здесь остаются правила: убрать дубли, ограничить размер выпуска и не публиковать без согласования.",
         code: {
           file:
             o.publisher && o.source && o.writer
@@ -63,24 +63,24 @@ export function architecture(o: Options = {}): StageView {
         },
       },
     ),
-    node("rss", "RSS-лента", "Конкретный формат данных", 735, 60, "detail", {
+    node("rss", "RSS-лента", "Материалы из ленты", 735, 60, "detail", {
       icon: "rss",
       height: 82,
       detail:
-        "Интеграция знает item.description и поля внешнего источника. После инверсии возвращает Material[], определённый редакцией.",
+        "RSS-интеграция знает поля ленты. После инверсии она должна вернуть Material[] в формате, заданном сценарием фабрики. В коде ниже — учебные реализации без запросов к внешним сервисам.",
       code: { file: "stories/dip/adapters.ts", text: adaptersCode },
     }),
-    node("llm", "LLM-провайдер", "Конкретный API модели", 735, 217, "detail", {
+    node("llm", "AI-редактор", "Подготовка черновика", 735, 217, "detail", {
       icon: "sparkles",
       height: 82,
       detail:
-        "Реализация знает протокол модели. Сценарию нужен Draft, а не provider-specific response.",
+        "Интеграция AI-редактора обращается к модели и превращает её ответ в Draft. Сценарий не разбирает ответ провайдера сам. В песочнице используются заготовленные тексты, а не вызовы модели.",
       code: { file: "stories/dip/adapters.ts", text: adaptersCode },
     }),
     node(
       "telegram",
       "Telegram",
-      "Формат сообщения и отправка",
+      "Сообщение для канала",
       735,
       365,
       "detail",
@@ -88,8 +88,8 @@ export function architecture(o: Options = {}): StageView {
         height: 70,
         icon: "send",
         detail: o.publisher
-          ? "Telegram-реализация принимает Draft и создаёт документ своего канала. Она зависит от Publisher и Draft, а не наоборот."
-          : "Пока сценарий знает особенности Telegram. Открытый код ниже — итоговая реализация после инверсии, не текущая версия сценария.",
+          ? "Telegram-интеграция принимает Draft через Publisher и оформляет сообщение. Она использует контракты фабрики. В учебном прогоне создаётся текст сообщения, но ничего не отправляется в Telegram."
+          : "Пока сценарий сам знает параметры Telegram и форматирует сообщение. Код ниже показывает итоговую учебную реализацию после инверсии, а не текущую версию сценария.",
         code: { file: "stories/dip/adapters.ts", text: adaptersCode },
       },
     ),
@@ -102,7 +102,7 @@ export function architecture(o: Options = {}): StageView {
       "MaterialSource",
       "Получить материалы",
       50,
-      "Контракт принадлежит редакции: collect(Brief) → Material[]. Нет RSS-тегов и структуры ответа агрегатора.",
+      "MaterialSource определён на стороне сценария фабрики. Операция collect(Brief) возвращает Material[]. В этом контракте нет полей RSS или ответа конкретного агрегатора.",
     ],
     [
       o.writer,
@@ -110,7 +110,7 @@ export function architecture(o: Options = {}): StageView {
       "DraftWriter",
       "Подготовить черновик",
       207,
-      "Контракт редакции: write(Brief, Material[]) → Draft. Нет messages, model и полей ответа провайдера.",
+      "DraftWriter определён на стороне сценария фабрики: write(Brief, Material[]) возвращает Draft. Параметры запроса к модели и разбор её ответа остаются внутри интеграции.",
     ],
     [
       o.publisher || o.wrapper,
@@ -119,8 +119,8 @@ export function architecture(o: Options = {}): StageView {
       o.wrapper ? "sendMessage(chatId, text)" : "Опубликовать выпуск",
       365,
       o.wrapper
-        ? "Обёртка есть, но интерфейс всё ещё говорит на языке Telegram и находится в его модуле. Сценарий импортирует деталь."
-        : "Контракт задан сценарием: publish(Draft). Формат канала скрыт внутри реализации.",
+        ? "TelegramClient определён в модуле Telegram и требует chatId и parse_mode. Сценарий по-прежнему зависит от интерфейса конкретного сервиса. Одного выделения файла для DIP недостаточно."
+        : "Publisher определён на стороне сценария: publish(Draft). Интеграция принимает выпуск и сама готовит формат своего канала. Из сценария не нужно передавать ей Telegram-разметку или HTML-страницу.",
     ],
   ] as const) {
     const target =
@@ -174,8 +174,9 @@ export function architecture(o: Options = {}): StageView {
       node("website", "Сайт", "HTML-страница выпуска", 735, 450, "detail", {
         height: 55,
         icon: "globe",
-        detail:
-          "Новая интеграция реализует Publisher. Редакционные правила не меняются.",
+        detail: o.publisher
+          ? "Интеграция сайта реализует Publisher: принимает Draft и создаёт HTML-страницу. Правила подготовки выпуска не меняются. В песочнице HTML показывается на странице, но не размещается на настоящем сайте."
+          : "До инверсии поддержку сайта приходится добавлять в сценарий рядом с кодом Telegram. Код ниже показывает итоговую учебную реализацию после появления Publisher.",
         code: { file: "stories/dip/adapters.ts", text: adaptersCode },
       }),
     );
@@ -192,7 +193,7 @@ export function architecture(o: Options = {}): StageView {
     regions: [
       {
         id: "application",
-        label: "НАШ СЦЕНАРИЙ · application",
+        label: "СЦЕНАРИЙ ФАБРИКИ · application",
         x: 20,
         y: 20,
         width: o.wrapper ? 380 : hasPorts ? 620 : 380,
@@ -208,35 +209,35 @@ export function architecture(o: Options = {}): StageView {
       },
     ],
     note: o.wrapper
-      ? "Новый файл — ещё не инверсия. Контракт по-прежнему продиктован Telegram."
+      ? "Интерфейс TelegramClient описан в модуле Telegram. Сценарий всё ещё зависит от параметров этого сервиса."
       : hasPorts
-        ? "Стрелка означает: «исходный код знает об этом типе / импортирует его»."
-        : "Сценарий знает API каждой интеграции. Изменение формата может затронуть его код.",
+        ? "Стрелка A → B: код A использует определения из B. Это зависимость кода, а не направление передачи материалов."
+        : "Сценарий напрямую использует API сервисов. При изменении API правки могут понадобиться и в сценарии.",
   };
 }
 export const execution: StageView = {
   flow: true,
   nodes: [
-    node("run-source", "Собрать", "RSS / агрегатор", 30, 195, "detail", {
+    node("run-source", "Собрать", "RSS или агрегатор", 30, 195, "detail", {
       width: 160,
       icon: "rss",
     }),
-    node("run-select", "Отобрать", "Правила редакции", 225, 195, "policy", {
+    node("run-select", "Отобрать", "Дубли и лимит выпуска", 225, 195, "policy", {
       width: 160,
       icon: "filter",
     }),
-    node("run-write", "Подготовить", "Черновик выпуска", 420, 195, "detail", {
+    node("run-write", "Написать", "AI-черновик", 420, 195, "detail", {
       width: 160,
       icon: "sparkles",
     }),
-    node("run-approve", "Согласовать", "Решение человека", 615, 195, "policy", {
+    node("run-approve", "Согласовать", "Согласование выпуска", 615, 195, "policy", {
       width: 160,
       icon: "check",
     }),
     node(
       "run-publish",
-      "Опубликовать",
-      "Выбранные каналы",
+      "Выпустить",
+      "Telegram или сайт",
       810,
       195,
       "detail",
@@ -259,7 +260,7 @@ export const execution: StageView = {
       height: 310,
     },
   ],
-  note: "Инверсия не разворачивает поток данных. Сценарий по-прежнему вызывает интеграции — через свои контракты.",
+  note: "Порядок операций остался прежним. Сценарий вызывает сервисы через свои интерфейсы; материалы идут от источника к публикации.",
 };
 export const views = (options: Options = {}) => ({
   code: architecture(options),

@@ -109,7 +109,7 @@ export function playback(
         ? {
             ...state,
             playing: false,
-            feedback: "Сначала попробуй действие внутри сцены.",
+            feedback: "Выбери действие в этой сцене, затем продолжай просмотр.",
           }
         : seek(state.index + 1);
     case "answer": {

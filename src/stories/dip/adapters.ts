@@ -8,21 +8,21 @@ import type {
 const articles: Material[] = [
   {
     id: "agents",
-    title: "Агентские инструменты",
+    title: "Как собрать фабрику контента",
     url: "https://example.com/agents",
-    excerpt: "Инструменты отделяют задачу агента от конкретной интеграции.",
+    excerpt: "Сценарий связывает сбор материалов, подготовку черновика и публикацию. Интеграции остаются сменяемыми.",
   },
   {
     id: "launch",
-    title: "Запуск маленького продукта",
+    title: "Зачем согласовывать AI-черновики",
     url: "https://example.com/launch",
-    excerpt: "Проверить спрос можно до разработки всей платформы.",
+    excerpt: "Перед выпуском редактор проверяет факты, формулировки и ссылки. Без согласования публикация останавливается.",
   },
   {
     id: "research",
-    title: "Исследование аудитории",
+    title: "Как выбрать каналы публикации",
     url: "https://example.com/research",
-    excerpt: "Качественный бриф помогает отбирать релевантные материалы.",
+    excerpt: "Один выпуск можно оформить для Telegram и сайта. Формат каждого канала задаёт его интеграция.",
   },
 ];
 export const rssSource: MaterialSource = {
@@ -38,14 +38,14 @@ export const aggregateSource: MaterialSource = {
 export const cloudWriter: DraftWriter = {
   write: (brief, materials) => ({
     title: brief.topic,
-    intro: "Главное за неделю: что пригодится в работе.",
+    intro: "Выпуск о фабрике контента: как собрать материалы, подготовить черновик и разнести публикации по каналам.",
     materials,
   }),
 };
 export const localWriter: DraftWriter = {
   write: (brief, materials) => ({
     title: brief.topic,
-    intro: "Короткая редакционная сводка. Только полезное.",
+    intro: "В этом выпуске — сбор материалов, проверка AI-черновиков и публикация в нескольких каналах.",
     materials,
   }),
 };
@@ -61,7 +61,7 @@ export function telegramPublisher(outbox: Artifact[]): Publisher {
   return {
     publish: (draft) => {
       const artifact = {
-        title: "Telegram",
+        title: "Текст для Telegram",
         format: "text/html",
         body: `<b>${escape(draft.title)}</b>\n\n${escape(draft.intro)}\n\n${draft.materials.map((m) => `<a href="${escape(m.url)}">${escape(m.title)}</a>\n${escape(m.excerpt)}`).join("\n\n")}`,
       };
@@ -74,7 +74,7 @@ export function websitePublisher(outbox: Artifact[]): Publisher {
   return {
     publish: (draft) => {
       const artifact = {
-        title: "Сайт",
+        title: "HTML для сайта",
         format: "text/html",
         body: `<article><h1>${escape(draft.title)}</h1><p>${escape(draft.intro)}</p>${draft.materials.map((m) => `<section><h2><a href="${escape(m.url)}">${escape(m.title)}</a></h2><p>${escape(m.excerpt)}</p></section>`).join("")}</article>`,
       };

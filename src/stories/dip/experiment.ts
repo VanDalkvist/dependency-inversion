@@ -23,7 +23,7 @@ export function runExperiment(
     !["telegram", "website", "both"].includes(config.publisher) ||
     !["yes", "no"].includes(config.approval)
   )
-    throw new Error("Неизвестная конфигурация редакции");
+    throw new Error("Неизвестная конфигурация фабрики контента");
   const outbox: Artifact[] = [];
   const publishers: Publisher[] =
     config.publisher === "both"
@@ -34,7 +34,7 @@ export function runExperiment(
             : websitePublisher(outbox),
         ];
   const result = runDigest(
-    { topic: "Вайбкодинг без магии", limit: 3 },
+    { topic: "Фабрика контента: от материалов до публикации", limit: 3 },
     {
       source: sources[config.source as keyof typeof sources],
       writer: writers[config.writer as keyof typeof writers],
@@ -44,32 +44,33 @@ export function runExperiment(
   );
   return {
     summary: result.approved
-      ? "Выпуск собран и записан в учебную ленту."
-      : "Черновик готов. Без согласования выпуск не опубликован.",
+      ? "Учебный выпуск готов. Тексты для выбранных каналов — ниже."
+      : "Выпуск не согласован. В учебном прогоне публикации не созданы.",
     facts: [
-      { label: "Получено материалов", value: String(result.received) },
-      { label: "Уникальных материалов", value: String(result.selected) },
-      { label: "Публикаций в ленте", value: String(outbox.length) },
+      { label: "Исходных материалов", value: String(result.received) },
+      { label: "Материалов в выпуске", value: String(result.selected) },
+      { label: "Подготовлено публикаций", value: String(outbox.length) },
     ],
     artifacts: outbox,
     trace: [
-      `Получено: ${result.received}`,
-      `После удаления дублей: ${result.selected}`,
+      `Собрано материалов: ${result.received}`,
+      `Дубли удалены, выбрано: ${result.selected}`,
       "Черновик подготовлен",
       result.approved
-        ? `Артефактов создано: ${outbox.length}`
-        : "Публикация остановлена: нет согласования",
+        ? `Подготовлено публикаций: ${outbox.length}`
+        : "Согласование не получено — публикация остановлена",
     ],
   };
 }
 export const experiment: ExperimentDefinition = {
-  title: "Песочница: замена сервисов в пайплайне",
+  title: "Песочница фабрики контента",
+  runLabel: "Запустить выпуск",
   description:
-    "Это детерминированная симуляция: без вызовов моделей и настоящих публикаций. Меняй реализации — внутри исполняется один и тот же сценарий runDigest.",
+    "Здесь работают заготовленные материалы и тексты, а не реальные RSS и AI-модели. Меняй настройки и сравнивай документы: сценарий runDigest остаётся тем же. Публикации создаются только внутри этой страницы.",
   choices: [
     {
       id: "source",
-      label: "Источник",
+      label: "Источник материалов",
       options: [
         { id: "rss", label: "Одна RSS-лента" },
         { id: "aggregate", label: "Агрегатор источников" },
@@ -77,15 +78,15 @@ export const experiment: ExperimentDefinition = {
     },
     {
       id: "writer",
-      label: "Редактор",
+      label: "AI-редактор",
       options: [
-        { id: "cloud", label: "Облачная модель" },
-        { id: "local", label: "Локальная модель" },
+        { id: "cloud", label: "Облачный AI-редактор" },
+        { id: "local", label: "Локальный AI-редактор" },
       ],
     },
     {
       id: "publisher",
-      label: "Публикация",
+      label: "Каналы публикации",
       options: [
         { id: "telegram", label: "Telegram" },
         { id: "website", label: "Сайт" },
@@ -94,10 +95,10 @@ export const experiment: ExperimentDefinition = {
     },
     {
       id: "approval",
-      label: "Согласование",
+      label: "Согласование выпуска",
       options: [
-        { id: "yes", label: "Разрешить выпуск" },
-        { id: "no", label: "Оставить черновиком" },
+        { id: "yes", label: "Согласовать выпуск" },
+        { id: "no", label: "Не согласовывать" },
       ],
     },
   ],

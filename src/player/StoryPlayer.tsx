@@ -88,9 +88,11 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
           <div className="intro-note">
             <span>интерактивный фильм</span>
             <p>
-              Не запоминай правило.
+              Включи фильм
               <br />
-              Посмотри, что оно меняет.
+              или выбирай сцены
+              <br />
+              на шкале внизу.
             </p>
             <a href="#film" aria-label="К интерактивному фильму">
               <ArrowDown size={21} />
@@ -244,7 +246,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
       <footer>
         <span>Простые вещи · интерактивные объяснения</span>
         <span className="keyboard-hint">
-          space — play / pause · ← → — сцены
+          пробел — смотреть / пауза · ← → — сцены
         </span>
         <a href="https://motion.dev" target="_blank" rel="noreferrer">
           Motion × Hearth & Wave ↗

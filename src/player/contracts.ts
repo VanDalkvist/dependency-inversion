@@ -64,6 +64,7 @@ export type ExperimentResult = {
 export type ExperimentDefinition = {
   title: string;
   description: string;
+  runLabel?: string;
   choices: {
     id: string;
     label: string;

@@ -55,7 +55,7 @@ export default function ExperimentPanel({
       </div>
       <button className="run-button" onClick={run}>
         <Play size={15} />
-        Прогнать выпуск
+        {experiment.runLabel ?? "Запустить пример"}
         <ArrowUpRight size={15} />
       </button>
       {error && <p role="alert">{error}</p>}
