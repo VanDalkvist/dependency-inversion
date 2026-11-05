@@ -36,7 +36,7 @@ Author review, not independent acceptance. Reviewed the changed source and produ
 
 ### Architecture verification
 - Passed for the changed slice: AP-010, AP-020, AP-025, AP-028, AP-046, AP-051, AP-054, AP-069, AP-074, AP-076.
-- Dependency traceability: main.tsx renders App; App.tsx:5 injects the story into StoryPlayer. StoryPlayer.tsx passes story.experiment into ExperimentPanel; ExperimentPanel.tsx:17 invokes the injected run(config), and :58 displays the injected runLabel. experiment.ts:38 wires source/writer/publishers into runDigest; pipeline.ts:16/:20/:22 actually invokes collect/write/publish.
+- Dependency traceability: main.tsx renders App; App.tsx:5 injects the story into StoryPlayer. StoryPlayer.tsx passes story.experiment into ExperimentPanel; ExperimentPanel.tsx:17 invokes the injected run(config), and :58 displays the injected runLabel. experiment.ts:36 wires source/writer/publishers into runDigest; pipeline.ts:16/:20/:22 actually invokes collect/write/publish.
 - Runtime completeness: no alternate scene set or entrypoint added; only one active DIP story. Existing engine/story separation remains intact.
 - Entry point wiring: production main.tsx → App → StoryPlayer → ExperimentPanel → runExperiment → runDigest → in-memory adapters. The public browser test traverses this path and inspects the generated document contents.
 - Anti-gaming: no pipeline behavior, validation, approval gate or timers removed. Fixed teaching text is expressly labelled as fixed data; the simulation is not represented as an external AI or publishing integration. The two run-label tests assert compatibility and invocation with the chosen configuration; pipeline/browser tests inspect actual output documents and denial.
