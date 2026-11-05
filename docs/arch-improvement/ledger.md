@@ -47,3 +47,9 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Deployment: source e68f117, version d5e55b00-31ff-4ae7-a1c2-c0ca4d2f0385; public asset hashes match the production build.
 - Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/viewport/. The long browser matrix was split into bounded batches after the host RPC deadline stopped the first public run; the four completed public batches are the acceptance evidence.
 - Author review only; no independent reviewer was spawned. Extreme dimensions/zoom outside the listed matrix are not claimed as verified.
+
+## Header new-tab link — 2026-11-05
+
+- User requested vanya-arc.dev in a new tab. Header link now has target=_blank and rel=noopener noreferrer; URL and accessible name unchanged.
+- Existing journey test failed before the change; all 49 tests and production build pass after it. Public JS matches the build and contains the updated anchor props (thread evidence new-tab/verify.json).
+- Deployed source 0f91ea7, Cloudflare version 3781c32b-d2a6-4849-8976-9a9bfe27d282. No architecture boundaries or playback behavior changed.
