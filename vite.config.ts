@@ -11,5 +11,9 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
     allowedHosts: ["vanya--4178.getbb.app", "vanya--4178.next.getbb.app"],
   },
-  test: { environment: "jsdom", testTimeout: 30000, setupFiles: ["src/test/setup.ts"] },
+  test: {
+    environment: "jsdom",
+    testTimeout: 30000,
+    setupFiles: ["src/test/setup.ts"],
+  },
 }));

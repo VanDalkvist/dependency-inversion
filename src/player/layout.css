@@ -19,7 +19,9 @@
   height: auto;
   min-height: 0;
 }
-.lesson-screen .brand-description { font-size: 10px; }
+.lesson-screen .brand-description {
+  font-size: 10px;
+}
 .lesson-screen .lesson-main {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
@@ -51,7 +53,9 @@
 .lesson-screen .chapters,
 .lesson-screen .film-toolbar,
 .lesson-screen .caption,
-.lesson-screen .transport { flex: none; }
+.lesson-screen .transport {
+  flex: none;
+}
 .lesson-screen .chapters button {
   min-height: 32px;
   padding: 6px 10px;
@@ -83,7 +87,11 @@
   flex: 1;
   aspect-ratio: auto;
 }
-.lesson-screen .stage-legend { flex: none; min-width: 0; padding: 5px 8px 0; }
+.lesson-screen .stage-legend {
+  flex: none;
+  min-width: 0;
+  padding: 5px 8px 0;
+}
 .lesson-screen .graph-note {
   flex: none;
   min-height: 0;
@@ -97,14 +105,43 @@
   padding: 14px 16px;
   border-left: 1px solid var(--border);
 }
-.lesson-screen .narration-bottom { margin: 0; padding: 0; }
-.lesson-screen .narration-status { min-height: 20px; margin-bottom: 8px; }
-.lesson-screen .narration > div > h2 { font-size: 22px; line-height: 1.23; letter-spacing: -0.6px; }
-.lesson-screen .narration-body { font-size: 13px; line-height: 1.65; margin-top: 10px; }
-.lesson-screen .scene-actions { margin-top: 12px; gap: 6px; grid-template-columns: 1fr; }
-.lesson-screen .scene-actions button { min-height: 36px; padding: 8px 10px; font-size: 11px; line-height: 1.4; }
-.lesson-screen .action-feedback { font-size: 12px; line-height: 1.6; padding-top: 12px; }
-.lesson-screen .action-feedback:empty { padding-top: 0; }
+.lesson-screen .narration-bottom {
+  margin: 0;
+  padding: 0;
+}
+.lesson-screen .narration-status {
+  min-height: 20px;
+  margin-bottom: 8px;
+}
+.lesson-screen .narration > div > h2 {
+  font-size: 22px;
+  line-height: 1.23;
+  letter-spacing: -0.6px;
+}
+.lesson-screen .narration-body {
+  font-size: 13px;
+  line-height: 1.65;
+  margin-top: 10px;
+}
+.lesson-screen .scene-actions {
+  margin-top: 12px;
+  gap: 6px;
+  grid-template-columns: 1fr;
+}
+.lesson-screen .scene-actions button {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.lesson-screen .action-feedback {
+  font-size: 12px;
+  line-height: 1.6;
+  padding-top: 12px;
+}
+.lesson-screen .action-feedback:empty {
+  padding-top: 0;
+}
 .insight-button,
 .feedback-switch,
 .lesson-details-button {
@@ -114,26 +151,93 @@
   color: var(--ink-soft);
   font-size: 10px;
 }
-.insight-button { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; padding: 2px 0 2px 6px; min-height: 24px; }
-.feedback-switch { align-self: flex-start; margin-top: 8px; padding: 2px 0; min-height: 24px; text-decoration: underline; text-underline-offset: 3px; }
-.lesson-screen .caption { min-height: 0; padding: 7px 14px; gap: 10px; align-items: center; }
-.lesson-screen .caption-symbol { font-size: 18px; margin: 0; }
-.lesson-screen .caption p { font-size: 11px; line-height: 1.5; }
-.lesson-screen .transport { padding: 7px 14px 4px; }
-.lesson-screen .transport-controls { gap: 6px; flex-wrap: nowrap; }
-.lesson-screen .play-button { min-height: 32px; min-width: 105px; padding: 6px 12px; }
-.lesson-screen .transport .icon-button { min-height: 32px; min-width: 32px; }
-.lesson-screen .film-scrubber { margin: 3px 0 0; height: 16px; }
-.lesson-screen .scene-ticks button { min-height: 23px; padding: 2px 0; gap: 3px; }
-.lesson-screen .speed-select { padding: 3px; }
-.lesson-screen .timecode { margin-left: 5px; }
-.lesson-screen footer { min-height: 0; height: auto; flex-direction: row; gap: 10px; align-items: center; padding-top: 0; padding-bottom: 0; }
-.lesson-details-button { min-height: 24px; padding: 2px 6px; }
-.lesson-extras { padding-top: 12px; padding-bottom: 36px; }
-.lesson-extras .experiment { margin-top: 0; }
+.insight-button {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 0 2px 6px;
+  min-height: 24px;
+}
+.feedback-switch {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 2px 0;
+  min-height: 24px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lesson-screen .caption {
+  min-height: 0;
+  padding: 7px 14px;
+  gap: 10px;
+  align-items: center;
+}
+.lesson-screen .caption-symbol {
+  font-size: 18px;
+  margin: 0;
+}
+.lesson-screen .caption p {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.lesson-screen .transport {
+  padding: 7px 14px 4px;
+}
+.lesson-screen .transport-controls {
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+.lesson-screen .play-button {
+  min-height: 32px;
+  min-width: 105px;
+  padding: 6px 12px;
+}
+.lesson-screen .transport .icon-button {
+  min-height: 32px;
+  min-width: 32px;
+}
+.lesson-screen .film-scrubber {
+  margin: 3px 0 0;
+  height: 16px;
+}
+.lesson-screen .scene-ticks button {
+  min-height: 23px;
+  padding: 2px 0;
+  gap: 3px;
+}
+.lesson-screen .speed-select {
+  padding: 3px;
+}
+.lesson-screen .timecode {
+  margin-left: 5px;
+}
+.lesson-screen footer {
+  min-height: 0;
+  height: auto;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.lesson-details-button {
+  min-height: 24px;
+  padding: 2px 6px;
+}
+.lesson-extras {
+  padding-top: 12px;
+  padding-bottom: 36px;
+}
+.lesson-extras .experiment {
+  margin-top: 0;
+}
 .pane-toggle,
-.mobile-scene-title { display: none; }
+.mobile-scene-title {
+  display: none;
+}
 .player-dialog {
+  margin: auto;
   width: min(800px, calc(100% - 32px));
   max-height: calc(100dvh - 32px);
   padding: 0;
@@ -142,75 +246,263 @@
   background: var(--ground);
   color: var(--ink);
 }
-.player-dialog::backdrop { background: color-mix(in oklab, var(--ink) 28%, transparent); }
-.dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
-.dialog-heading h2 { font-size: 18px; font-weight: 550; line-height: 1.4; }
-.dialog-content { padding: 20px; font-size: 13px; line-height: 1.8; }
-.dialog-content .inspector { padding: 0; border: 0; background: transparent; }
-.dialog-content .inspector > p { font-size: 13px; }
+.player-dialog::backdrop {
+  background: color-mix(in oklab, var(--ink) 28%, transparent);
+}
+.dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.dialog-heading h2 {
+  font-size: 18px;
+  font-weight: 550;
+  line-height: 1.4;
+}
+.dialog-content {
+  padding: 20px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.dialog-content .inspector {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.dialog-content .inspector > p {
+  font-size: 13px;
+}
 .lesson-conclusion h3,
-.lesson-source-list h3 { font-size: 17px; font-weight: 550; margin: 0 0 8px; }
-.lesson-source-list { margin-top: 24px; }
-.lesson-source-list a { display: block; margin-top: 10px; color: var(--ink-soft); }
-.lesson-screen .film:fullscreen { height: 100dvh; }
-.lesson-screen .film:fullscreen .stage-svg { height: 0; max-height: none; }
+.lesson-source-list h3 {
+  font-size: 17px;
+  font-weight: 550;
+  margin: 0 0 8px;
+}
+.lesson-source-list {
+  margin-top: 24px;
+}
+.lesson-source-list a {
+  display: block;
+  margin-top: 10px;
+  color: var(--ink-soft);
+}
+.lesson-screen .film:fullscreen {
+  height: 100dvh;
+}
+.lesson-screen .film:fullscreen .stage-svg {
+  height: 0;
+  max-height: none;
+}
 @media (max-height: 800px) and (min-width: 901px) {
-  .lesson-screen .intro { padding-top: 8px; padding-bottom: 8px; }
-  .lesson-screen .intro h1 { font-size: 28px; }
-  .lesson-screen .narration { padding: 10px 14px; }
-  .lesson-screen .narration > div > h2 { font-size: 20px; }
-  .lesson-screen .narration-body { font-size: 12px; line-height: 1.6; margin-top: 8px; }
-  .lesson-screen .scene-actions { margin-top: 10px; }
+  .lesson-screen .intro {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .lesson-screen .intro h1 {
+    font-size: 28px;
+  }
+  .lesson-screen .narration {
+    padding: 10px 14px;
+  }
+  .lesson-screen .narration > div > h2 {
+    font-size: 20px;
+  }
+  .lesson-screen .narration-body {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+  .lesson-screen .scene-actions {
+    margin-top: 10px;
+  }
 }
 @media (max-width: 900px) {
-  .lesson-screen { grid-template-rows: 40px minmax(0, 1fr) 28px; }
+  .lesson-screen {
+    grid-template-rows: 40px minmax(0, 1fr) 28px;
+  }
   .lesson-screen .site-header,
   .lesson-screen .lesson-main,
   .lesson-screen footer,
-  .lesson-extras { padding-left: 12px; padding-right: 12px; }
-  .lesson-screen .intro { padding: 8px 0; display: block; }
-  .lesson-screen .intro h1 { font-size: 25px; letter-spacing: -0.9px; }
-  .lesson-screen .intro > div > p { font-size: 11px; line-height: 1.4; margin-top: 4px; }
+  .lesson-extras {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .lesson-screen .intro {
+    padding: 8px 0;
+    display: block;
+  }
+  .lesson-screen .intro h1 {
+    font-size: 25px;
+    letter-spacing: -0.9px;
+  }
+  .lesson-screen .intro > div > p {
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
   .lesson-screen .brand-description,
-  .lesson-screen .brand-divider { display: none; }
-  .lesson-screen .film-topic { display: none; }
-  .pane-toggle { display: flex; gap: 2px; }
-  .pane-toggle button { min-height: 28px; border: 0; border-radius: 2px; padding: 4px 7px; background: transparent; font-size: 10px; white-space: nowrap; color: var(--ink-soft); }
-  .pane-toggle button[aria-pressed="true"] { background: var(--surface-raised); color: var(--ink); }
-  .lesson-screen .film-toolbar { flex-wrap: wrap; min-height: 36px; padding: 3px 7px; gap: 5px; }
-  .lesson-screen .film-toolbar .view-toggle { margin-left: auto; }
-  .lesson-screen .view-toggle button { min-height: 26px; padding: 4px 6px; font-size: 9px; }
-  .lesson-screen .film[data-pane="text"] .view-toggle { display: none; }
-  .lesson-screen .film-toolbar .fullscreen-button { margin-left: auto; min-height: 26px; }
-  .lesson-screen .mobile-scene-title { display: block; flex: none; padding: 8px 12px; font-size: 18px; font-weight: 550; line-height: 1.25; letter-spacing: -0.4px; border-bottom: 1px solid var(--border); }
-  .lesson-screen .film-content { display: flex; flex-direction: column; }
+  .lesson-screen .brand-divider {
+    display: none;
+  }
+  .lesson-screen .film-topic {
+    display: none;
+  }
+  .pane-toggle {
+    display: flex;
+    gap: 2px;
+  }
+  .pane-toggle button {
+    min-height: 28px;
+    border: 0;
+    border-radius: 2px;
+    padding: 4px 7px;
+    background: transparent;
+    font-size: 10px;
+    white-space: nowrap;
+    color: var(--ink-soft);
+  }
+  .pane-toggle button[aria-pressed="true"] {
+    background: var(--surface-raised);
+    color: var(--ink);
+  }
+  .lesson-screen .film-toolbar {
+    flex-wrap: wrap;
+    min-height: 36px;
+    padding: 3px 7px;
+    gap: 5px;
+  }
+  .lesson-screen .film-toolbar .view-toggle {
+    margin-left: auto;
+  }
+  .lesson-screen .view-toggle button {
+    min-height: 26px;
+    padding: 4px 6px;
+    font-size: 9px;
+  }
+  .lesson-screen .film[data-pane="text"] .view-toggle {
+    display: none;
+  }
+  .lesson-screen .film-toolbar .fullscreen-button {
+    margin-left: auto;
+    min-height: 26px;
+  }
+  .lesson-screen .mobile-scene-title {
+    display: block;
+    flex: none;
+    padding: 8px 12px;
+    font-size: 18px;
+    font-weight: 550;
+    line-height: 1.25;
+    letter-spacing: -0.4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .lesson-screen .film-content {
+    display: flex;
+    flex-direction: column;
+  }
   .lesson-screen .film[data-pane="text"] .visual-stage,
-  .lesson-screen .film[data-pane="graph"] .narration { display: none; }
+  .lesson-screen .film[data-pane="graph"] .narration {
+    display: none;
+  }
   .lesson-screen .visual-stage,
-  .lesson-screen .narration { flex: 1; min-height: 0; }
-  .lesson-screen .visual-stage { border-bottom: 0; padding: 6px; overflow: visible; }
-  .lesson-screen .narration { border-left: 0; padding: 8px 12px; }
-  .lesson-screen .narration > div > h2 { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); }
-  .lesson-screen .narration-status { margin-bottom: 4px; }
-  .lesson-screen .narration-body { font-size: 13px; margin-top: 4px; line-height: 1.6; }
-  .lesson-screen .scene-actions { margin-top: 10px; }
-  .lesson-screen .scene-actions button { min-height: 36px; padding: 7px 10px; font-size: 11px; }
-  .lesson-screen .caption { padding: 6px 12px; }
-  .lesson-screen .caption p { font-size: 10px; line-height: 1.5; }
-  .lesson-screen .transport { padding: 5px 10px 3px; }
-  .lesson-screen .play-button { min-width: 90px; font-size: 10px; }
-  .lesson-screen .timecode { font-size: 8px; margin-left: 0; }
-  .lesson-screen .scene-counter { font-size: 9px; }
-  .lesson-screen footer > span { display: none; }
-  .lesson-screen footer > a { font-size: 8px; }
-  .lesson-screen footer { justify-content: space-between; }
-  .lesson-screen .graph-note { font-size: 10px; }
+  .lesson-screen .narration {
+    flex: 1;
+    min-height: 0;
+  }
+  .lesson-screen .visual-stage {
+    border-bottom: 0;
+    padding: 6px;
+    overflow: visible;
+  }
+  .lesson-screen .narration {
+    border-left: 0;
+    padding: 8px 12px;
+  }
+  .lesson-screen .narration > div > h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .lesson-screen .narration-status {
+    margin-bottom: 4px;
+  }
+  .lesson-screen .narration-body {
+    font-size: 13px;
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+  .lesson-screen .scene-actions {
+    margin-top: 10px;
+  }
+  .lesson-screen .scene-actions button {
+    min-height: 36px;
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+  .lesson-screen .caption {
+    padding: 6px 12px;
+  }
+  .lesson-screen .caption p {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .lesson-screen .transport {
+    padding: 5px 10px 3px;
+  }
+  .lesson-screen .play-button {
+    min-width: 90px;
+    font-size: 10px;
+  }
+  .lesson-screen .timecode {
+    font-size: 8px;
+    margin-left: 0;
+  }
+  .lesson-screen .scene-counter {
+    font-size: 9px;
+  }
+  .lesson-screen footer > span {
+    display: none;
+  }
+  .lesson-screen footer > a {
+    font-size: 8px;
+  }
+  .lesson-screen footer {
+    justify-content: space-between;
+  }
+  .lesson-screen .graph-note {
+    font-size: 10px;
+  }
 }
 @media (max-height: 700px) and (max-width: 900px) {
-  .lesson-screen .intro h1 { font-size: 22px; }
-  .lesson-screen .intro { padding-top: 5px; padding-bottom: 5px; }
-  .lesson-screen .mobile-scene-title { font-size: 17px; padding-top: 6px; padding-bottom: 6px; }
-  .lesson-screen .narration-body { font-size: 12px; line-height: 1.55; }
-  .lesson-screen .scene-actions { margin-top: 7px; gap: 5px; }
-  .lesson-screen .action-feedback { font-size: 11px; line-height: 1.5; padding-top: 7px; }
+  .lesson-screen .intro h1 {
+    font-size: 22px;
+  }
+  .lesson-screen .intro {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .lesson-screen .mobile-scene-title {
+    font-size: 17px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .lesson-screen .narration-body {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .lesson-screen .scene-actions {
+    margin-top: 7px;
+    gap: 5px;
+  }
+  .lesson-screen .action-feedback {
+    font-size: 11px;
+    line-height: 1.5;
+    padding-top: 7px;
+  }
 }

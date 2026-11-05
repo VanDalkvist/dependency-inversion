@@ -42,7 +42,9 @@ describe("DIP film user journeys", () => {
   });
   it("shows rules on the card and reveals API details only in its inspector", () => {
     render(<App />);
-    const card = screen.getByRole("button", { name: "Блок Сценарий выпуска. Подробнее" });
+    const card = screen.getByRole("button", {
+      name: "Блок Сценарий выпуска. Подробнее",
+    });
     expect(card.textContent).toContain("Отобрать материалы без дублей");
     expect(card.textContent).toContain("Зависимости кода");
     expect(card.textContent).not.toContain("choices[0].message");
@@ -63,7 +65,9 @@ describe("DIP film user journeys", () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: "Вывод и источники" }));
     const dialog = screen.getByRole("dialog", { name: "Вывод и источники" });
-    expect(dialog.textContent).toContain("Интеграции зависят от контрактов сценария");
+    expect(dialog.textContent).toContain(
+      "Интеграции зависят от контрактов сценария",
+    );
     expect(dialog.querySelectorAll("a").length).toBe(3);
     fireEvent(dialog, new Event("cancel", { cancelable: true }));
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -71,12 +75,22 @@ describe("DIP film user journeys", () => {
   it("lets readers switch between feedback and the original explanation", () => {
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }));
-    expect((document.querySelector(".narration-body") as HTMLElement).hidden).toBe(true);
-    fireEvent.click(screen.getByRole("button", { name: "Показать объяснение" }));
-    expect((document.querySelector(".narration-body") as HTMLElement).hidden).toBe(false);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }),
+    );
+    expect(
+      (document.querySelector(".narration-body") as HTMLElement).hidden,
+    ).toBe(true);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Показать объяснение" }),
+    );
+    expect(
+      (document.querySelector(".narration-body") as HTMLElement).hidden,
+    ).toBe(false);
     fireEvent.click(screen.getByRole("button", { name: "Показать ответ" }));
-    expect((document.querySelector(".narration-body") as HTMLElement).hidden).toBe(true);
+    expect(
+      (document.querySelector(".narration-body") as HTMLElement).hidden,
+    ).toBe(true);
   });
   it("links the header back to the main website", () => {
     render(<App />);
@@ -91,7 +105,9 @@ describe("DIP film user journeys", () => {
       document.querySelector('[data-node-id="publish-port"]')?.textContent,
     ).toContain("TelegramClient");
     fireEvent.click(
-      screen.getByRole("button", { name: "Задать Publisher на стороне сценария" }),
+      screen.getByRole("button", {
+        name: "Задать Publisher на стороне сценария",
+      }),
     );
     await waitFor(() =>
       expect(
@@ -108,7 +124,9 @@ describe("DIP film user journeys", () => {
     fireEvent.click(
       screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }),
     );
-    expect(screen.getByText(/Отдельный интерфейс ещё не решает задачу/)).toBeTruthy();
+    expect(
+      screen.getByText(/Отдельный интерфейс ещё не решает задачу/),
+    ).toBeTruthy();
     expect(
       (
         screen.getByRole("button", {
@@ -141,9 +159,7 @@ describe("DIP film user journeys", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Запустить выпуск" }));
     await waitFor(() =>
-      expect(
-        screen.getByText(/Выпуск не согласован/),
-      ).toBeTruthy(),
+      expect(screen.getByText(/Выпуск не согласован/)).toBeTruthy(),
     );
     expect(screen.queryByText(/<article><h1>/)).toBeNull();
   });

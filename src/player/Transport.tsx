@@ -60,7 +60,11 @@ export default function Transport({
         <button
           className="icon-button"
           aria-label="Следующая сцена"
-          disabled={state.index === story.scenes.length - 1 || (!!story.scenes[state.index].gate && !state.answers[story.scenes[state.index].id])}
+          disabled={
+            state.index === story.scenes.length - 1 ||
+            (!!story.scenes[state.index].gate &&
+              !state.answers[story.scenes[state.index].id])
+          }
           onClick={() => dispatch({ type: "next" })}
         >
           <SkipForward size={16} />
