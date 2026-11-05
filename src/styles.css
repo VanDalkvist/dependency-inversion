@@ -349,7 +349,7 @@ footer {
   fill: var(--ink-soft);
 }
 .node-body {
-  font: 500 11px var(--font-sans);
+  font: 500 13px var(--font-sans);
   fill: var(--ink);
 }
 .node-content-divider {
