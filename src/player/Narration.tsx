@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import Dialog from "./Dialog";
 import { ArrowRight, Check, Info, Pause } from "lucide-react";
 import type { StoryScene } from "./contracts";
 export default function Narration({
@@ -7,19 +9,17 @@ export default function Narration({
   answered,
   answer,
   feedback,
-  hasNext,
   onAnswer,
-  onNext,
 }: {
   scene: StoryScene;
   playing: boolean;
   answered: boolean;
   answer?: string;
   feedback: string | null;
-  hasNext: boolean;
   onAnswer: (id: string) => void;
-  onNext: () => void;
 }) {
+  const [readingOriginal, setReadingOriginal] = useState(false);
+  const [insightOpen, setInsightOpen] = useState(false);
   return (
     <aside className="narration">
       <div className="narration-status">
@@ -39,6 +39,7 @@ export default function Narration({
             {playing ? "Воспроизведение" : "На паузе"}
           </>
         )}
+        {scene.insight && <button className="insight-button" onClick={() => setInsightOpen(true)}><Info size={13} />Почему это важно</button>}
       </div>
       <AnimatePresence initial={false} mode="wait">
         <motion.div
@@ -48,7 +49,7 @@ export default function Narration({
           exit={{ opacity: 0, y: -5 }}
         >
           <h2>{scene.title}</h2>
-          <p className="narration-body">{scene.body}</p>
+          <p className="narration-body" hidden={!!feedback && !readingOriginal}>{scene.body}</p>
         </motion.div>
       </AnimatePresence>
       {scene.actions && (
@@ -56,7 +57,7 @@ export default function Narration({
           {scene.actions.map((action) => (
             <button
               key={action.id}
-              onClick={() => onAnswer(action.id)}
+              onClick={() => { setReadingOriginal(false); onAnswer(action.id); }}
               aria-pressed={answer === action.id}
             >
               {action.label}
@@ -71,26 +72,13 @@ export default function Narration({
           ))}
         </div>
       )}
-      <div className="action-feedback" role="status" aria-live="polite">
+      <div className="action-feedback" role="status" aria-live="polite" hidden={readingOriginal}>
         {feedback}
       </div>
+      {feedback && <button className="feedback-switch" onClick={() => setReadingOriginal(!readingOriginal)}>{readingOriginal ? "Показать ответ" : "Показать объяснение"}</button>}
       <div className="narration-bottom">
-        {scene.insight && (
-          <p>
-            <Info size={14} />
-            {scene.insight}
-          </p>
-        )}
-        {hasNext && (
-          <button
-            className="continue-button"
-            onClick={() => onNext()}
-            disabled={!!scene.gate && !answered}
-          >
-            К следующей сцене
-            <ArrowRight size={16} />
-          </button>
-        )}
+        {insightOpen && scene.insight && <Dialog title="Почему это важно" onClose={() => setInsightOpen(false)}><p>{scene.insight}</p></Dialog>}
+
       </div>
     </aside>
   );

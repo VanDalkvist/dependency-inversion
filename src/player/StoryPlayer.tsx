@@ -1,16 +1,6 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  ArrowDown,
-  Maximize2,
-  Moon,
-  Sun,
-  Pause,
-  Check,
-  Info,
-} from "lucide-react";
+import { ArrowUpRight, Maximize2, Moon, Sun } from "lucide-react";
 import { useTheme } from "@vanya/ui";
 import type { StoryDefinition } from "./contracts";
 import { usePlayback } from "./usePlayback";
@@ -19,6 +9,8 @@ import Transport from "./Transport";
 import Inspector from "./Inspector";
 import ExperimentPanel from "./ExperimentPanel";
 import Narration from "./Narration";
+import LessonDetails from "./LessonDetails";
+import "./layout.css";
 export default function StoryPlayer({ story }: { story: StoryDefinition }) {
   return <PlayerSession key={story.id} story={story} />;
 }
@@ -28,6 +20,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
   const { resolvedTheme, setTheme } = useTheme();
   const screen = useRef<HTMLDivElement>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [pane, setPane] = useState<"graph" | "text">("text");
   const answered = !!state.answers[scene.id];
   const sceneViews =
     answered && scene.resolvedViews ? scene.resolvedViews : scene.views;
@@ -47,6 +40,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
   }
   return (
     <div className="app-shell">
+      <div className="lesson-screen">
       <a className="skip-link" href="#film">
         Перейти к фильму
       </a>
@@ -79,25 +73,13 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
           </button>
         </div>
       </header>
-      <main>
+      <main className="lesson-main">
         <section className="intro">
           <div>
             <h1>{story.title}</h1>
             <p>{story.subtitle}</p>
           </div>
-          <div className="intro-note">
-            <span>интерактивный фильм</span>
-            <p>
-              Включи фильм
-              <br />
-              или выбирай сцены
-              <br />
-              на шкале внизу.
-            </p>
-            <a href="#film" aria-label="К интерактивному фильму">
-              <ArrowDown size={21} />
-            </a>
-          </div>
+
         </section>
         <div
           id="film"
@@ -105,6 +87,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
           className="film"
           data-scene={scene.id}
           data-story={story.id}
+          data-pane={pane}
         >
           <nav className="chapters" aria-label="Главы">
             {story.chapters.map((chapter, index) => (
@@ -137,6 +120,10 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
               <span>/ {String(story.scenes.length).padStart(2, "0")}</span>
             </span>
             <span className="film-topic">{story.topic ?? story.subtitle}</span>
+            <div className="pane-toggle" role="group" aria-label="Панель сцены">
+              <button aria-pressed={pane === "graph"} onClick={() => setPane("graph")}>Схема</button>
+              <button aria-pressed={pane === "text"} onClick={() => setPane("text")}>Текст{scene.gate && !answered ? " · действие" : ""}</button>
+            </div>
             <div className="view-toggle" role="group" aria-label="Режим схемы">
               {Object.keys(sceneViews).map((key) => (
                 <button
@@ -161,6 +148,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
               {notice}
             </p>
           )}
+          <p className="mobile-scene-title">{scene.title}</p>
           <div className="film-content">
             <div className="visual-stage">
               <Stage
@@ -180,20 +168,19 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
                 </span>
                 <span className="inspect-hint">Нажми на блок ↗</span>
                 <span className="mobile-stage-hint">
-                  ↔ Схему можно двигать
+                  ↗ Детали — по клику на блок
                 </span>
               </div>
               <p className="graph-note">{view.note ?? " "}</p>
             </div>
             <Narration
+              key={scene.id}
               scene={scene}
               playing={state.playing}
               answered={answered}
               answer={state.answers[scene.id]}
               feedback={state.feedback}
-              hasNext={state.index < story.scenes.length - 1}
               onAnswer={(id) => dispatch({ type: "answer", id })}
-              onNext={() => dispatch({ type: "next" })}
             />
           </div>
           <div className="caption">
@@ -217,41 +204,17 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
             />
           )}
         </div>
-        {scene.experiment && story.experiment && (
-          <ExperimentPanel experiment={story.experiment} />
-        )}
-        {story.conclusion && (
-          <section className="afterword">
-            <h2>{story.conclusion.title}</h2>
-            <p>{story.conclusion.body}</p>
-            <span className="afterword-arrow">↗</span>
-          </section>
-        )}
-        {story.sources && (
-          <details className="sources">
-            <summary>Откуда взялся принцип</summary>
-            {story.sources.map((source) => (
-              <a
-                key={source.url}
-                href={source.url}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {source.title} ↗
-              </a>
-            ))}
-          </details>
-        )}
+
       </main>
       <footer>
         <span>Простые вещи · интерактивные объяснения</span>
-        <span className="keyboard-hint">
-          пробел — смотреть / пауза · ← → — сцены
-        </span>
+        <LessonDetails conclusion={story.conclusion} sources={story.sources} />
         <a href="https://motion.dev" target="_blank" rel="noreferrer">
           Motion × Hearth & Wave ↗
         </a>
       </footer>
+      </div>
+      {scene.experiment && story.experiment && <section className="lesson-extras" aria-label="Практика"><ExperimentPanel experiment={story.experiment} /></section>}
     </div>
   );
 }

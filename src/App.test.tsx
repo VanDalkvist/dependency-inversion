@@ -52,6 +52,32 @@ describe("DIP film user journeys", () => {
     expect(inspector.textContent).toContain("choices[0].message");
     expect(inspector.textContent).toContain("parse_mode");
   });
+  it("keeps the late experiment outside the bounded lesson screen", () => {
+    render(<App />);
+    expect(document.querySelector(".lesson-screen")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
+    expect(document.querySelector(".lesson-screen .experiment")).toBeNull();
+    expect(document.querySelector(".lesson-extras .experiment")).toBeTruthy();
+  });
+  it("opens supplementary lesson content without expanding the page", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Вывод и источники" }));
+    const dialog = screen.getByRole("dialog", { name: "Вывод и источники" });
+    expect(dialog.textContent).toContain("Интеграции зависят от контрактов сценария");
+    expect(dialog.querySelectorAll("a").length).toBe(3);
+    fireEvent(dialog, new Event("cancel", { cancelable: true }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+  it("lets readers switch between feedback and the original explanation", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }));
+    expect((document.querySelector(".narration-body") as HTMLElement).hidden).toBe(true);
+    fireEvent.click(screen.getByRole("button", { name: "Показать объяснение" }));
+    expect((document.querySelector(".narration-body") as HTMLElement).hidden).toBe(false);
+    fireEvent.click(screen.getByRole("button", { name: "Показать ответ" }));
+    expect((document.querySelector(".narration-body") as HTMLElement).hidden).toBe(true);
+  });
   it("links the header back to the main website", () => {
     render(<App />);
     const link = screen.getByRole("link", { name: "vanya-arc.dev" });
@@ -86,7 +112,7 @@ describe("DIP film user journeys", () => {
     expect(
       (
         screen.getByRole("button", {
-          name: "К следующей сцене",
+          name: "Следующая сцена",
         }) as HTMLButtonElement
       ).disabled,
     ).toBe(true);
