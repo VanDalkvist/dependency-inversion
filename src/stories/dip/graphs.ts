@@ -38,19 +38,43 @@ export function architecture(o: Options = {}): StageView {
       "Сценарий выпуска",
       "Правила фабрики контента",
       45,
-      195,
+      153,
       "policy",
       {
         width: 255,
-        height: 132,
+        height: 216,
         icon: "workflow",
-        lines: [
-          o.source ? "materials: Material[]" : "RSS: item.description",
-          o.writer ? "draft: Draft" : "LLM: choices[0].message",
-          o.publisher ? "publisher.publish(draft)" : "Telegram: parse_mode",
+        body: [
+          "Отобрать материалы без дублей",
+          "Подготовить черновик выпуска",
+          "Публиковать после согласования",
         ],
-        detail:
+        linesLabel: "Зависимости кода",
+        lines: [
+          o.source ? "Источник: MaterialSource" : "Источник: RSS API",
+          o.writer ? "Редактор: DraftWriter" : "Редактор: API модели",
+          o.publisher
+            ? "Каналы: Publisher"
+            : o.wrapper
+              ? "Каналы: TelegramClient"
+              : o.website
+                ? "Каналы: Telegram API + сайт API"
+                : "Каналы: Telegram API",
+        ],
+        detail: [
           "Сценарий фабрики связывает сбор материалов, подготовку черновика и публикацию. Здесь остаются правила: убрать дубли, ограничить размер выпуска и не публиковать без согласования.",
+          o.source
+            ? "Источник: MaterialSource возвращает материалы в формате Material[], заданном сценарием."
+            : "RSS: сценарий читает поле item.description из формата ленты.",
+          o.writer
+            ? "Редактор: DraftWriter возвращает Draft; ответ конкретной модели разбирает интеграция."
+            : "Модель: сценарий сам разбирает choices[0].message из ответа провайдера.",
+          o.publisher
+            ? "Каналы: Publisher принимает Draft; разметка и API каждого канала остаются в интеграциях."
+            : o.wrapper
+              ? "Отправка: TelegramClient по-прежнему требует chatId и parse_mode — параметры API Telegram."
+              : "Отправка: сценарий передаёт chatId и parse_mode в Telegram API.",
+        ].join(" "),
         code: {
           file:
             o.publisher && o.source && o.writer

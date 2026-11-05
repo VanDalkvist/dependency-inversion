@@ -8,7 +8,9 @@ export type StageNode = {
   height?: number;
   kind: "policy" | "contract" | "detail" | "artifact";
   icon?: string;
+  body?: string[];
   lines?: string[];
+  linesLabel?: string;
   focus?: boolean;
   detail?: string;
   code?: { file: string; text: string };

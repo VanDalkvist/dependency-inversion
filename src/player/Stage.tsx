@@ -12,6 +12,7 @@ import {
   FileText,
 } from "lucide-react";
 import type { StageNode, StageView } from "./contracts";
+import NodeContent from "./NodeContent";
 const icons: Record<string, typeof Braces> = {
   braces: Braces,
   rss: Rss,
@@ -194,11 +195,7 @@ export default function Stage({
               <text x="16" y="52" className="node-subtitle">
                 {node.subtitle}
               </text>
-              {node.lines?.map((line, i) => (
-                <text key={line} x="16" y={77 + i * 17} className="node-code">
-                  {line}
-                </text>
-              ))}
+              <NodeContent node={node} />
               <text x={(node.width ?? 220) - 19} y="28" className="node-open">
                 ↗
               </text>

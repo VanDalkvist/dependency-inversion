@@ -348,6 +348,18 @@ footer {
   font: 11px var(--font-sans);
   fill: var(--ink-soft);
 }
+.node-body {
+  font: 500 11px var(--font-sans);
+  fill: var(--ink);
+}
+.node-content-divider {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.node-lines-label {
+  font: 10px var(--font-sans);
+  fill: var(--ink-faint);
+}
 .node-code {
   font: 10px var(--font-mono);
   fill: var(--ink-soft);

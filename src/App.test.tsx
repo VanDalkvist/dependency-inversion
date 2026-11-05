@@ -40,6 +40,18 @@ describe("DIP film user journeys", () => {
       }),
     ).toBeTruthy();
   });
+  it("shows rules on the card and reveals API details only in its inspector", () => {
+    render(<App />);
+    const card = screen.getByRole("button", { name: "Блок Сценарий выпуска. Подробнее" });
+    expect(card.textContent).toContain("Отобрать материалы без дублей");
+    expect(card.textContent).toContain("Зависимости кода");
+    expect(card.textContent).not.toContain("choices[0].message");
+    expect(card.textContent).not.toContain("parse_mode");
+    fireEvent.click(card);
+    const inspector = screen.getByRole("region", { name: "Инспектор блока" });
+    expect(inspector.textContent).toContain("choices[0].message");
+    expect(inspector.textContent).toContain("parse_mode");
+  });
   it("links the header back to the main website", () => {
     render(<App />);
     const link = screen.getByRole("link", { name: "vanya-arc.dev" });
