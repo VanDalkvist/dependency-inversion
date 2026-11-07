@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import Stage from "./Stage";
 import type { StageNode } from "./contracts";
 
@@ -12,6 +12,12 @@ const base: StageNode = { id: "example", label: "Другой сценарий",
 function show(node: StageNode) { render(<Stage view={{ nodes: [node], edges: [] }} selected={null} playing={false} onInspect={() => {}} />); }
 
 describe("generic node content hierarchy", () => {
+  it("activates an actionable card by click and keyboard instead of opening the inspector",()=>{
+    const actions:string[]=[];let inspected=0;
+    render(<Stage view={{nodes:[{...base,action:{id:"connect",label:"Подключить объект"}}],edges:[]}} selected={null} playing={false} onInspect={()=>{inspected++;}} onAction={id=>actions.push(id)}/>);
+    const card=screen.getByRole("button",{name:"Подключить объект"});fireEvent.click(card);fireEvent.keyDown(card,{key:"Enter"});
+    expect(actions).toEqual(["connect","connect"]);expect(inspected).toBe(0);
+  });
   it("renders the supplied explanatory body before its separate dependencies", () => {
     show({ ...base, body: ["Проверить лимит", "Потребовать подтверждение"], linesLabel: "Зависимости", lines: ["StoragePort"] });
     const body = screen.getByText("Проверить лимит");
