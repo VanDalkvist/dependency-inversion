@@ -1,16 +1,7 @@
-import type {
-  Brief,
-  DraftWriter,
-  MaterialSource,
-  Publisher,
-} from "./contracts";
+import type { Brief, FactoryPorts } from "./contracts";
 export function runDigest(
   brief: Brief,
-  ports: {
-    source: MaterialSource;
-    writer: DraftWriter;
-    publishers: Publisher[];
-  },
+  ports: FactoryPorts,
   approved: boolean,
 ) {
   const received = ports.source.collect(brief);

@@ -28,3 +28,8 @@ export interface DraftWriter {
 export interface Publisher {
   publish(draft: Draft): Artifact;
 }
+export interface FactoryPorts {
+  source: MaterialSource;
+  writer: DraftWriter;
+  publishers: Publisher[];
+}

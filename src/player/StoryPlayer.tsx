@@ -11,7 +11,10 @@ import ExperimentPanel from "./ExperimentPanel";
 import Narration from "./Narration";
 import LessonDetails from "./LessonDetails";
 import "./layout.css";
-type PlayerProps = { story: StoryDefinition; navigation?: readonly LessonLink[] };
+type PlayerProps = {
+  story: StoryDefinition;
+  navigation?: readonly LessonLink[];
+};
 export default function StoryPlayer({ story, navigation }: PlayerProps) {
   return <PlayerSession key={story.id} story={story} navigation={navigation} />;
 }
@@ -54,9 +57,27 @@ function PlayerSession({ story, navigation }: PlayerProps) {
               Архитектура, которую можно потрогать
             </span>
           </a>
-          {!!navigation?.length && <nav className="lesson-nav" aria-label="Уроки">{navigation.map(link => <a key={link.href} href={link.href} aria-label={link.title} aria-current={link.current ? "page" : undefined}>{link.label}</a>)}</nav>}
+          {!!navigation?.length && (
+            <nav className="lesson-nav" aria-label="Уроки">
+              {navigation.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-label={link.title}
+                  aria-current={link.current ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          )}
           <div className="header-actions">
-            <a className="home-link" href="https://vanya-arc.dev/" target="_blank" rel="noopener noreferrer">
+            <a
+              className="home-link"
+              href="https://vanya-arc.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               vanya-arc.dev
               <ArrowUpRight size={13} />
             </a>

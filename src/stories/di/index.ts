@@ -1,8 +1,33 @@
 import type { StoryDefinition } from "../../player/contracts";
+import { injectionScenes } from "./scenes";
+import { injectionExperiment } from "./experiment";
 export const dependencyInjectionStory: StoryDefinition = {
- id: "dependency-injection", title: "Внедрение зависимостей",
- subtitle: "Продолжение фабрики контента: кто выбирает сервисы и как сценарий получает готовые зависимости.",
- chapters: [{ id: "assembly", title: "Выбор сервисов" }],
- scenes: [{ id: "roles", chapter: "assembly", title: "Контракт Publisher не выбирает канал", body: "В песочнице первого урока сервисы уже передавались снаружи. Теперь разберём сборку этой фабрики.", caption: "DI передаёт сценарию конкретные реализации.", duration: 18000, views: { assembly: { nodes: [{id:"scenario",label:"Сценарий выпуска",subtitle:"Правила фабрики",kind:"policy",x:375,y:180,width:255,height:216,body:["Отобрать материалы без дублей","Подготовить черновик выпуска","Публиковать после согласования"]}],edges:[] } } }],
- viewLabels: { assembly: "Сборка" }
+  id: "dependency-injection",
+  title: "Внедрение зависимостей",
+  subtitle:
+    "Продолжение фабрики контента: кто выбирает сервисы и как сценарий получает готовые зависимости.",
+  topic: "dependency injection",
+  chapters: [
+    { id: "choose", title: "Выбор сервисов" },
+    { id: "inject", title: "Передача зависимостей" },
+    { id: "check", title: "Подмена и проверка" },
+  ],
+  viewLabels: { assembly: "Сборка", runtime: "Вызовы" },
+  scenes: injectionScenes,
+  experiment: injectionExperiment,
+  conclusion: {
+    title: "Сценарий получает готовые зависимости из сборки",
+    body: "Код сборки выбирает реализации и передаёт их сценарию. Сценарий использует полученные объекты. В этом примере DI выполнен обычными параметрами функции; отдельный контейнер не требуется.",
+  },
+  sources: [
+    {
+      title:
+        "Мартин Фаулер: Dependency Injection и отделение сборки от использования",
+      url: "https://martinfowler.com/articles/injection.html",
+    },
+    {
+      title: "Марк Симан: где размещать Composition Root",
+      url: "https://blog.ploeh.dk/2011/07/28/CompositionRoot/",
+    },
+  ],
 };

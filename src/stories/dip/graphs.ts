@@ -101,22 +101,14 @@ export function architecture(o: Options = {}): StageView {
         "Интеграция AI-редактора обращается к модели и превращает её ответ в Draft. Сценарий не разбирает ответ провайдера сам. В песочнице используются заготовленные тексты, а не вызовы модели.",
       code: { file: "content-factory/adapters.ts", text: adaptersCode },
     }),
-    node(
-      "telegram",
-      "Telegram",
-      "Сообщение для канала",
-      735,
-      365,
-      "detail",
-      {
-        height: 70,
-        icon: "send",
-        detail: o.publisher
-          ? "Telegram-интеграция принимает Draft через Publisher и оформляет сообщение. Она использует контракты фабрики. В учебном прогоне создаётся текст сообщения, но ничего не отправляется в Telegram."
-          : "Пока сценарий сам знает параметры Telegram и форматирует сообщение. Код ниже показывает итоговую учебную реализацию после инверсии, а не текущую версию сценария.",
-        code: { file: "content-factory/adapters.ts", text: adaptersCode },
-      },
-    ),
+    node("telegram", "Telegram", "Сообщение для канала", 735, 365, "detail", {
+      height: 70,
+      icon: "send",
+      detail: o.publisher
+        ? "Telegram-интеграция принимает Draft через Publisher и оформляет сообщение. Она использует контракты фабрики. В учебном прогоне создаётся текст сообщения, но ничего не отправляется в Telegram."
+        : "Пока сценарий сам знает параметры Telegram и форматирует сообщение. Код ниже показывает итоговую учебную реализацию после инверсии, а не текущую версию сценария.",
+      code: { file: "content-factory/adapters.ts", text: adaptersCode },
+    }),
   ];
   const edges: StageView["edges"] = [];
   for (const [flag, id, label, subtitle, y, detail] of [
@@ -246,27 +238,38 @@ export const execution: StageView = {
       width: 160,
       icon: "rss",
     }),
-    node("run-select", "Отобрать", "Дубли и лимит выпуска", 225, 195, "policy", {
-      width: 160,
-      icon: "filter",
-    }),
+    node(
+      "run-select",
+      "Отобрать",
+      "Дубли и лимит выпуска",
+      225,
+      195,
+      "policy",
+      {
+        width: 160,
+        icon: "filter",
+      },
+    ),
     node("run-write", "Написать", "AI-черновик", 420, 195, "detail", {
       width: 160,
       icon: "sparkles",
     }),
-    node("run-approve", "Согласовать", "Согласование выпуска", 615, 195, "policy", {
-      width: 160,
-      icon: "check",
-    }),
     node(
-      "run-publish",
-      "Выпустить",
-      "Telegram или сайт",
-      810,
+      "run-approve",
+      "Согласовать",
+      "Согласование выпуска",
+      615,
       195,
-      "detail",
-      { width: 160, icon: "send" },
+      "policy",
+      {
+        width: 160,
+        icon: "check",
+      },
     ),
+    node("run-publish", "Выпустить", "Telegram или сайт", 810, 195, "detail", {
+      width: 160,
+      icon: "send",
+    }),
   ],
   edges: ["source", "select", "write", "approve"].map((_, i) => ({
     id: `flow-${i}`,
