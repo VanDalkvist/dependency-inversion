@@ -18,7 +18,7 @@ export function recordingPublisher(captured: Draft[]): Publisher {
     publish(draft) {
       captured.push(draft);
       return {
-        title: "Снимок переданного Draft",
+        title: "Черновик, полученный публикатором",
         format: "application/json",
         body: JSON.stringify(draft, null, 2),
       };

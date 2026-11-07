@@ -58,7 +58,7 @@ function regions(
       ? [
           {
             id: "composition",
-            label: "СБОРКА · аргумент ports",
+            label: "СБОРКА · выбранные сервисы",
             x: 350,
             y: 20,
             width: 315,
@@ -70,10 +70,12 @@ function regions(
       id: "catalog",
       label:
         phase === 9
-          ? "ТВОЙ НАБОР — ЗАПУСК НИЖЕ"
+          ? "ДРУГИЕ ВАРИАНТЫ СЕРВИСОВ"
           : run && ![6, 7].includes(phase)
             ? "РЕЗУЛЬТАТ ПРОГОНА"
-            : "ВЫБЕРИ РЕАЛИЗАЦИЮ",
+            : [1, 2, 3, 6, 7].includes(phase)
+              ? "ВЫБЕРИ СЕРВИС"
+              : "ВАРИАНТЫ СЕРВИСОВ",
       x: 690,
       y: 20,
       width: 305,
@@ -87,7 +89,7 @@ function note(phase: number, run: Observation | undefined) {
     : run
       ? "Стрелки — реальные вызовы через порты. Карточки 1–3 показывают данные этого прогона; анимация иллюстрирует порядок."
       : phase <= 3
-        ? "Нажми карточку с + или выбери действие справа. Выбранный объект переместится в сборку."
+        ? "«Выбрать» подключает сервис. Значок ⓘ открывает описание и код. Карточки без кнопки сейчас не выбираются."
         : "Передаём объекты из сборки в сценарий. Это не стрелки импортов из урока DIP.";
 }
 export function lessonView(context: StoryContext, phase: number): StageView {
@@ -107,6 +109,7 @@ export function lessonView(context: StoryContext, phase: number): StageView {
   if (bad) nodes.push(warningNode(context.attempt!));
   else if (run) nodes.push(...resultNodes(run, phase));
   return {
+    explicitControls: true,
     nodes,
     edges: bindings(context, phase, config, run),
     flow: !!run,

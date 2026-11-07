@@ -12,7 +12,10 @@ export type StageNode = {
   lines?: string[];
   linesLabel?: string;
   focus?: boolean;
-  action?: { id: string; label: string };
+  action?: { id: string; label: string; selected?: boolean };
+  hint?: string;
+  inspectLabel?: string;
+  content?: { title: string; text: string };
   appearAfter?: number;
   detail?: string;
   code?: { file: string; text: string };
@@ -33,6 +36,7 @@ export type StageRegion = {
   height: number;
 };
 export type StageView = {
+  explicitControls?: boolean;
   flow?: boolean;
   nodes: StageNode[];
   edges: StageEdge[];

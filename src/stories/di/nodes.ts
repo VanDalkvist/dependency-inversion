@@ -37,6 +37,7 @@ function serviceNode(
   service: Service,
   selected: boolean,
   active: boolean,
+  hint: string,
 ): StageNode {
   const wide = selected || service.id === "probe" || service.id === "both";
   return {
@@ -53,10 +54,19 @@ function serviceNode(
     height: 100,
     focus: active && selected,
     ...(active
-      ? { action: { id: service.id, label: `Подключить ${service.label}` } }
+      ? { action: { id: service.id, label: service.actionLabel, selected } }
       : {}),
+    hint,
     detail:
-      "Это конкретная учебная реализация. Её объект выбирается в сборке и передаётся сценарию. Подготовленные данные обрабатываются внутри страницы.",
+      service.detail ??
+      {
+        source:
+          "Источник поставляет исходные материалы. Сценарий просит их методом collect, затем сам удаляет дубли и отбирает материалы. В коде роль называется MaterialSource.",
+        writer:
+          "AI-редактор получает отобранные материалы и готовит черновик: заголовок, вводный текст и список материалов. В коде роль называется DraftWriter, а черновик — Draft.",
+        publisher:
+          "Публикатор получает готовый черновик. Telegram оформляет сообщение, сайт — HTML-страницу. В коде роль называется Publisher; метод publish принимает черновик. В этом уроке документы создаются внутри страницы.",
+      }[service.role],
     code: {
       file:
         service.role === "publisher"
@@ -97,9 +107,9 @@ function emptySlots(
           y: slots[role].y,
           width: 230,
           height: 100,
-          lines: ["Выбери реализацию справа"],
+          lines: ["Ждёт выбранный сервис"],
           detail:
-            "Слот показывает, какой объект нужно передать в аргументе ports.",
+            "Здесь будет выбранный сервис. В коде набор сервисов называется ports: источник, редактор и список публикаторов передаются сценарию одним аргументом.",
         });
   return nodes;
 }
@@ -133,6 +143,13 @@ export function assemblyNodes(
           s.role === "publisher" &&
           s.id !== (context.answers.channel ?? "telegram")) ||
         (phase === 7 && s.id === "probe"),
+      chosen.includes(s)
+        ? "В сборке"
+        : phase === 9
+          ? "Выбор ниже"
+          : phase < slots[s.role].phase
+            ? `Выбор на шаге ${slots[s.role].phase + 1}`
+            : `Изменить: шаг ${slots[s.role].phase + 1}`,
     ),
   );
   nodes.push(...emptySlots(context, phase, filled));
@@ -142,8 +159,8 @@ export function warningNode(attempt: string): StageNode {
   const descriptions: Record<string, [string, string]> = {
     inside: ["Выбор попал в сценарий", "Вынеси сборку наружу"],
     name: ["Имя ещё не объект", "У строки нет метода publish"],
-    rewrite: ["Сценарий менять не нужно", "Подключи другой Publisher"],
-    type: ["Тип подходит. А был вызов?", "Подключи запись аргумента Draft"],
+    rewrite: ["Правила остаются прежними", "Выбери другой канал публикации"],
+    type: ["Метод есть. А что он получил?", "Подключи запись выпуска"],
   };
   const [label, subtitle] = descriptions[attempt];
   return {

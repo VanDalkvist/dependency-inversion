@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import type { StageNode, StageView } from "./contracts";
 import NodeContent from "./NodeContent";
+import NodeControls from "./NodeControls";
 const icons: Record<string, typeof Braces> = {
   braces: Braces,
   rss: Rss,
@@ -52,7 +53,11 @@ export default function Stage({
       viewBox="0 0 1000 535"
       className="stage-svg"
       role="group"
-      aria-label="Интерактивная схема. Нажми на блок для подробностей."
+      aria-label={
+        view.explicitControls
+          ? "Интерактивная схема: выбор сервисов"
+          : "Интерактивная схема. Нажми на блок для подробностей."
+      }
     >
       <defs>
         <marker
@@ -152,21 +157,34 @@ export default function Stage({
                   delay: reduced ? 0 : (node.appearAfter ?? 0),
                 },
               }}
-              className={`stage-node ${node.kind} ${node.focus ? "node-focus" : ""} ${selected === node.id ? "node-selected" : ""}`}
-              tabIndex={0}
-              role="button"
-              aria-label={node.action?.label ?? `Блок ${node.label}. Подробнее`}
-              aria-disabled={node.action && !onAction ? true : undefined}
-              onClick={() =>
-                node.action ? onAction?.(node.action.id) : onInspect(node.id)
+              className={`stage-node ${view.explicitControls ? "node-explicit" : ""} ${node.kind} ${node.focus ? "node-focus" : ""} ${selected === node.id ? "node-selected" : ""}`}
+              tabIndex={view.explicitControls ? undefined : 0}
+              role={view.explicitControls ? "group" : "button"}
+              aria-label={
+                view.explicitControls
+                  ? `Карточка ${node.label}`
+                  : (node.action?.label ?? `Блок ${node.label}. Подробнее`)
               }
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  if (node.action) onAction?.(node.action.id);
-                  else onInspect(node.id);
-                }
-              }}
+              aria-disabled={node.action && !onAction ? true : undefined}
+              onClick={
+                view.explicitControls
+                  ? undefined
+                  : () =>
+                      node.action
+                        ? onAction?.(node.action.id)
+                        : onInspect(node.id)
+              }
+              onKeyDown={
+                view.explicitControls
+                  ? undefined
+                  : (event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        if (node.action) onAction?.(node.action.id);
+                        else onInspect(node.id);
+                      }
+                    }
+              }
               data-node-id={node.id}
             >
               <rect
@@ -205,9 +223,17 @@ export default function Stage({
                 {node.subtitle}
               </text>
               <NodeContent node={node} />
-              <text x={(node.width ?? 220) - 19} y="28" className="node-open">
-                {node.action ? "+" : "↗"}
-              </text>
+              {view.explicitControls ? (
+                <NodeControls
+                  node={node}
+                  onAction={onAction}
+                  onInspect={onInspect}
+                />
+              ) : (
+                <text x={(node.width ?? 220) - 19} y="28" className="node-open">
+                  {node.action ? "+" : "↗"}
+                </text>
+              )}
             </motion.g>
           );
         })}

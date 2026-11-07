@@ -227,12 +227,16 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                     Реализация
                   </span>
                   <span className="inspect-hint">
-                    {view.nodes.some((n) => n.action)
-                      ? "+ Подключить · ↗ Подробнее"
-                      : "Нажми на блок ↗"}
+                    {view.explicitControls
+                      ? "Выбрать — подключение · ⓘ — описание"
+                      : view.nodes.some((n) => n.action)
+                        ? "+ Подключить · ↗ Подробнее"
+                        : "Нажми на блок ↗"}
                   </span>
                   <span className="mobile-stage-hint">
-                    ↗ Детали — по клику на блок
+                    {view.explicitControls
+                      ? "Выбор: «Выбрать» · описание: ⓘ"
+                      : "↗ Детали — по клику на блок"}
                   </span>
                 </div>
                 <p className="graph-note">{view.note ?? " "}</p>

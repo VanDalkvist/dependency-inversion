@@ -28,17 +28,17 @@ afterEach(() => {
 it("builds through clickable cards and carries selections into the sandbox", async () => {
  render(<App/>);
  fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 2:/}));
- fireEvent.click(screen.getByRole("button",{name:"Подключить Агрегатор"}));
+ fireEvent.click(document.querySelector('[data-node-id="source-aggregate"] .node-select')!);
  fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 3:/}));
- fireEvent.click(screen.getByRole("button",{name:"Подключить Локальный редактор"}));
+ fireEvent.click(document.querySelector('[data-node-id="writer-local"] .node-select')!);
  fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 4:/}));
- fireEvent.click(screen.getByRole("button",{name:"Подключить Сайт"}));
+ fireEvent.click(document.querySelector('[data-node-id="publisher-website"] .node-select')!);
  fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 10:/}));
  expect((screen.getByLabelText("Источник материалов") as HTMLSelectElement).value).toBe("aggregate");
  expect((screen.getByLabelText("AI-редактор") as HTMLSelectElement).value).toBe("local");
- expect((screen.getByLabelText("Реализация Publisher") as HTMLSelectElement).value).toBe("website");
+ expect((screen.getByLabelText("Куда передать выпуск") as HTMLSelectElement).value).toBe("website");
  fireEvent.change(screen.getByLabelText("Источник материалов"),{target:{value:"rss"}});
- await waitFor(()=>expect(screen.getByRole("button",{name:"Блок RSS-источник. Подробнее"})).toBeTruthy());
+ await waitFor(()=>expect(screen.getByRole("group",{name:"Карточка RSS-источник"})).toBeTruthy());
 });
 it("runs the configured factory and renders the actually captured Draft", async () => {
   render(<App />);
@@ -49,7 +49,7 @@ it("runs the configured factory and renders the actually captured Draft", async 
   fireEvent.change(screen.getByLabelText("AI-редактор"), {
     target: { value: "local" },
   });
-  fireEvent.change(screen.getByLabelText("Реализация Publisher"), {
+  fireEvent.change(screen.getByLabelText("Куда передать выпуск"), {
     target: { value: "probe" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Собрать и запустить" }));
@@ -72,7 +72,7 @@ it("runs the configured factory and renders the actually captured Draft", async 
   fireEvent.click(screen.getByRole("button", { name: "Собрать и запустить" }));
   await waitFor(() =>
     expect(
-      screen.getByText(/без согласования Publisher не вызван/),
+      screen.getByText(/Публикация не согласована: публикатор не вызван/),
     ).toBeTruthy(),
   );
   expect(document.querySelectorAll(".artifacts pre")).toHaveLength(1);

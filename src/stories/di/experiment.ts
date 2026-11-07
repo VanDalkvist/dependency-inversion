@@ -34,7 +34,7 @@ function observedFacts(
     },
     { label: "Материалов в выпуске", value: String(selected) },
     {
-      label: "Вызовов publish",
+      label: "Передач публикатору",
       value: String(
         factory.calls.filter((c) => c.operation === "publish").length,
       ),
@@ -62,8 +62,8 @@ export function runInjectionExperiment(
   );
   return {
     summary: approved
-      ? "Фабрика собрана. Сценарий вызвал переданные реализации."
-      : "Фабрика собрана. Черновик готов; без согласования Publisher не вызван.",
+      ? "Фабрика подготовила выпуск и передала его выбранным публикаторам."
+      : "Черновик готов. Публикация не согласована: публикатор не вызван.",
     facts: observedFacts(factory, result.selected),
     trace: factory.calls.map((c) => `${c.implementation}.${c.operation}()`),
     artifacts: [
@@ -80,7 +80,7 @@ export const injectionExperiment: ExperimentDefinition = {
   title: "Песочница: сборка и вызовы фабрики",
   runLabel: "Собрать и запустить",
   description:
-    "Выбери реализации и запусти тот же runDigest. Ниже — фрагмент сборки, вызовы через контракты и полученные документы. Все данные учебные: запросов к моделям и внешних публикаций нет.",
+    "Публикатор получает готовый черновик. Telegram оформит сообщение, сайт — HTML-страницу, а «Запись выпуска» сохранит черновик для проверки. Все варианты работают внутри страницы: внешних публикаций и запросов к моделям нет.",
   choices: [
     {
       id: "source",
@@ -100,9 +100,9 @@ export const injectionExperiment: ExperimentDefinition = {
     },
     {
       id: "publisher",
-      label: "Реализация Publisher",
+      label: "Куда передать выпуск",
       options: [
-        { id: "probe", label: "Запись вызова в тесте" },
+        { id: "probe", label: "Запись выпуска (проверка)" },
         { id: "telegram", label: "Telegram" },
         { id: "website", label: "Сайт" },
         { id: "both", label: "Telegram и сайт" },

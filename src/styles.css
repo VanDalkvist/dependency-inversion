@@ -324,7 +324,8 @@ footer {
   stroke-width: 1;
   transition: fill 200ms;
 }
-.stage-node:hover .node-surface {
+.stage-node:not(.node-explicit):hover .node-surface,
+.node-explicit:has(.node-select:hover) .node-surface {
   fill: var(--surface-raised);
 }
 .stage-node:focus-visible .node-surface,
@@ -371,6 +372,18 @@ footer {
 .node-focus .node-icon {
   color: var(--accent);
 }
+.node-explicit { cursor: default; }
+.node-select, .node-info, .node-open-document { cursor: pointer; outline: none; }
+.node-hit { fill: transparent; stroke: transparent; }
+.node-control-label { font: 600 10px var(--font-sans); fill: var(--accent); }
+.node-state-hint { font: 10px var(--font-sans); fill: var(--ink-faint); }
+.node-info-hit { fill: var(--surface-raised); stroke: var(--border); }
+.node-info { color: var(--ink-soft); }
+.node-document-hit { fill: var(--surface-inset); stroke: var(--border); }
+.node-select:focus-visible .node-hit, .node-info:focus-visible rect, .node-open-document:focus-visible rect { stroke: var(--accent); stroke-width: 2; }
+.inspector-content { margin-top: 16px; }
+.inspector-content h3 { font-size: 12px; font-weight: 600; }
+.inspector .inspector-content pre { font: 12px/1.8 var(--font-sans); max-height: 55dvh; }
 .node-open {
   fill: var(--ink-faint);
   font-size: 13px;

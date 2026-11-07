@@ -11,6 +11,12 @@ export default function Inspector({
     <Dialog title={node.label} onClose={close} closeLabel="Закрыть инспектор">
       <section className="inspector" aria-label="Инспектор блока">
         <p>{node.detail ?? node.subtitle}</p>
+        {node.content && (
+          <section className="inspector-content">
+            <h3>{node.content.title}</h3>
+            <pre>{node.content.text}</pre>
+          </section>
+        )}
         {node.code && (
           <details>
             <summary>Посмотреть код · {node.code.file}</summary>
