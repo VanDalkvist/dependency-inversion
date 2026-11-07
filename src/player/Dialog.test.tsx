@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { afterEach, expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import Dialog from "./Dialog";
-afterEach(cleanup);
+afterEach(()=>{cleanup();vi.restoreAllMocks();});
 function Example() {
   const [open, setOpen] = useState(false);
   return (
@@ -16,7 +16,7 @@ function Example() {
     </>
   );
 }
-it.each(["button", "cancel"])(
+it.each(["button", "cancel", "backdrop"])(
   "returns focus to the opener when closed by %s",
   (method) => {
     render(<Example />);
@@ -27,7 +27,12 @@ it.each(["button", "cancel"])(
     const close = screen.getByRole("button", { name: "Закрыть" });
     close.focus();
     if (method === "button") fireEvent.click(close);
-    else fireEvent(dialog, new Event("cancel", { cancelable: true }));
+    else if(method==="cancel") fireEvent(dialog, new Event("cancel", { cancelable: true }));
+    else {
+      vi.spyOn(dialog,"getBoundingClientRect").mockReturnValue({left:100,top:100,right:500,bottom:350,x:100,y:100,width:400,height:250,toJSON(){return {};}});
+      fireEvent.mouseDown(dialog,{clientX:20,clientY:20});
+      fireEvent.click(dialog,{clientX:20,clientY:20});
+    }
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(document.activeElement).toBe(opener);
   },
