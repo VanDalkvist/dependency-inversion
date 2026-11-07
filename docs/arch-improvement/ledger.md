@@ -53,3 +53,11 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - User requested vanya-arc.dev in a new tab. Header link now has target=_blank and rel=noopener noreferrer; URL and accessible name unchanged.
 - Existing journey test failed before the change; all 49 tests and production build pass after it. Public JS matches the build and contains the updated anchor props (thread evidence new-tab/verify.json).
 - Deployed source 0f91ea7, Cloudflare version 3781c32b-d2a6-4849-8976-9a9bfe27d282. No architecture boundaries or playback behavior changed.
+
+## 2026-11-07 — DI continuation and interaction correction
+
+- Published /di/ alongside DIP; shared content-factory contracts/pipeline/adapters, native header links and private cloudflare-deploy ioc target. Source 18327e1, deployment fe56ce2c-454d-47be-bf26-d836f1dba05f.
+- Technical evidence: 67 passing tests and production build; public entry assets match local bytes. Chrome checked 98 DI and 139 DIP viewport states; approved recording Publisher captured Draft, denial invoked zero publishers, both channels produced actual local documents. Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/di/.
+- USER CORRECTION: technically working initial DI is not accepted as sufficiently visual or interactive. Do not equate passing tests/browser bounds with teaching acceptance.
+- Revision design proposed in docs/superpowers/specs/2026-11-07-di-interaction-design.md: guided assembly, persistent distinct choices, visible bindings, execution/result stages and recoverable mistakes. Awaiting design approval; no v2 implementation or publication claimed.
+- Review remains author-only. Preserve unrelated workspace changes. Previous technical receipts remain historical evidence, not product approval.
