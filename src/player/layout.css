@@ -1,4 +1,9 @@
 /* Viewport composition. Existing styles.css owns the visual primitives. */
+.lesson-nav { display: flex; gap: 4px; }
+.lesson-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 38px; min-height: 30px; padding: 3px 9px; border-radius: 2px; font-size: 11px; color: var(--ink-soft); }
+.lesson-nav a:hover { background: var(--surface-raised); }
+.lesson-nav a[aria-current="page"] { background: var(--surface-inset); color: var(--ink); font-weight: 650; }
+@media (max-width: 600px) { .has-lesson-nav .wordmark strong { display: none; } .has-lesson-nav .wordmark { gap: 0; } }
 .lesson-screen {
   height: 100vh;
   height: 100dvh;

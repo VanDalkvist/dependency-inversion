@@ -2,7 +2,7 @@ import type {
   ExperimentDefinition,
   ExperimentResult,
 } from "../../player/contracts";
-import { runDigest } from "./pipeline";
+import { runDigest } from "../../content-factory/pipeline";
 import {
   aggregateSource,
   cloudWriter,
@@ -10,8 +10,8 @@ import {
   rssSource,
   telegramPublisher,
   websitePublisher,
-} from "./adapters";
-import type { Artifact, Publisher } from "./contracts";
+} from "../../content-factory/adapters";
+import type { Artifact, Publisher } from "../../content-factory/contracts";
 export function runExperiment(
   config: Record<string, string>,
 ): ExperimentResult {

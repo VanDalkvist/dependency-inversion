@@ -1,7 +1,7 @@
 import type { StageNode, StageView } from "../../player/contracts";
-import pipelineCode from "./pipeline.ts?raw";
-import contractsCode from "./contracts.ts?raw";
-import adaptersCode from "./adapters.ts?raw";
+import pipelineCode from "../../content-factory/pipeline.ts?raw";
+import contractsCode from "../../content-factory/contracts.ts?raw";
+import adaptersCode from "../../content-factory/adapters.ts?raw";
 import { policySnapshot } from "./snapshots";
 type Options = {
   publisher?: boolean;
@@ -78,7 +78,7 @@ export function architecture(o: Options = {}): StageView {
         code: {
           file:
             o.publisher && o.source && o.writer
-              ? "stories/dip/pipeline.ts"
+              ? "content-factory/pipeline.ts"
               : "учебный срез / scenario.ts",
           text:
             o.publisher && o.source && o.writer
@@ -92,14 +92,14 @@ export function architecture(o: Options = {}): StageView {
       height: 82,
       detail:
         "RSS-интеграция знает поля ленты. После инверсии она должна вернуть Material[] в формате, заданном сценарием фабрики. В коде ниже — учебные реализации без запросов к внешним сервисам.",
-      code: { file: "stories/dip/adapters.ts", text: adaptersCode },
+      code: { file: "content-factory/adapters.ts", text: adaptersCode },
     }),
     node("llm", "AI-редактор", "Подготовка черновика", 735, 217, "detail", {
       icon: "sparkles",
       height: 82,
       detail:
         "Интеграция AI-редактора обращается к модели и превращает её ответ в Draft. Сценарий не разбирает ответ провайдера сам. В песочнице используются заготовленные тексты, а не вызовы модели.",
-      code: { file: "stories/dip/adapters.ts", text: adaptersCode },
+      code: { file: "content-factory/adapters.ts", text: adaptersCode },
     }),
     node(
       "telegram",
@@ -114,7 +114,7 @@ export function architecture(o: Options = {}): StageView {
         detail: o.publisher
           ? "Telegram-интеграция принимает Draft через Publisher и оформляет сообщение. Она использует контракты фабрики. В учебном прогоне создаётся текст сообщения, но ничего не отправляется в Telegram."
           : "Пока сценарий сам знает параметры Telegram и форматирует сообщение. Код ниже показывает итоговую учебную реализацию после инверсии, а не текущую версию сценария.",
-        code: { file: "stories/dip/adapters.ts", text: adaptersCode },
+        code: { file: "content-factory/adapters.ts", text: adaptersCode },
       },
     ),
   ];
@@ -165,7 +165,7 @@ export function architecture(o: Options = {}): StageView {
             code: {
               file: o.wrapper
                 ? "до / integrations/telegram.ts"
-                : "stories/dip/contracts.ts",
+                : "content-factory/contracts.ts",
               text: o.wrapper
                 ? 'export interface TelegramClient {\n  sendMessage(chatId: string, text: string,\n    options: { parse_mode: "HTML" }): void;\n}\n// scenario.ts imports integrations/telegram.ts'
                 : contractsCode,
@@ -201,7 +201,7 @@ export function architecture(o: Options = {}): StageView {
         detail: o.publisher
           ? "Интеграция сайта реализует Publisher: принимает Draft и создаёт HTML-страницу. Правила подготовки выпуска не меняются. В песочнице HTML показывается на странице, но не размещается на настоящем сайте."
           : "До инверсии поддержку сайта приходится добавлять в сценарий рядом с кодом Telegram. Код ниже показывает итоговую учебную реализацию после появления Publisher.",
-        code: { file: "stories/dip/adapters.ts", text: adaptersCode },
+        code: { file: "content-factory/adapters.ts", text: adaptersCode },
       }),
     );
     edges.push({

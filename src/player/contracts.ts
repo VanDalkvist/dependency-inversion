@@ -74,6 +74,7 @@ export type ExperimentDefinition = {
   }[];
   run: (configuration: Record<string, string>) => ExperimentResult;
 };
+export type LessonLink = { href: string; label: string; title: string; current?: boolean };
 export type StoryDefinition = {
   id: string;
   title: string;

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Maximize2, Moon, Sun } from "lucide-react";
 import { useTheme } from "@vanya/ui";
-import type { StoryDefinition } from "./contracts";
+import type { LessonLink, StoryDefinition } from "./contracts";
 import { usePlayback } from "./usePlayback";
 import Stage from "./Stage";
 import Transport from "./Transport";
@@ -11,11 +11,12 @@ import ExperimentPanel from "./ExperimentPanel";
 import Narration from "./Narration";
 import LessonDetails from "./LessonDetails";
 import "./layout.css";
-export default function StoryPlayer({ story }: { story: StoryDefinition }) {
-  return <PlayerSession key={story.id} story={story} />;
+type PlayerProps = { story: StoryDefinition; navigation?: readonly LessonLink[] };
+export default function StoryPlayer({ story, navigation }: PlayerProps) {
+  return <PlayerSession key={story.id} story={story} navigation={navigation} />;
 }
 
-function PlayerSession({ story }: { story: StoryDefinition }) {
+function PlayerSession({ story, navigation }: PlayerProps) {
   const { state, dispatch, scene } = usePlayback(story);
   const { resolvedTheme, setTheme } = useTheme();
   const screen = useRef<HTMLDivElement>(null);
@@ -39,13 +40,13 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
     }
   }
   return (
-    <div className="app-shell">
+    <div className={`app-shell${navigation?.length ? " has-lesson-nav" : ""}`}>
       <div className="lesson-screen">
         <a className="skip-link" href="#film">
           Перейти к фильму
         </a>
         <header className="site-header">
-          <a className="wordmark" href="#">
+          <a className="wordmark" href="/" aria-label="Простые вещи">
             <span className="brand-mark">↗</span>
             <strong>Простые вещи</strong>
             <span className="brand-divider" />
@@ -53,6 +54,7 @@ function PlayerSession({ story }: { story: StoryDefinition }) {
               Архитектура, которую можно потрогать
             </span>
           </a>
+          {!!navigation?.length && <nav className="lesson-nav" aria-label="Уроки">{navigation.map(link => <a key={link.href} href={link.href} aria-label={link.title} aria-current={link.current ? "page" : undefined}>{link.label}</a>)}</nav>}
           <div className="header-actions">
             <a className="home-link" href="https://vanya-arc.dev/" target="_blank" rel="noopener noreferrer">
               vanya-arc.dev
