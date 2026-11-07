@@ -1,7 +1,6 @@
 import type {
   Artifact,
   Draft,
-  FactoryPorts,
   Publisher,
 } from "../../content-factory/contracts";
 import {
@@ -13,10 +12,7 @@ import {
   websitePublisher,
 } from "../../content-factory/adapters";
 
-export type DependencyCall = {
-  operation: "collect" | "write" | "publish";
-  implementation: string;
-};
+import { observePorts, type DependencyCall } from "./observe-ports";
 export function recordingPublisher(captured: Draft[]): Publisher {
   return {
     publish(draft) {
@@ -30,19 +26,8 @@ export function recordingPublisher(captured: Draft[]): Publisher {
   };
 }
 
-export function assembleFactory(config: Record<string, string>) {
-  const outbox: Artifact[] = [];
-  const captured: Draft[] = [];
-  const calls: DependencyCall[] = [];
-  const sources = {
-    rss: { value: rssSource, name: "rssSource" },
-    aggregate: { value: aggregateSource, name: "aggregateSource" },
-  };
-  const writers = {
-    cloud: { value: cloudWriter, name: "cloudWriter" },
-    local: { value: localWriter, name: "localWriter" },
-  };
-  const channels = {
+function createChannels(outbox: Artifact[], captured: Draft[]) {
+  return {
     telegram: {
       name: "telegramPublisher",
       expression: "telegramPublisher(outbox)",
@@ -58,6 +43,20 @@ export function assembleFactory(config: Record<string, string>) {
       expression: "recordingPublisher(captured)",
       create: () => recordingPublisher(captured),
     },
+  };
+}
+
+function selectImplementations(
+  config: Record<string, string>,
+  channels: ReturnType<typeof createChannels>,
+) {
+  const sources = {
+    rss: { value: rssSource, name: "rssSource" },
+    aggregate: { value: aggregateSource, name: "aggregateSource" },
+  };
+  const writers = {
+    cloud: { value: cloudWriter, name: "cloudWriter" },
+    local: { value: localWriter, name: "localWriter" },
   };
   const profiles: Record<string, readonly (keyof typeof channels)[]> = {
     telegram: ["telegram"],
@@ -77,35 +76,37 @@ export function assembleFactory(config: Record<string, string>) {
     ...channels[id],
     value: channels[id].create(),
   }));
-  const ports: FactoryPorts = {
-    source: {
-      collect(brief) {
-        calls.push({ operation: "collect", implementation: source.name });
-        return source.value.collect(brief);
-      },
-    },
-    writer: {
-      write(brief, materials) {
-        calls.push({ operation: "write", implementation: writer.name });
-        return writer.value.write(brief, materials);
-      },
-    },
-    publishers: publishers.map((p) => ({
-      publish(draft) {
-        calls.push({ operation: "publish", implementation: p.name });
-        return p.value.publish(draft);
-      },
-    })),
+  return { source, writer, publishers };
+}
+
+export function assembleFactory(config: Record<string, string>) {
+  const outbox: Artifact[] = [];
+  const captured: Draft[] = [];
+  const calls: DependencyCall[] = [];
+  const channels = createChannels(outbox, captured);
+  const { source, writer, publishers } = selectImplementations(
+    config,
+    channels,
+  );
+  const names = {
+    source: source.name,
+    writer: writer.name,
+    publishers: publishers.map((p) => p.name),
   };
+  const ports = observePorts(
+    {
+      source: source.value,
+      writer: writer.value,
+      publishers: publishers.map((p) => p.value),
+    },
+    names,
+    calls,
+  );
   return {
     ports,
     calls,
     captured,
-    names: {
-      source: source.name,
-      writer: writer.name,
-      publishers: publishers.map((p) => p.name),
-    },
+    names,
     expressions: publishers.map((p) => p.expression),
   };
 }

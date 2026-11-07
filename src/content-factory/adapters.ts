@@ -33,10 +33,10 @@ export const rssSource: MaterialSource = {
     articles[0],
     articles[1],
     { ...articles[0], id: "duplicate" },
-  ],
+  ].map((article) => ({ ...article })),
 };
 export const aggregateSource: MaterialSource = {
-  collect: () => [...rssSource.collect({ topic: "", limit: 3 }), articles[2]],
+  collect: () => [...rssSource.collect({ topic: "", limit: 3 }), { ...articles[2] }],
 };
 export const cloudWriter: DraftWriter = {
   write: (brief, materials) => ({

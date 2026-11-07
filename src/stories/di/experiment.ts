@@ -4,6 +4,24 @@ import type {
 } from "../../player/contracts";
 import { runDigest } from "../../content-factory/pipeline";
 import { assembleFactory } from "./assembly";
+import type { Brief } from "../../content-factory/contracts";
+function assemblyExcerpt(
+  factory: ReturnType<typeof assembleFactory>,
+  brief: Brief,
+  approved: boolean,
+  probe: boolean,
+): string {
+  return [
+    "// Упрощённый фрагмент: наблюдатели вызовов опущены.",
+    "// Функции и типы импортированы из модулей примера.",
+    "const outbox: Artifact[] = [];",
+    ...(probe ? ["const captured: Draft[] = [];"] : []),
+    `const source = ${factory.names.source};`,
+    `const writer = ${factory.names.writer};`,
+    `const publishers = [${factory.expressions.join(", ")}];`,
+    `runDigest(${JSON.stringify(brief)}, { source, writer, publishers }, ${approved});`,
+  ].join("\n");
+}
 
 export function runInjectionExperiment(
   config: Record<string, string>,
@@ -17,16 +35,12 @@ export function runInjectionExperiment(
   };
   const approved = config.approval === "yes";
   const result = runDigest(brief, factory.ports, approved);
-  const code = [
-    "// Упрощённый фрагмент: наблюдатели вызовов опущены.",
-    "// Функции и типы импортированы из модулей примера.",
-    "const outbox: Artifact[] = [];",
-    ...(config.publisher === "probe" ? ["const captured: Draft[] = [];"] : []),
-    `const source = ${factory.names.source};`,
-    `const writer = ${factory.names.writer};`,
-    `const publishers = [${factory.expressions.join(", ")}];`,
-    `runDigest(${JSON.stringify(brief)}, { source, writer, publishers }, ${approved});`,
-  ].join("\n");
+  const code = assemblyExcerpt(
+    factory,
+    brief,
+    approved,
+    config.publisher === "probe",
+  );
   return {
     summary: approved
       ? "Фабрика собрана. Сценарий вызвал переданные реализации."
@@ -59,7 +73,7 @@ export const injectionExperiment: ExperimentDefinition = {
   title: "Песочница: сборка и вызовы фабрики",
   runLabel: "Собрать и запустить",
   description:
-    "Выбери реализации и запусти тот же runDigest. Ниже — фрагмент сборки, фактические вызовы и полученные документы. Все данные учебные: запросов к моделям и внешних публикаций нет.",
+    "Выбери реализации и запусти тот же runDigest. Ниже — фрагмент сборки, вызовы через контракты и полученные документы. Все данные учебные: запросов к моделям и внешних публикаций нет.",
   choices: [
     {
       id: "source",
@@ -81,10 +95,10 @@ export const injectionExperiment: ExperimentDefinition = {
       id: "publisher",
       label: "Реализация Publisher",
       options: [
+        { id: "probe", label: "Запись вызова в тесте" },
         { id: "telegram", label: "Telegram" },
         { id: "website", label: "Сайт" },
         { id: "both", label: "Telegram и сайт" },
-        { id: "probe", label: "Запись вызова в тесте" },
       ],
     },
     {

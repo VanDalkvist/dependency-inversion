@@ -48,6 +48,14 @@ describe("actual dependency injection", () => {
     expect(a.calls.map((c) => c.operation)).toEqual(["collect", "write"]);
     expect(r.draft.materials).toHaveLength(2);
   });
+  it("does not share mutable source records between factory runs", () => {
+    const a = assembleFactory(base);
+    const first = a.ports.source.collect(brief);
+    const originalTitle = first[0].title;
+    first[0].title = "Изменённый результат предыдущего запуска";
+    const b = assembleFactory(base);
+    expect(b.ports.source.collect(brief)[0].title).toBe(originalTitle);
+  });
   it("isolates call histories and outputs between assembled factories", () => {
     const a = assembleFactory(base),
       b = assembleFactory(base);
