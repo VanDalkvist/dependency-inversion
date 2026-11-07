@@ -19,7 +19,7 @@ Recommendation: turn the existing film into a guided assembly exercise, preservi
 - Contrast correct external wiring with an attempted choice inside the scenario. Show the consequence on the diagram, explain it briefly and allow retry; never claim that the existing first-lesson factory lacked DI.
 - Launch the assembled factory. Highlight collect → write → publish against the chosen objects, show material/draft/output stages and an observable result derived from the shared executable factory. No invented receipt IDs or external calls.
 - Substitute the site Publisher. The selected object and produced local document change; scenario rules stay fixed. This must be more visible than changing a caption or icon.
-- Inject the recording Publisher, then withhold approval. Show captured Draft for the approved run and zero publish calls for the denied run. Let the learner predict/check the outcome and retry.
+- Inject the recording Publisher and inspect the actual received Draft. User correction on 2026-11-07 removes approval entirely from DI: no approval scene, control, branch or teaching material; the first DIP lesson retains its own editorial rule.
 
 ## Acceptance
 
