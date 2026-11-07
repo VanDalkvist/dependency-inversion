@@ -146,7 +146,7 @@ export default function Stage({
           return (
             <motion.g
               key={node.id}
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0, x: node.x, y: node.y }}
               animate={{ opacity: 1, x: node.x, y: node.y }}
               exit={{ opacity: 0 }}
               transition={{

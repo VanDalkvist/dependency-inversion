@@ -31,9 +31,10 @@ function PlayerSession({ story, navigation }: PlayerProps) {
     if (scene.revealOnAction && pane !== "graph") {
       setPane("graph");
       if (window.matchMedia("(max-width: 900px)").matches)
-        requestAnimationFrame(() =>
-          screen.current?.querySelector<SVGElement>(".stage-node")?.focus(),
-        );
+        requestAnimationFrame(() => {
+          const target=screen.current?.querySelector<SVGElement>('.node-select[aria-pressed="true"]') ?? screen.current?.querySelector<SVGElement>(".node-select, .node-open-document, .node-info") ?? screen.current?.querySelector<SVGElement>(".stage-node");
+          target?.focus();
+        });
     }
   }
   const answered = !!state.answers[scene.id];

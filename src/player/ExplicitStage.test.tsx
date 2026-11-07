@@ -47,6 +47,7 @@ it("separates choosing from inspection and never turns the card into a popup tar
   fireEvent.click(
     screen.getByRole("button", { name: "Описание и код: Источник" }),
   );
+  expect(document.activeElement).toBe(screen.getByRole("button", {name:"Описание и код: Источник"}));
   expect(inspected).toEqual(["item"]);
   expect(actions).toHaveLength(1);
 });

@@ -25,7 +25,7 @@ function Button({
       className={className}
       onClick={(event) => {
         event.stopPropagation();
-        if (!disabled) activate();
+        if (!disabled) { event.currentTarget.focus(); activate(); }
       }}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
