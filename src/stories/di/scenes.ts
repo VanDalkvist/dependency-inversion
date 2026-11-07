@@ -1,131 +1,275 @@
-import type { StoryScene } from "../../player/contracts";
-import { views } from "./graphs";
-export const injectionScenes: StoryScene[] = [
+import type {
+  StoryScene,
+  StoryContext,
+  StoryAction,
+} from "../../player/contracts";
+import { lessonView } from "./graphs";
+import { execute, configuration, observation } from "./lesson-model";
+const action = (
+  id: string,
+  label: string,
+  feedback: string,
+  correct = true,
+  perform?: StoryAction["perform"],
+): StoryAction => ({ id, label, feedback, correct, perform });
+const specs: Omit<StoryScene, "views" | "project">[] = [
   {
-    id: "roles",
+    id: "root",
     chapter: "choose",
-    title: "Контракт Publisher не выбирает канал",
+    title: "Кто выбирает сервисы для выпуска?",
+    body: "Контракты фабрики уже есть. Где выбрать RSS, редактора и канал? Попробуй оба варианта и посмотри, что происходит со сценарием.",
+    caption: "Выбор должен получить отдельное место снаружи сценария.",
     duration: 18000,
-    body: "В песочнице первого урока сервисы уже передавались снаружи. Теперь разберём эту часть фабрики. Publisher описывает публикацию выпуска. Для запуска нужна готовая реализация: публикатор Telegram, сайта или проверочный Publisher.",
-    caption:
-      "У фабрики есть требования к сервисам. Состав конкретного запуска задаёт сборка.",
-    insight:
-      "DIP определяет направление зависимостей кода и владение контрактами. DI показывает, как получателю передают нужные реализации.",
-    views: views(),
+    gate: true,
+    actions: [
+      action(
+        "inside",
+        "Выбирать сервисы внутри сценария",
+        "Так сценарий сам выбирает Telegram. Чтобы сменить канал, придётся менять его код.",
+        false,
+      ),
+      action(
+        "outside",
+        "Собрать зависимости снаружи",
+        "Появились три слота сборки. Теперь выбери конкретные объекты для них.",
+      ),
+    ],
   },
   {
-    id: "choose",
+    id: "source",
     chapter: "choose",
-    title: "Сборка выбирает реализации сервисов",
+    title: "Подключи источник материалов",
+    body: "Нажми RSS или агрегатор. Выбранный объект займёт слот MaterialSource. Можно переключить выбор; он сохранится в следующих сценах.",
+    caption:
+      "Сборка выбирает объект источника. Сценарий получит его как source.",
     duration: 20000,
     gate: true,
-    body: "Для этого выпуска возьмём RSS-источник, облачного редактора и Telegram. Код сборки выбирает готовые объекты и создаёт канал публикации. Сам сценарий выпуска в этом выборе не участвует.",
-    caption:
-      "Выбор сделан снаружи сценария. Методы сервисов при этом ещё не вызываются.",
-    insight:
-      "В настоящем приложении здесь также читают настройки окружения и создают клиентов сервисов. Учебные реализации работают только с данными внутри страницы.",
-    views: views(),
-    resolvedViews: views({ selected: true }),
     actions: [
-      {
-        id: "choose",
-        label: "Выбрать сервисы для выпуска",
-        correct: true,
-        feedback:
-          "Подготовлены rssSource, cloudWriter и Telegram-публикатор. Выбор сервисов ещё не запускает сбор материалов или публикацию.",
-      },
+      action(
+        "rss",
+        "Подключить RSS",
+        "RSS занял слот source. Дальше будет использован именно этот источник.",
+      ),
+      action(
+        "aggregate",
+        "Подключить агрегатор",
+        "Агрегатор занял слот source. Его материалы попадут в фактический запуск.",
+      ),
+    ],
+  },
+  {
+    id: "writer",
+    chapter: "choose",
+    title: "Подключи AI-редактора",
+    body: "Выбери облачного или локального редактора. Карточка переместится в слот DraftWriter. Уже выбранный источник останется на месте.",
+    caption: "Источник и редактор подключаются независимо.",
+    duration: 20000,
+    gate: true,
+    actions: [
+      action(
+        "cloud",
+        "Подключить облачного редактора",
+        "Выбран cloudWriter. В учебной версии он готовит заготовленный текст без запроса к модели.",
+      ),
+      action(
+        "local",
+        "Подключить локального редактора",
+        "Выбран localWriter. После запуска увидишь его текст в Draft.",
+      ),
+    ],
+  },
+  {
+    id: "channel",
+    chapter: "choose",
+    title: "Подключи канал публикации",
+    body: "Выбери Telegram или сайт. Оба объекта принимают Draft через Publisher, но создают разные документы. Выбор повлияет на выпуск.",
+    caption: "В слот publishers приходит выбранная реализация канала.",
+    duration: 20000,
+    gate: true,
+    actions: [
+      action(
+        "telegram",
+        "Подключить Telegram",
+        "В сборку добавлен Telegram-публикатор.",
+      ),
+      action(
+        "website",
+        "Подключить сайт",
+        "В сборку добавлен публикатор HTML-страницы.",
+      ),
     ],
   },
   {
     id: "inject",
     chapter: "inject",
-    title: "Сценарий получает зависимости параметрами",
-    duration: 22000,
+    title: "Передай сборку в сценарий",
+    body: "В слотах находятся готовые объекты. Что передать в runDigest: названия сервисов или сами объекты с нужными методами?",
+    caption: "Передача зависимостей параметрами — Dependency Injection.",
+    duration: 20000,
     gate: true,
-    body: "При вызове runDigest сборка передаёт выбранные объекты в ports. Теперь внутри функции доступны source, writer и publishers. Она может вызывать их методы через уже знакомые контракты.",
-    caption: "Передача готовых зависимостей получателю — Dependency Injection.",
-    insight:
-      "В этой фабрике достаточно параметров функции. В классе зависимости часто передают через конструктор. DI-контейнер для этого примера не нужен.",
-    views: views({ selected: true }),
-    resolvedViews: views({ selected: true, injected: true }),
     actions: [
-      {
-        id: "inject",
-        label: "Передать объекты в runDigest",
-        correct: true,
-        feedback:
-          "Сборка передаёт объекты в аргументе ports. Функция получает готовые зависимости и использует их при выполнении выпуска.",
-      },
+      action(
+        "name",
+        "Передать названия сервисов",
+        "Строка с названием канала не умеет publish. Сценарию нужны готовые объекты.",
+        false,
+      ),
+      action(
+        "objects",
+        "Передать готовые объекты",
+        "Связи показывают, какие объекты переданы в ports. Сценарий по-прежнему использует свои контракты.",
+      ),
     ],
   },
   {
-    id: "calls",
+    id: "run",
     chapter: "inject",
-    title: "Сценарий вызывает переданные реализации",
-    duration: 22000,
-    body: "Переключи схему на «Вызовы». Сценарий обращается к source.collect, передаёт отобранные материалы в writer.write и после согласования вызывает publish. Выполняются методы тех объектов, которые пришли в ports.",
-    caption:
-      "Передача зависимостей происходит при вызове сценария; затем он выполняет свою работу.",
-    insight:
-      "Схема показывает порядок вызовов при запуске. Их фактическая лента появится в песочнице вместе с документами, которые подготовили выбранные реализации.",
-    views: views({ selected: true, injected: true }),
+    title: "Запусти собранную фабрику",
+    body: "Запусти выпуск с выбранными объектами. Справа появятся фактические материалы, черновик и документ. Нажми результат, чтобы открыть его содержимое.",
+    caption: "collect → write → publish: наблюдаем вызовы переданных объектов.",
+    duration: 24000,
+    gate: true,
+    actions: [
+      action(
+        "run",
+        "Запустить мой выпуск",
+        "Прогон выполнен. Карточки показывают его реальные результаты внутри страницы.",
+        true,
+        (context) => execute(context),
+      ),
+    ],
   },
   {
-    id: "replace",
+    id: "swap",
     chapter: "check",
-    title: "Новый канал подключается в сборке",
-    duration: 20000,
+    title: "Замени канал, сохрани сценарий",
+    body: "Подключи другой Publisher. Новый объект займёт слот канала, а повторный запуск создаст документ в другом формате. Правила выпуска останутся прежними.",
+    caption:
+      "Меняется подключённый объект и документ; сценарий не переписывается.",
+    duration: 22000,
     gate: true,
-    body: "Теперь нужен выпуск для сайта. Сборка создаёт websitePublisher и передаёт его вместо Telegram-публикатора. Тот же runDigest вызывает publish; правила отбора материалов и согласования остаются прежними.",
-    caption: "Меняем переданный объект. Код сценария выпуска остаётся тем же.",
-    insight:
-      "DI передаёт реализации. DIP помогает сохранить зависимость сценария от собственных контрактов. Передача конкретного TelegramClient параметром тоже была бы DI, но сама по себе не обеспечила бы DIP.",
-    views: views({ selected: true, injected: true }),
-    resolvedViews: views({ selected: true, injected: true, website: true }),
     actions: [
-      {
-        id: "website",
-        label: "Передать Publisher сайта",
-        correct: true,
-        feedback:
-          "В ports.publishers теперь находится реализация сайта. При запуске она получит тот же Draft и подготовит HTML-страницу.",
-      },
+      action(
+        "rewrite",
+        "Переписать сценарий для нового канала",
+        "Выбор канала снова попал бы в сценарий. Замени объект в сборке.",
+        false,
+      ),
+      action(
+        "telegram",
+        "Заменить на Telegram",
+        "Подключён Telegram. Новый документ доступен под сценарием.",
+        true,
+        (context) => execute(context),
+      ),
+      action(
+        "website",
+        "Заменить на сайт",
+        "Подключён сайт. Новый HTML-документ доступен под сценарием.",
+        true,
+        (context) => execute(context),
+      ),
     ],
   },
   {
     id: "probe",
     chapter: "check",
-    title: "Проверочный Publisher записывает вызов",
+    title: "Проверь, что Publisher действительно вызван",
+    body: "Сам тип Publisher ещё не доказывает вызов. Подключи реализацию, которая запоминает полученный Draft, и повтори прогон.",
+    caption: "Проверочный объект сохраняет аргумент реального вызова publish.",
     duration: 22000,
     gate: true,
-    body: "Для проверки подключим Publisher, который запоминает полученный Draft. По записи можно проверить содержимое выпуска и число вызовов. Отдельный запуск без согласования должен оставить запись пустой.",
-    caption:
-      "Сценарий выполняется через тот же контракт; проверочная реализация сохраняет наблюдаемый результат.",
-    insight:
-      "Наличие интерфейса не доказывает, что зависимость использована. Проверяем аргумент реального вызова и отдельно убеждаемся, что запрет публикации соблюдён.",
-    views: views({ selected: true, injected: true, website: true }),
-    resolvedViews: views({ selected: true, injected: true, probe: true }),
     actions: [
-      {
-        id: "probe",
-        label: "Подключить запись вызова Publisher",
-        correct: true,
-        feedback:
-          "Проверочный Publisher готов принять Draft. В песочнице выбери «Запись вызова в тесте»: согласованный запуск покажет JSON-снимок, а запуск без согласования не вызовет publish.",
-      },
+      action(
+        "type",
+        "Проверить только тип Publisher",
+        "Тип описывает возможность вызова. Для проверки нужен записанный аргумент.",
+        false,
+      ),
+      action(
+        "probe",
+        "Подключить запись вызова",
+        "Проверочный Publisher получил Draft. Открой карточку результата, чтобы увидеть JSON.",
+        true,
+        (context) => execute(context, true, true),
+      ),
+    ],
+  },
+  {
+    id: "approval",
+    chapter: "check",
+    title: "Проверь запуск без согласования",
+    body: "Что произойдёт, если выпуск не согласован? Сравни два запуска. Для проверки запрета нужен результат без единого вызова publish.",
+    caption:
+      "Источник и редактор работают; несогласованный выпуск до Publisher не доходит.",
+    duration: 22000,
+    gate: true,
+    actions: [
+      action(
+        "approve",
+        "Согласовать и запустить",
+        "В согласованном выпуске publish вызывается. Теперь проверь запуск без согласования.",
+        false,
+        (context) => execute(context, true, true),
+      ),
+      action(
+        "deny",
+        "Запустить без согласования",
+        "У проверочного Publisher ноль вызовов. Материалы и черновик готовы, запись Draft пуста.",
+        true,
+        (context) => execute(context, false, true),
+      ),
     ],
   },
   {
     id: "sandbox",
     chapter: "check",
-    title: "Собери фабрику и проверь её вызовы",
+    title: "Продолжи с собственной сборкой",
+    body: "Песочница сохранила твой выбор. Меняй сервисы и согласование: схема сразу покажет новую сборку, а запуск — её вызовы и документы.",
+    caption: "Здесь схема и настройки описывают одну и ту же сборку.",
     duration: 24000,
     experiment: true,
-    body: "Выбери источник, редактора и Publisher. После запуска сравни фрагмент сборки с лентой вызовов и результатом. Для проверочного канала появится снимок Draft; затем повтори запуск без согласования.",
-    caption:
-      "На схеме — проверочный Publisher. Состав выбранного запуска появится в песочнице.",
-    insight:
-      "DI можно применять без контейнера. Здесь все зависимости передаются явно, а правила выпуска выполняет общий runDigest из первого урока.",
-    views: views({ selected: true, injected: true, probe: true }),
   },
 ];
+function project(
+  scene: (typeof specs)[number],
+  phase: number,
+  context: StoryContext,
+) {
+  const view = lessonView(context, phase);
+  const actions =
+    scene.id === "swap"
+      ? scene.actions?.filter(
+          (a) =>
+            a.id === "rewrite" ||
+            a.id !== (context.answers.channel ?? "telegram"),
+        )
+      : scene.actions;
+  const preset =
+    phase > 1 &&
+    phase < 9 &&
+    (!context.answers.source ||
+      (phase > 2 && !context.answers.writer) ||
+      (phase > 3 && !context.answers.channel));
+  return {
+    views: {
+      [observation(context) && phase >= 5 && phase < 9
+        ? "runtime"
+        : "assembly"]: view,
+    },
+    actions,
+    body: preset
+      ? `${scene.body} При прямом переходе недостающие сервисы взяты из учебного набора.`
+      : scene.body,
+    experimentDefaults: {
+      ...configuration(context),
+      ...(phase === 9 ? context.configuration : {}),
+    },
+  };
+}
+export const injectionScenes: StoryScene[] = specs.map((scene, phase) => ({
+  ...scene,
+  revealOnAction: true,
+  views: { assembly: { nodes: [], edges: [] } },
+  project: (context) => project(scene, phase, context),
+}));

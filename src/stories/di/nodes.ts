@@ -1,155 +1,150 @@
-import type { StageNode } from "../../player/contracts";
-import type { AssemblyState } from "./graph-contracts";
+import type { StageNode, StoryContext } from "../../player/contracts";
 import pipelineCode from "../../content-factory/pipeline.ts?raw";
 import adaptersCode from "../../content-factory/adapters.ts?raw";
 import assemblyCode from "./assembly.ts?raw";
-import { wiringSnapshot } from "./snapshots";
-const positions = {
-  assembler: { x: 45, y: 153 },
-  source: { x: 375, y: 50 },
-  writer: { x: 375, y: 210 },
-  publisher: { x: 375, y: 370 },
-  scenario: { x: 730, y: 153 },
-} as const;
-const box = (
-  id: keyof typeof positions,
-  label: string,
-  subtitle: string,
-  kind: StageNode["kind"],
-  extra: Partial<StageNode> = {},
-): StageNode => ({
-  id,
-  label,
-  subtitle,
-  kind,
-  width: 220,
-  height: 96,
-  ...positions[id],
-  ...extra,
-});
-
-function assemblerNode(state: AssemblyState): StageNode {
-  const { selected = false } = state;
-  const expression = state.probe
-    ? "recordingPublisher"
-    : state.website
-      ? "websitePublisher"
-      : "telegramPublisher";
-  return box("assembler", "Сборка фабрики", "Выбор перед запуском", "policy", {
+import { services, slots, type Service, type Role } from "./catalog";
+export function scenarioNode(bad = false): StageNode {
+  return {
+    id: "scenario",
+    label: "Сценарий выпуска",
+    subtitle: "Правила остаются прежними",
+    kind: "policy",
+    icon: "workflow",
+    x: 45,
+    y: 153,
     width: 255,
     height: 216,
-    icon: "workflow",
     body: [
-      "Выбрать источник материалов",
-      "Подключить AI-редактора",
-      "Задать каналы публикации",
+      "Отобрать материалы без дублей",
+      "Подготовить черновик выпуска",
+      "Публиковать после согласования",
     ],
-    linesLabel: "Выбранные объекты",
-    lines: selected
-      ? [
-          "source = rssSource",
-          "writer = cloudWriter",
-          `channel = ${expression}`,
-        ]
-      : ["source: ?", "writer: ?", "publishers: ?"],
+    linesLabel: "Получает параметрами",
+    lines: bad
+      ? ["Выбор Telegram попал внутрь", "Сценарий знает конкретный канал"]
+      : [
+          "source: MaterialSource",
+          "writer: DraftWriter",
+          "publishers: Publisher[]",
+        ],
+    focus: bad,
     detail:
-      "Сборка выбирает реализации и создаёт нужные объекты. При вызове сценария они передаются параметрами. Фрагмент ниже показывает этап, выбранный в уроке; полная исполняемая сборка доступна через блок канала.",
+      "Сценарий вызывает переданные объекты и сохраняет правила выпуска. Выбор конкретных реализаций находится снаружи.",
+    code: { file: "content-factory/pipeline.ts", text: pipelineCode },
+  };
+}
+function serviceNode(
+  service: Service,
+  selected: boolean,
+  active: boolean,
+): StageNode {
+  const wide = selected || service.id === "probe" || service.id === "both";
+  return {
+    id: `${service.role}-${service.id}`,
+    label: wide ? service.label : service.short,
+    subtitle: selected
+      ? `${service.role === "publisher" ? "publishers" : service.role} · ${service.contract}`
+      : service.contract,
+    kind: "detail",
+    icon: service.icon,
+    x: selected ? 390 : service.x,
+    y: selected ? slots[service.role].y : service.y,
+    width: wide ? 230 : 138,
+    height: 100,
+    focus: active && selected,
+    ...(active
+      ? { action: { id: service.id, label: `Подключить ${service.label}` } }
+      : {}),
+    detail:
+      "Это конкретная учебная реализация. Её объект выбирается в сборке и передаётся сценарию. Подготовленные данные обрабатываются внутри страницы.",
     code: {
-      file: "учебный фрагмент / assembly.ts",
-      text: wiringSnapshot(state),
+      file:
+        service.role === "publisher"
+          ? "stories/di/assembly.ts"
+          : "content-factory/adapters.ts",
+      text: service.role === "publisher" ? assemblyCode : adaptersCode,
     },
-  });
+  };
 }
-
-function sourceNode(state: AssemblyState): StageNode {
-  const { selected = false } = state;
-  return box(
-    "source",
-    selected ? "RSS-источник" : "Источник",
-    "MaterialSource",
-    selected ? "detail" : "contract",
-    {
-      icon: "rss",
-      lines: selected ? ["collect(Brief)"] : ["Реализация ещё не выбрана"],
-      detail:
-        "MaterialSource — описание нужной операции. rssSource — конкретный объект с методом collect. Он выбирается в сборке. В этом учебном примере возвращает заготовленные материалы.",
-      code: { file: "content-factory/adapters.ts", text: adaptersCode },
-    },
-  );
-}
-
-function writerNode(state: AssemblyState): StageNode {
-  const { selected = false } = state;
-  return box(
-    "writer",
-    selected ? "Облачный редактор" : "Редактор",
-    "DraftWriter",
-    selected ? "detail" : "contract",
-    {
-      icon: "sparkles",
-      lines: selected
-        ? ["write(Brief, Material[])"]
-        : ["Реализация ещё не выбрана"],
-      detail:
-        "В сценарий передаётся объект редактора. Вызов writer.write выполняет именно его реализацию. Учебный cloudWriter возвращает подготовленный текст; внешняя модель не вызывается.",
-      code: { file: "content-factory/adapters.ts", text: adaptersCode },
-    },
-  );
-}
-
-function publisherNode(state: AssemblyState): StageNode {
-  const { selected = false, website = false, probe = false } = state;
-  const channel = probe ? "Проверочный" : website ? "Сайт" : "Telegram";
-  return box(
-    "publisher",
-    selected ? channel : "Канал",
-    "Publisher",
-    selected ? "detail" : "contract",
-    {
-      icon: probe ? "check" : website ? "globe" : "send",
-      lines: selected ? ["publish(Draft)"] : ["Реализация ещё не выбрана"],
-      detail: probe
-        ? "Проверочный Publisher записывает полученный Draft и возвращает его JSON-снимок. Это реальная реализация того же контракта. По записи можно проверить аргумент вызова; без согласования publish не вызывается."
-        : "Сборка создаёт выбранный Publisher и передаёт его сценарию. Метод publish получает готовый Draft. В учебном запуске создаётся локальный документ; сообщения и страницы не публикуются во внешних сервисах.",
-      code: { file: "stories/di/assembly.ts", text: assemblyCode },
-    },
-  );
-}
-
-function scenarioNode(): StageNode {
-  return box(
-    "scenario",
-    "Сценарий выпуска",
-    "Правила фабрики контента",
-    "policy",
-    {
-      width: 255,
-      height: 216,
-      icon: "workflow",
-      body: [
-        "Отобрать материалы без дублей",
-        "Подготовить черновик выпуска",
-        "Публиковать после согласования",
-      ],
-      linesLabel: "Получает параметрами",
-      lines: [
-        "source: MaterialSource",
-        "writer: DraftWriter",
-        "publishers: Publisher[]",
-      ],
-      detail:
-        "runDigest использует объекты из аргумента ports: source.collect, writer.write и publishers[].publish. Он сам не выбирает rssSource, cloudWriter или канал. Контракты принадлежат сценарию, конкретные реализации выбирает внешний код сборки.",
-      code: { file: "content-factory/pipeline.ts", text: pipelineCode },
-    },
-  );
-}
-
-export function assemblyNodes(state: AssemblyState): StageNode[] {
-  return [
-    assemblerNode(state),
-    sourceNode(state),
-    writerNode(state),
-    publisherNode(state),
-    scenarioNode(),
+export function assemblyNodes(
+  context: StoryContext,
+  phase: number,
+  config: Record<string, string>,
+): StageNode[] {
+  const roles: Role[] = ["source", "writer", "publisher"];
+  const filled = (role: Role) =>
+    phase > slots[role].phase ||
+    (phase === slots[role].phase &&
+      !!context.answers[role === "publisher" ? "channel" : role]);
+  const chosen = roles
+    .filter(filled)
+    .map((role) =>
+      services.find((s) => s.role === role && s.id === config[role])!,
+    );
+  const candidates =
+    phase < 5 || phase === 9
+      ? services.filter((s) => !["probe", "both"].includes(s.id))
+      : phase === 6
+        ? services.filter(
+            (s) =>
+              s.role === "publisher" && ["telegram", "website"].includes(s.id),
+          )
+        : phase === 7
+          ? services.filter((s) => s.id === "probe")
+          : [];
+  const unique = [
+    ...new Map(
+      [...candidates, ...chosen].map((s) => [`${s.role}-${s.id}`, s]),
+    ).values(),
   ];
+  const nodes = unique.map((s) =>
+    serviceNode(
+      s,
+      chosen.includes(s),
+      phase === slots[s.role].phase ||
+        (phase === 6 &&
+          s.role === "publisher" &&
+          s.id !== (context.answers.channel ?? "telegram")) ||
+        (phase === 7 && s.id === "probe"),
+    ),
+  );
+  if (phase > 0 || context.answers.root === "outside")
+    for (const role of roles)
+      if (!filled(role))
+        nodes.push({
+          id: `empty-${role}`,
+          label: slots[role].label,
+          subtitle: `${role === "publisher" ? "publishers" : role} · ${slots[role].contract}`,
+          kind: "contract",
+          x: 390,
+          y: slots[role].y,
+          width: 230,
+          height: 100,
+          lines: ["Выбери реализацию справа"],
+          detail:
+            "Слот показывает, какой объект нужно передать в аргументе ports.",
+        });
+  return nodes;
+}
+export function warningNode(attempt: string): StageNode {
+  const descriptions: Record<string, [string, string]> = {
+    inside: ["Выбор попал в сценарий", "Вынеси сборку наружу"],
+    name: ["Имя ещё не объект", "У строки нет метода publish"],
+    rewrite: ["Сценарий менять не нужно", "Подключи другой Publisher"],
+    type: ["Тип подходит. А был вызов?", "Подключи запись аргумента Draft"],
+  };
+  const [label, subtitle] = descriptions[attempt];
+  return {
+    id: "bad-attempt",
+    label,
+    subtitle,
+    x: 45,
+    y: 390,
+    width: 255,
+    height: 112,
+    kind: "artifact",
+    icon: "filter",
+    focus: true,
+    detail: subtitle,
+  };
 }

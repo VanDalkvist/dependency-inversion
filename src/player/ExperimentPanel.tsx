@@ -4,12 +4,19 @@ import { AnimatePresence, motion } from "motion/react";
 import type { ExperimentDefinition, ExperimentResult } from "./contracts";
 export default function ExperimentPanel({
   experiment,
+  initialConfiguration,
+  onConfigurationChange,
 }: {
   experiment: ExperimentDefinition;
+  initialConfiguration?: Record<string, string>;
+  onConfigurationChange?: (value: Record<string, string>) => void;
 }) {
-  const [config, setConfig] = useState<Record<string, string>>(() =>
-    Object.fromEntries(experiment.choices.map((c) => [c.id, c.options[0].id])),
-  );
+  const [config, setConfig] = useState<Record<string, string>>(() => ({
+    ...Object.fromEntries(
+      experiment.choices.map((c) => [c.id, c.options[0].id]),
+    ),
+    ...initialConfiguration,
+  }));
   const [result, setResult] = useState<ExperimentResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   function run() {
@@ -39,7 +46,9 @@ export default function ExperimentPanel({
             <select
               value={config[choice.id]}
               onChange={(e) => {
-                setConfig({ ...config, [choice.id]: e.target.value });
+                const next = { ...config, [choice.id]: e.target.value };
+                setConfig(next);
+                onConfigurationChange?.(next);
                 setResult(null);
                 setError(null);
               }}

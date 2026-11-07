@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
 import type { StoryDefinition } from "./contracts";
 import { createPlayback, playback } from "./playback";
+import { presentScene } from "./interaction";
 export function usePlayback(story: StoryDefinition) {
   const [state, dispatch] = useReducer(
     (s: ReturnType<typeof createPlayback>, e: Parameters<typeof playback>[2]) =>
@@ -51,5 +52,9 @@ export function usePlayback(story: StoryDefinition) {
       document.removeEventListener("visibilitychange", visibility);
     };
   }, [state.playing]);
-  return { state, dispatch, scene: story.scenes[state.index] };
+  return {
+    state,
+    dispatch,
+    scene: presentScene(story.scenes[state.index], state),
+  };
 }

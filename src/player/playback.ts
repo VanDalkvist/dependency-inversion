@@ -1,4 +1,5 @@
 import type { StoryDefinition } from "./contracts";
+import { presentScene } from "./interaction";
 export type PlaybackState = {
   index: number;
   elapsed: number;
@@ -6,6 +7,9 @@ export type PlaybackState = {
   speed: 1 | 1.5 | 2;
   view: string;
   answers: Record<string, string>;
+  results: Record<string, unknown>;
+  attempt: string | null;
+  configuration: Record<string, string>;
   feedback: string | null;
   selectedNode: string | null;
 };
@@ -16,7 +20,8 @@ export type PlaybackEvent =
   | { type: "seek"; index: number; elapsed?: number }
   | { type: "next" }
   | { type: "previous" }
-  | { type: "answer"; id: string }
+  | { type: "answer"; id: string; result?: unknown; error?: string }
+  | { type: "configuration"; value: Record<string, string> }
   | { type: "speed"; speed: 1 | 1.5 | 2 }
   | { type: "view"; view: string }
   | { type: "inspect"; id: string | null }
@@ -28,6 +33,9 @@ export const createPlayback = (): PlaybackState => ({
   speed: 1,
   view: "code",
   answers: {},
+  results: {},
+  attempt: null,
+  configuration: {},
   feedback: null,
   selectedNode: null,
 });
@@ -36,7 +44,8 @@ export function playback(
   state: PlaybackState,
   event: PlaybackEvent,
 ): PlaybackState {
-  const scene = story.scenes[state.index];
+  const rawScene = story.scenes[state.index];
+  const scene = rawScene && presentScene(rawScene, state);
   const seek = (index: number): PlaybackState => {
     const target = Math.max(
       0,
@@ -52,6 +61,14 @@ export function playback(
       playing: false,
       feedback: null,
       selectedNode: null,
+      attempt: null,
+      configuration: {},
+      results: Object.fromEntries(
+        story.scenes
+          .slice(0, target)
+          .filter((s) => s.id in state.results)
+          .map((s) => [s.id, state.results[s.id]]),
+      ),
       answers: Object.fromEntries(
         story.scenes
           .slice(0, target)
@@ -85,6 +102,8 @@ export function playback(
         ...state,
         index: state.index + 1,
         elapsed: 0,
+        attempt: null,
+        configuration: {},
         feedback: null,
         selectedNode: null,
       };
@@ -118,12 +137,32 @@ export function playback(
       return {
         ...state,
         playing: false,
-        feedback: action.feedback,
-        answers: action.correct
-          ? { ...state.answers, [scene.id]: action.id }
-          : state.answers,
+        feedback: event.error ?? action.feedback,
+        attempt: action.id,
+        results: {
+          ...Object.fromEntries(
+            story.scenes
+              .slice(0, state.index)
+              .filter((s) => s.id in state.results)
+              .map((s) => [s.id, state.results[s.id]]),
+          ),
+          ...(!event.error && event.result !== undefined
+            ? { [scene.id]: event.result }
+            : {}),
+        },
+        answers: {
+          ...Object.fromEntries(
+            story.scenes
+              .slice(0, state.index)
+              .filter((s) => state.answers[s.id])
+              .map((s) => [s.id, state.answers[s.id]]),
+          ),
+          ...(action.correct && !event.error ? { [scene.id]: action.id } : {}),
+        },
       };
     }
+    case "configuration":
+      return { ...state, configuration: event.value };
     case "speed":
       return [1, 1.5, 2].includes(event.speed)
         ? { ...state, speed: event.speed }

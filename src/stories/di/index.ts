@@ -9,7 +9,7 @@ export const dependencyInjectionStory: StoryDefinition = {
   topic: "dependency injection",
   chapters: [
     { id: "choose", title: "Выбор сервисов" },
-    { id: "inject", title: "Передача зависимостей" },
+    { id: "inject", title: "Передать и запустить" },
     { id: "check", title: "Подмена и проверка" },
   ],
   viewLabels: { assembly: "Сборка", runtime: "Вызовы" },

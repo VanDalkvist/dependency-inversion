@@ -1,74 +1,99 @@
-import type { StageView } from "../../player/contracts";
-import type { AssemblyState } from "./graph-contracts";
-import { assemblyNodes } from "./nodes";
-function regions(selected: boolean): StageView["regions"] {
-  return [
-    {
-      id: "composition",
-      label: "СБОРКА · composition root",
-      x: 20,
-      y: 20,
-      width: 310,
-      height: 490,
-    },
-    {
-      id: "objects",
-      label: selected ? "ОБЪЕКТЫ СЕРВИСОВ" : "РОЛИ И КОНТРАКТЫ",
-      x: 350,
-      y: 20,
-      width: 315,
-      height: 490,
-    },
-    {
-      id: "application",
-      label: "СЦЕНАРИЙ · application",
-      x: 710,
-      y: 20,
-      width: 280,
-      height: 490,
-    },
+import type { StageView, StoryContext } from "../../player/contracts";
+import { assemblyNodes, scenarioNode, warningNode } from "./nodes";
+import { slots, type Role } from "./catalog";
+import { configuration, observation } from "./lesson-model";
+import { resultNodes } from "./result-nodes";
+export function lessonView(context: StoryContext, phase: number): StageView {
+  const config = {
+    ...configuration(context),
+    ...(phase === 8 && !context.answers.probe ? { publisher: "probe" } : {}),
+    ...(phase === 9 ? context.configuration : {}),
+  };
+  const bad = ["inside", "name", "rewrite", "type"].includes(
+    context.attempt ?? "",
+  );
+  const run = phase === 9 ? undefined : observation(context);
+  const nodes = [
+    scenarioNode(context.attempt === "inside"),
+    ...assemblyNodes(context, phase, config),
   ];
-}
-export function assembly(state: AssemblyState = {}): StageView {
-  const { selected = false, injected = false } = state;
+  if (bad) nodes.push(warningNode(context.attempt!));
+  else if (run) nodes.push(...resultNodes(run, phase));
   const edges: StageView["edges"] = [];
-  if (selected)
-    for (const id of ["source", "writer", "publisher"])
-      edges.push({ id: `choose-${id}`, from: "assembler", to: id });
-  if (injected)
-    for (const id of ["source", "writer", "publisher"])
-      edges.push({
-        id: `inject-${id}`,
-        from: id,
-        to: "scenario",
-        emphasis: true,
-      });
-  return {
-    nodes: assemblyNodes(state),
-    edges,
-    regions: regions(selected),
-    note: injected
-      ? "Стрелки показывают передачу объектов в сценарий. Это сборка, а не направление импортов из урока DIP."
-      : selected
-        ? "Объекты выбраны. Передача параметров и вызовы методов — следующие шаги."
-        : "Контракт описывает нужную операцию. Конкретный объект выбирает сборка.",
-  };
-}
-export function execution(state: AssemblyState = {}): StageView {
-  const view = assembly({ ...state, selected: true, injected: true });
-  return {
-    ...view,
-    flow: true,
-    edges: ["source", "writer", "publisher"].map((id) => ({
-      id: `call-${id}`,
+  if (context.attempt === "inside")
+    edges.push({
+      id: "bad-selection",
       from: "scenario",
-      to: id,
+      to: "publisher-telegram",
       emphasis: true,
-    })),
-    note: "Здесь стрелки — вызовы методов: collect → write → publish. До publish сценарий проверяет согласование. Фактические вызовы увидим в песочнице.",
+    });
+  if (phase >= 4 && (phase > 4 || context.answers.inject === "objects"))
+    for (const role of ["source", "writer", "publisher"] as Role[]) {
+      const called = run?.calls.some(
+        (c) =>
+          c.operation ===
+          (
+            {
+              source: "collect",
+              writer: "write",
+              publisher: "publish",
+            } as const
+          )[role],
+      );
+      if (!run || called)
+        edges.push({
+          id: `binding-${role}`,
+          from: run ? "scenario" : `${role}-${config[role]}`,
+          to: run ? `${role}-${config[role]}` : "scenario",
+          emphasis: !!run || phase === 4,
+        });
+    }
+  return {
+    nodes,
+    edges,
+    flow: !!run,
+    regions: [
+      {
+        id: "application",
+        label: "СЦЕНАРИЙ · application",
+        x: 20,
+        y: 20,
+        width: 310,
+        height: 490,
+      },
+      ...(phase > 0 || context.answers.root === "outside"
+        ? [
+            {
+              id: "composition",
+              label: "СБОРКА · аргумент ports",
+              x: 350,
+              y: 20,
+              width: 315,
+              height: 490,
+            },
+          ]
+        : []),
+      {
+        id: "catalog",
+        label:
+          phase === 9
+            ? "ТВОЙ НАБОР — ЗАПУСК НИЖЕ"
+            : run && ![6, 7].includes(phase)
+              ? "РЕЗУЛЬТАТ ПРОГОНА"
+              : "ВЫБЕРИ РЕАЛИЗАЦИЮ",
+        x: 690,
+        y: 20,
+        width: 305,
+        height: 490,
+      },
+    ],
+    note:
+      phase === 9
+        ? "Настройки песочницы ниже сразу меняют эту сборку. Сценарий остаётся прежним."
+        : run
+          ? "Стрелки — реальные вызовы через порты. Карточки 1–3 показывают данные этого прогона; анимация иллюстрирует порядок."
+          : phase <= 3
+            ? "Нажми карточку с + или выбери действие справа. Выбранный объект переместится в сборку."
+            : "Передаём объекты из сборки в сценарий. Это не стрелки импортов из урока DIP.",
   };
 }
-export const views = (state: AssemblyState = {}) => ({
-  assembly: assembly(state),
-  runtime: execution(state),
-});

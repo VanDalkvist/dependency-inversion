@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Dialog from "./Dialog";
-import { ArrowRight, Check, Info, Pause } from "lucide-react";
+import { ArrowRight, Check, Info, Pause, X } from "lucide-react";
 import type { StoryScene } from "./contracts";
 export default function Narration({
   scene,
@@ -76,7 +76,11 @@ export default function Narration({
               {action.label}
               <span>
                 {answer === action.id ? (
-                  <Check size={15} />
+                  action.correct ? (
+                    <Check size={15} />
+                  ) : (
+                    <X size={15} />
+                  )
                 ) : (
                   <ArrowRight size={15} />
                 )}

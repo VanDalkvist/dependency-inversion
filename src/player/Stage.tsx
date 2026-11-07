@@ -35,11 +35,13 @@ function edgePath(from: StageNode, to: StageNode) {
 export default function Stage({
   view,
   onInspect,
+  onAction,
   selected,
   playing,
 }: {
   view: StageView;
   onInspect: (id: string) => void;
+  onAction?: (id: string) => void;
   selected: string | null;
   playing: boolean;
 }) {
@@ -145,17 +147,24 @@ export default function Stage({
               transition={{
                 x: { type: "spring", stiffness: 150, damping: 24 },
                 y: { type: "spring", stiffness: 150, damping: 24 },
-                opacity: { duration: 0.2 },
+                opacity: {
+                  duration: 0.2,
+                  delay: reduced ? 0 : (node.appearAfter ?? 0),
+                },
               }}
               className={`stage-node ${node.kind} ${node.focus ? "node-focus" : ""} ${selected === node.id ? "node-selected" : ""}`}
               tabIndex={0}
               role="button"
-              aria-label={`Блок ${node.label}. Подробнее`}
-              onClick={() => onInspect(node.id)}
+              aria-label={node.action?.label ?? `Блок ${node.label}. Подробнее`}
+              aria-disabled={node.action && !onAction ? true : undefined}
+              onClick={() =>
+                node.action ? onAction?.(node.action.id) : onInspect(node.id)
+              }
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  onInspect(node.id);
+                  if (node.action) onAction?.(node.action.id);
+                  else onInspect(node.id);
                 }
               }}
               data-node-id={node.id}
@@ -197,7 +206,7 @@ export default function Stage({
               </text>
               <NodeContent node={node} />
               <text x={(node.width ?? 220) - 19} y="28" className="node-open">
-                ↗
+                {node.action ? "+" : "↗"}
               </text>
             </motion.g>
           );

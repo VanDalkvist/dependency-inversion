@@ -4,6 +4,7 @@ import { ArrowUpRight, Maximize2, Moon, Sun } from "lucide-react";
 import { useTheme } from "@vanya/ui";
 import type { LessonLink, StoryDefinition } from "./contracts";
 import { usePlayback } from "./usePlayback";
+import { answerEvent } from "./interaction";
 import Stage from "./Stage";
 import Transport from "./Transport";
 import Inspector from "./Inspector";
@@ -25,6 +26,16 @@ function PlayerSession({ story, navigation }: PlayerProps) {
   const screen = useRef<HTMLDivElement>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [pane, setPane] = useState<"graph" | "text">("text");
+  function answer(id: string) {
+    dispatch(answerEvent(scene, state, id));
+    if (scene.revealOnAction && pane !== "graph") {
+      setPane("graph");
+      if (window.matchMedia("(max-width: 900px)").matches)
+        requestAnimationFrame(() =>
+          screen.current?.querySelector<SVGElement>(".stage-node")?.focus(),
+        );
+    }
+  }
   const answered = !!state.answers[scene.id];
   const sceneViews =
     answered && scene.resolvedViews ? scene.resolvedViews : scene.views;
@@ -204,6 +215,7 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                   selected={state.selectedNode}
                   playing={state.playing}
                   onInspect={(id) => dispatch({ type: "inspect", id })}
+                  onAction={answer}
                 />
                 <div className="stage-legend">
                   <span>
@@ -214,7 +226,11 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                     <span className="legend-square" />
                     Реализация
                   </span>
-                  <span className="inspect-hint">Нажми на блок ↗</span>
+                  <span className="inspect-hint">
+                    {view.nodes.some((n) => n.action)
+                      ? "+ Подключить · ↗ Подробнее"
+                      : "Нажми на блок ↗"}
+                  </span>
                   <span className="mobile-stage-hint">
                     ↗ Детали — по клику на блок
                   </span>
@@ -226,9 +242,9 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                 scene={scene}
                 playing={state.playing}
                 answered={answered}
-                answer={state.answers[scene.id]}
+                answer={state.attempt ?? state.answers[scene.id]}
                 feedback={state.feedback}
-                onAnswer={(id) => dispatch({ type: "answer", id })}
+                onAnswer={answer}
               />
             </div>
             <div className="caption">
@@ -266,7 +282,13 @@ function PlayerSession({ story, navigation }: PlayerProps) {
       </div>
       {scene.experiment && story.experiment && (
         <section className="lesson-extras" aria-label="Практика">
-          <ExperimentPanel experiment={story.experiment} />
+          <ExperimentPanel
+            experiment={story.experiment}
+            initialConfiguration={scene.experimentDefaults}
+            onConfigurationChange={(value) =>
+              dispatch({ type: "configuration", value })
+            }
+          />
         </section>
       )}
     </div>

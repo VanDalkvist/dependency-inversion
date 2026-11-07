@@ -12,6 +12,8 @@ export type StageNode = {
   lines?: string[];
   linesLabel?: string;
   focus?: boolean;
+  action?: { id: string; label: string };
+  appearAfter?: number;
   detail?: string;
   code?: { file: string; text: string };
 };
@@ -37,11 +39,18 @@ export type StageView = {
   regions?: StageRegion[];
   note?: string;
 };
+export type StoryContext = {
+  answers: Record<string, string>;
+  results: Record<string, unknown>;
+  attempt: string | null;
+  configuration: Record<string, string>;
+};
 export type StoryAction = {
   id: string;
   label: string;
   feedback: string;
   correct?: boolean;
+  perform?: (context: StoryContext) => Record<string, unknown>;
 };
 export type StoryScene = {
   id: string;
@@ -56,6 +65,16 @@ export type StoryScene = {
   actions?: StoryAction[];
   experiment?: boolean;
   insight?: string;
+  revealOnAction?: boolean;
+  experimentDefaults?: Record<string, string>;
+  project?: (
+    context: StoryContext,
+  ) => Partial<
+    Pick<
+      StoryScene,
+      "views" | "actions" | "body" | "caption" | "experimentDefaults"
+    >
+  >;
 };
 export type ExperimentResult = {
   summary: string;

@@ -25,9 +25,24 @@ afterEach(() => {
   cleanup();
   history.replaceState(null, "", "/");
 });
+it("builds through clickable cards and carries selections into the sandbox", async () => {
+ render(<App/>);
+ fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 2:/}));
+ fireEvent.click(screen.getByRole("button",{name:"Подключить Агрегатор"}));
+ fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 3:/}));
+ fireEvent.click(screen.getByRole("button",{name:"Подключить Локальный редактор"}));
+ fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 4:/}));
+ fireEvent.click(screen.getByRole("button",{name:"Подключить Сайт"}));
+ fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 10:/}));
+ expect((screen.getByLabelText("Источник материалов") as HTMLSelectElement).value).toBe("aggregate");
+ expect((screen.getByLabelText("AI-редактор") as HTMLSelectElement).value).toBe("local");
+ expect((screen.getByLabelText("Реализация Publisher") as HTMLSelectElement).value).toBe("website");
+ fireEvent.change(screen.getByLabelText("Источник материалов"),{target:{value:"rss"}});
+ await waitFor(()=>expect(screen.getByRole("button",{name:"Блок RSS-источник. Подробнее"})).toBeTruthy());
+});
 it("runs the configured factory and renders the actually captured Draft", async () => {
   render(<App />);
-  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 7:/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 10:/ }));
   fireEvent.change(screen.getByLabelText("Источник материалов"), {
     target: { value: "aggregate" },
   });
