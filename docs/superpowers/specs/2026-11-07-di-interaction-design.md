@@ -1,6 +1,6 @@
 # DI v2 — интерактивная сборка фабрики
 
-Status: proposed; awaiting user approval. Supersedes the product-acceptance claim for the first DI version, not its technical verification receipts.
+Status: approved by user and implemented, 2026-11-07. Published revision verified by the author; user teaching acceptance remains open. Supersedes the product-acceptance claim for the first DI version, not its technical verification receipts.
 
 ## User correction
 
