@@ -66,48 +66,25 @@ function serviceNode(
     },
   };
 }
-export function assemblyNodes(
+function candidatesFor(phase: number) {
+  return phase < 5 || phase === 9
+    ? services.filter((s) => !["probe", "both"].includes(s.id))
+    : phase === 6
+      ? services.filter(
+          (s) =>
+            s.role === "publisher" && ["telegram", "website"].includes(s.id),
+        )
+      : phase === 7
+        ? services.filter((s) => s.id === "probe")
+        : [];
+}
+function emptySlots(
   context: StoryContext,
   phase: number,
-  config: Record<string, string>,
+  filled: (role: Role) => boolean,
 ): StageNode[] {
+  const nodes: StageNode[] = [];
   const roles: Role[] = ["source", "writer", "publisher"];
-  const filled = (role: Role) =>
-    phase > slots[role].phase ||
-    (phase === slots[role].phase &&
-      !!context.answers[role === "publisher" ? "channel" : role]);
-  const chosen = roles
-    .filter(filled)
-    .map((role) =>
-      services.find((s) => s.role === role && s.id === config[role])!,
-    );
-  const candidates =
-    phase < 5 || phase === 9
-      ? services.filter((s) => !["probe", "both"].includes(s.id))
-      : phase === 6
-        ? services.filter(
-            (s) =>
-              s.role === "publisher" && ["telegram", "website"].includes(s.id),
-          )
-        : phase === 7
-          ? services.filter((s) => s.id === "probe")
-          : [];
-  const unique = [
-    ...new Map(
-      [...candidates, ...chosen].map((s) => [`${s.role}-${s.id}`, s]),
-    ).values(),
-  ];
-  const nodes = unique.map((s) =>
-    serviceNode(
-      s,
-      chosen.includes(s),
-      phase === slots[s.role].phase ||
-        (phase === 6 &&
-          s.role === "publisher" &&
-          s.id !== (context.answers.channel ?? "telegram")) ||
-        (phase === 7 && s.id === "probe"),
-    ),
-  );
   if (phase > 0 || context.answers.root === "outside")
     for (const role of roles)
       if (!filled(role))
@@ -124,6 +101,41 @@ export function assemblyNodes(
           detail:
             "Слот показывает, какой объект нужно передать в аргументе ports.",
         });
+  return nodes;
+}
+export function assemblyNodes(
+  context: StoryContext,
+  phase: number,
+  config: Record<string, string>,
+): StageNode[] {
+  const roles: Role[] = ["source", "writer", "publisher"];
+  const filled = (role: Role) =>
+    phase > slots[role].phase ||
+    (phase === slots[role].phase &&
+      !!context.answers[role === "publisher" ? "channel" : role]);
+  const chosen = roles
+    .filter(filled)
+    .map((role) =>
+      services.find((s) => s.role === role && s.id === config[role])!,
+    );
+  const candidates = candidatesFor(phase);
+  const unique = [
+    ...new Map(
+      [...candidates, ...chosen].map((s) => [`${s.role}-${s.id}`, s]),
+    ).values(),
+  ];
+  const nodes = unique.map((s) =>
+    serviceNode(
+      s,
+      chosen.includes(s),
+      phase === slots[s.role].phase ||
+        (phase === 6 &&
+          s.role === "publisher" &&
+          s.id !== (context.answers.channel ?? "telegram")) ||
+        (phase === 7 && s.id === "probe"),
+    ),
+  );
+  nodes.push(...emptySlots(context, phase, filled));
   return nodes;
 }
 export function warningNode(attempt: string): StageNode {

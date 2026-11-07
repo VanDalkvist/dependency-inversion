@@ -148,7 +148,7 @@ export default function Stage({
                 x: { type: "spring", stiffness: 150, damping: 24 },
                 y: { type: "spring", stiffness: 150, damping: 24 },
                 opacity: {
-                  duration: 0.2,
+                  duration: reduced ? 0 : 0.2,
                   delay: reduced ? 0 : (node.appearAfter ?? 0),
                 },
               }}

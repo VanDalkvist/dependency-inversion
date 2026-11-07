@@ -27,8 +27,8 @@ export function resultNodes(run: Observation, phase: number): StageNode[] {
         : run.config.publisher === "probe"
           ? "3 · Записан Draft"
           : "3 · Выпуск готов",
-      subtitle: `${count} вызовов publish`,
-      lines: [`${run.artifacts.length} локальных документов`],
+      subtitle: `Вызовов publish: ${count}`,
+      lines: [`Локальных документов: ${run.artifacts.length}`],
       code: {
         file: "Результат / Publisher",
         text:
