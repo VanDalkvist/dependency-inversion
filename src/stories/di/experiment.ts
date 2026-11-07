@@ -23,6 +23,25 @@ function assemblyExcerpt(
   ].join("\n");
 }
 
+function observedFacts(
+  factory: ReturnType<typeof assembleFactory>,
+  selected: number,
+) {
+  return [
+    {
+      label: "Зависимостей передано",
+      value: String(2 + factory.ports.publishers.length),
+    },
+    { label: "Материалов в выпуске", value: String(selected) },
+    {
+      label: "Вызовов publish",
+      value: String(
+        factory.calls.filter((c) => c.operation === "publish").length,
+      ),
+    },
+  ];
+}
+
 export function runInjectionExperiment(
   config: Record<string, string>,
 ): ExperimentResult {
@@ -45,19 +64,7 @@ export function runInjectionExperiment(
     summary: approved
       ? "Фабрика собрана. Сценарий вызвал переданные реализации."
       : "Фабрика собрана. Черновик готов; без согласования Publisher не вызван.",
-    facts: [
-      {
-        label: "Зависимостей передано",
-        value: String(2 + factory.ports.publishers.length),
-      },
-      { label: "Материалов в выпуске", value: String(result.selected) },
-      {
-        label: "Вызовов publish",
-        value: String(
-          factory.calls.filter((c) => c.operation === "publish").length,
-        ),
-      },
-    ],
+    facts: observedFacts(factory, result.selected),
     trace: factory.calls.map((c) => `${c.implementation}.${c.operation}()`),
     artifacts: [
       {
