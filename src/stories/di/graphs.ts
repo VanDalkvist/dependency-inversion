@@ -69,7 +69,7 @@ function regions(
     {
       id: "catalog",
       label:
-        phase === 9
+        phase === 8
           ? "ДРУГИЕ ВАРИАНТЫ СЕРВИСОВ"
           : run && ![6, 7].includes(phase)
             ? "РЕЗУЛЬТАТ ПРОГОНА"
@@ -84,7 +84,7 @@ function regions(
   ];
 }
 function note(phase: number, run: Observation | undefined) {
-  return phase === 9
+  return phase === 8
     ? "Настройки песочницы ниже сразу меняют эту сборку. Сценарий остаётся прежним."
     : run
       ? "Стрелки — реальные вызовы через порты. Карточки 1–3 показывают данные этого прогона; анимация иллюстрирует порядок."
@@ -95,13 +95,12 @@ function note(phase: number, run: Observation | undefined) {
 export function lessonView(context: StoryContext, phase: number): StageView {
   const config = {
     ...configuration(context),
-    ...(phase === 8 && !context.answers.probe ? { publisher: "probe" } : {}),
-    ...(phase === 9 ? context.configuration : {}),
+    ...(phase === 8 ? context.configuration : {}),
   };
   const bad = ["inside", "name", "rewrite", "type"].includes(
     context.attempt ?? "",
   );
-  const run = phase === 9 ? undefined : observation(context);
+  const run = phase === 8 ? undefined : observation(context);
   const nodes = [
     scenarioNode(context.attempt === "inside"),
     ...assemblyNodes(context, phase, config),

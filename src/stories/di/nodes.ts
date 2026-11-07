@@ -1,6 +1,6 @@
 import type { StageNode, StoryContext } from "../../player/contracts";
-import pipelineCode from "../../content-factory/pipeline.ts?raw";
-import adaptersCode from "../../content-factory/adapters.ts?raw";
+import pipelineCode from "./pipeline.ts?raw";
+import adaptersCode from "./adapters.ts?raw";
 import assemblyCode from "./assembly.ts?raw";
 import { services, slots, type Service, type Role } from "./catalog";
 export function scenarioNode(bad = false): StageNode {
@@ -17,7 +17,7 @@ export function scenarioNode(bad = false): StageNode {
     body: [
       "Отобрать материалы без дублей",
       "Подготовить черновик выпуска",
-      "Публиковать после согласования",
+      "Передать выпуск публикатору",
     ],
     linesLabel: "Получает параметрами",
     lines: bad
@@ -30,7 +30,7 @@ export function scenarioNode(bad = false): StageNode {
     focus: bad,
     detail:
       "Сценарий вызывает переданные объекты и сохраняет правила выпуска. Выбор конкретных реализаций находится снаружи.",
-    code: { file: "content-factory/pipeline.ts", text: pipelineCode },
+    code: { file: "stories/di/pipeline.ts", text: pipelineCode },
   };
 }
 function serviceNode(
@@ -71,13 +71,13 @@ function serviceNode(
       file:
         service.role === "publisher"
           ? "stories/di/assembly.ts"
-          : "content-factory/adapters.ts",
+          : "stories/di/adapters.ts",
       text: service.role === "publisher" ? assemblyCode : adaptersCode,
     },
   };
 }
 function candidatesFor(phase: number) {
-  return phase < 5 || phase === 9
+  return phase < 5 || phase === 8
     ? services.filter((s) => !["probe", "both"].includes(s.id))
     : phase === 6
       ? services.filter(
@@ -145,7 +145,7 @@ export function assemblyNodes(
         (phase === 7 && s.id === "probe"),
       chosen.includes(s)
         ? "В сборке"
-        : phase === 9
+        : phase === 8
           ? "Выбор ниже"
           : phase < slots[s.role].phase
             ? `Выбор на шаге ${slots[s.role].phase + 1}`

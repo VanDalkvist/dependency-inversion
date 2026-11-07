@@ -1,21 +1,17 @@
 import type { Brief, FactoryPorts } from "./contracts";
+import { prepareDigest } from "./prepare-digest";
 export function runDigest(
   brief: Brief,
   ports: FactoryPorts,
   approved: boolean,
 ) {
-  const received = ports.source.collect(brief);
-  const unique = [
-    ...new Map(received.map((item) => [item.url, item])).values(),
-  ].slice(0, brief.limit);
-  const draft = ports.writer.write(brief, unique);
+  const prepared = prepareDigest(brief, ports);
+  const { draft } = prepared;
   const artifacts = approved
     ? ports.publishers.map((p) => p.publish(draft))
     : [];
   return {
-    received: received.length,
-    selected: unique.length,
-    draft,
+    ...prepared,
     artifacts,
     approved,
   };

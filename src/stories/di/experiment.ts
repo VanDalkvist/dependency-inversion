@@ -2,13 +2,12 @@ import type {
   ExperimentDefinition,
   ExperimentResult,
 } from "../../player/contracts";
-import { runDigest } from "../../content-factory/pipeline";
+import { runFactory } from "./pipeline";
 import { assembleFactory } from "./assembly";
 import type { Brief } from "../../content-factory/contracts";
 function assemblyExcerpt(
   factory: ReturnType<typeof assembleFactory>,
   brief: Brief,
-  approved: boolean,
   probe: boolean,
 ): string {
   return [
@@ -19,7 +18,7 @@ function assemblyExcerpt(
     `const source = ${factory.names.source};`,
     `const writer = ${factory.names.writer};`,
     `const publishers = [${factory.expressions.join(", ")}];`,
-    `runDigest(${JSON.stringify(brief)}, { source, writer, publishers }, ${approved});`,
+    `runFactory(${JSON.stringify(brief)}, { source, writer, publishers });`,
   ].join("\n");
 }
 
@@ -45,25 +44,16 @@ function observedFacts(
 export function runInjectionExperiment(
   config: Record<string, string>,
 ): ExperimentResult {
-  if (!["yes", "no"].includes(config.approval))
-    throw new Error("Неизвестное состояние согласования");
   const factory = assembleFactory(config);
   const brief = {
     topic: "Выпуск фабрики с внедрёнными зависимостями",
     limit: 3,
   };
-  const approved = config.approval === "yes";
-  const result = runDigest(brief, factory.ports, approved);
-  const code = assemblyExcerpt(
-    factory,
-    brief,
-    approved,
-    config.publisher === "probe",
-  );
+  const result = runFactory(brief, factory.ports);
+  const code = assemblyExcerpt(factory, brief, config.publisher === "probe");
   return {
-    summary: approved
-      ? "Фабрика подготовила выпуск и передала его выбранным публикаторам."
-      : "Черновик готов. Публикация не согласована: публикатор не вызван.",
+    summary:
+      "Фабрика подготовила выпуск и передала его выбранным публикаторам.",
     facts: observedFacts(factory, result.selected),
     trace: factory.calls.map((c) => `${c.implementation}.${c.operation}()`),
     artifacts: [
@@ -106,14 +96,6 @@ export const injectionExperiment: ExperimentDefinition = {
         { id: "telegram", label: "Telegram" },
         { id: "website", label: "Сайт" },
         { id: "both", label: "Telegram и сайт" },
-      ],
-    },
-    {
-      id: "approval",
-      label: "Согласование выпуска",
-      options: [
-        { id: "yes", label: "Согласовать выпуск" },
-        { id: "no", label: "Не согласовывать" },
       ],
     },
   ],

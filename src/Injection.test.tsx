@@ -26,23 +26,41 @@ afterEach(() => {
   history.replaceState(null, "", "/");
 });
 it("builds through clickable cards and carries selections into the sandbox", async () => {
- render(<App/>);
- fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 2:/}));
- fireEvent.click(document.querySelector('[data-node-id="source-aggregate"] .node-select')!);
- fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 3:/}));
- fireEvent.click(document.querySelector('[data-node-id="writer-local"] .node-select')!);
- fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 4:/}));
- fireEvent.click(document.querySelector('[data-node-id="publisher-website"] .node-select')!);
- fireEvent.click(screen.getByRole("button",{name:/Перейти к сцене 10:/}));
- expect((screen.getByLabelText("Источник материалов") as HTMLSelectElement).value).toBe("aggregate");
- expect((screen.getByLabelText("AI-редактор") as HTMLSelectElement).value).toBe("local");
- expect((screen.getByLabelText("Куда передать выпуск") as HTMLSelectElement).value).toBe("website");
- fireEvent.change(screen.getByLabelText("Источник материалов"),{target:{value:"rss"}});
- await waitFor(()=>expect(screen.getByRole("group",{name:"Карточка RSS-источник"})).toBeTruthy());
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 2:/ }));
+  fireEvent.click(
+    document.querySelector('[data-node-id="source-aggregate"] .node-select')!,
+  );
+  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
+  fireEvent.click(
+    document.querySelector('[data-node-id="writer-local"] .node-select')!,
+  );
+  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 4:/ }));
+  fireEvent.click(
+    document.querySelector('[data-node-id="publisher-website"] .node-select')!,
+  );
+  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
+  expect(
+    (screen.getByLabelText("Источник материалов") as HTMLSelectElement).value,
+  ).toBe("aggregate");
+  expect(
+    (screen.getByLabelText("AI-редактор") as HTMLSelectElement).value,
+  ).toBe("local");
+  expect(
+    (screen.getByLabelText("Куда передать выпуск") as HTMLSelectElement).value,
+  ).toBe("website");
+  fireEvent.change(screen.getByLabelText("Источник материалов"), {
+    target: { value: "rss" },
+  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("group", { name: "Карточка RSS-источник" }),
+    ).toBeTruthy(),
+  );
 });
 it("runs the configured factory and renders the actually captured Draft", async () => {
   render(<App />);
-  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 10:/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
   fireEvent.change(screen.getByLabelText("Источник материалов"), {
     target: { value: "aggregate" },
   });
@@ -66,26 +84,13 @@ it("runs the configured factory and renders the actually captured Draft", async 
   expect(document.querySelector(".result-trace")!.textContent).toContain(
     "recordingPublisher.publish()",
   );
-  fireEvent.change(screen.getByLabelText("Согласование выпуска"), {
-    target: { value: "no" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Собрать и запустить" }));
-  await waitFor(() =>
-    expect(
-      screen.getByText(/Публикация не согласована: публикатор не вызван/),
-    ).toBeTruthy(),
-  );
-  expect(document.querySelectorAll(".artifacts pre")).toHaveLength(1);
-  expect(document.querySelector(".result-trace")!.textContent).not.toContain(
-    ".publish()",
-  );
+  expect(screen.queryByLabelText("Согласование выпуска")).toBeNull();
 });
-it("records both actual publisher calls and rejects an invalid approval value", () => {
+it("records both actual publisher calls without another condition", () => {
   const config = {
     source: "rss",
     writer: "cloud",
     publisher: "both",
-    approval: "yes",
   };
   const r = runInjectionExperiment(config);
   expect(r.trace).toEqual([
@@ -97,7 +102,4 @@ it("records both actual publisher calls and rejects an invalid approval value", 
   expect(r.artifacts).toHaveLength(3);
   expect(r.artifacts[1].body).toMatch(/^<b>/);
   expect(r.artifacts[2].body).toMatch(/^<article>/);
-  expect(() =>
-    runInjectionExperiment({ ...config, approval: "maybe" }),
-  ).toThrow("Неизвестное состояние");
 });

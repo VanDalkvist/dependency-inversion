@@ -36,7 +36,7 @@ it("carries selected objects into an actual run and preserves scenario rules", (
     "websitePublisher",
   ]);
 });
-it("changes the actual output after swapping, captures Draft and withholds publication", () => {
+it("changes the actual output after swapping and captures the passed Draft", () => {
   let s = createPlayback();
   s = choose(s, 3, "telegram");
   s = choose(s, 5, "run");
@@ -45,11 +45,9 @@ it("changes the actual output after swapping, captures Draft and withholds publi
   expect((s.results.swap as any).artifacts[0].body).toMatch(/^<article>/);
   s = choose(s, 7, "probe");
   expect((s.results.probe as any).captured).toHaveLength(1);
-  s = choose(s, 8, "deny");
   expect(
-    (s.results.approval as any).calls.filter(
+    (s.results.probe as any).calls.filter(
       (c: any) => c.operation === "publish",
     ),
-  ).toHaveLength(0);
-  expect((s.results.approval as any).captured).toHaveLength(0);
+  ).toHaveLength(1);
 });

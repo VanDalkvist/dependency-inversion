@@ -39,22 +39,14 @@ function publication(run: Observation): StageNode {
   const received = run.captured[0];
   return {
     id: "result-publication",
-    label: !run.approved
-      ? "3 · Публикация запрещена"
-      : probe
-        ? "3 · Черновик сохранён"
-        : "3 · Выпуск готов",
+    label: probe ? "3 · Черновик сохранён" : "3 · Выпуск готов",
     subtitle: `Вызовов публикатора: ${count}`,
     lines: [
       probe
         ? `Записано черновиков: ${run.captured.length}`
         : `Создано документов: ${run.artifacts.length}`,
     ],
-    inspectLabel: !run.approved
-      ? "Открыть проверку"
-      : probe
-        ? "Открыть запись"
-        : "Открыть выпуск",
+    inspectLabel: probe ? "Открыть запись" : "Открыть выпуск",
     content: {
       title: probe ? "Что получил публикатор" : "Документ выбранного канала",
       text: probe

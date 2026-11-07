@@ -4,14 +4,16 @@ import type {
   Publisher,
 } from "../../content-factory/contracts";
 import {
-  aggregateSource,
-  cloudWriter,
-  localWriter,
-  rssSource,
   telegramPublisher,
   websitePublisher,
 } from "../../content-factory/adapters";
 
+import {
+  aggregateSource,
+  cloudWriter,
+  localWriter,
+  rssSource,
+} from "./adapters";
 import { observePorts, type DependencyCall } from "./observe-ports";
 export function recordingPublisher(captured: Draft[]): Publisher {
   return {

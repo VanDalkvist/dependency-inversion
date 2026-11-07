@@ -20,13 +20,13 @@ function project(
       : scene.actions;
   const preset =
     phase > 1 &&
-    phase < 9 &&
+    phase < 8 &&
     (!context.answers.source ||
       (phase > 2 && !context.answers.writer) ||
       (phase > 3 && !context.answers.channel));
   return {
     views: {
-      [observation(context) && phase >= 5 && phase < 9
+      [observation(context) && phase >= 5 && phase < 8
         ? "runtime"
         : "assembly"]: view,
     },
@@ -36,7 +36,7 @@ function project(
       : scene.body,
     experimentDefaults: {
       ...configuration(context),
-      ...(phase === 9 ? context.configuration : {}),
+      ...(phase === 8 ? context.configuration : {}),
     },
   };
 }
