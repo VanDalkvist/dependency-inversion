@@ -121,7 +121,9 @@ export default function SeasonApp() {
   const episode = episodeById(episodeId);
   const next = nextEpisode(episode);
   const beat = problemVisible ? episode.problem : episode.start;
-  // Publishing adapters are local but their calls must still run once per choice,\n  // not again on every UI render or when we reveal a partial-failure example.\n  const result = useMemo(() => choice ? playChoice(episode.id, choice) : null, [episode.id, choice]);
+  // Publishing adapters are local but their calls must still run once per choice,
+  // not again on every UI render or when we reveal a partial-failure example.
+  const result = useMemo(() => choice ? playChoice(episode.id, choice) : null, [episode.id, choice]);
   useEffect(() => {
     document.title = `${episode.name} — Фабрика Ани · Vanya Arc / Aha!`;
     if(firstRender.current){firstRender.current=false;return}
