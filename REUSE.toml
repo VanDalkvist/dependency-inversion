@@ -1,0 +1,43 @@
+# REUSE 3.3-style targeted licensing scope. Licence texts: LICENSES/.
+# This map is intended to be machine readable; full external reuse lint
+# and upstream rights verification are not yet claimed to have passed.
+version = 1
+
+[[annotations]]
+path = [
+  "src/**",
+  "docs/**",
+  "scripts/**",
+  ".gitignore", "README.md", "BRAND.md", "LICENSING.md", "THIRD_PARTY_NOTICES.md",
+  "REUSE.toml", "package.json", "package-lock.json", "tsconfig.json", "vite.config.ts",
+  "index.html", "di/index.html"
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Vanya Afanasov"
+SPDX-License-Identifier = "MIT"
+
+# Film-specific CSS, illustrations, scene scripts and diagram compositions
+# are NOT MIT source. Where narrative and TS code are inseparable, reserve
+# the entire file until the reusable logic is factored into the MIT engine.
+[[annotations]]
+path = [
+  "src/styles.css",
+  "src/player/layout.css",
+  "src/stories/di/assembly-scenes.ts",
+  "src/stories/di/catalog.ts",
+  "src/stories/di/execution-scenes.ts",
+  "src/stories/di/graphs.ts",
+  "src/stories/di/index.ts",
+  "src/stories/di/lesson-model.ts",
+  "src/stories/di/nodes.ts",
+  "src/stories/di/result-content.ts",
+  "src/stories/di/result-nodes.ts",
+  "src/stories/di/scenes.ts",
+  "src/stories/dip/graphs.ts",
+  "src/stories/dip/index.ts",
+  "src/stories/dip/scenes.ts",
+  "src/stories/dip/snapshots.ts"
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Vanya Afanasov"
+SPDX-License-Identifier = "LicenseRef-Aha-Film"
