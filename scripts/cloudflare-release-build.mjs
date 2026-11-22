@@ -66,4 +66,8 @@ for (const packageName of ["react", "react-dom"]) {
 run("npm", ["test"]);
 run("npm", ["run", "build"]);
 run("npm", ["run", "check:licensing"]);
+// Verifies the *source-pinned* UI contract via the portable agent procedure.
+// Its test:ui script covers jsdom interactions; actual browser/visual QA
+// remains a separately recorded proof gate.
+run("node", ["../vanya-ui/scripts/ui-pipeline.mjs", "verify", "--project", root]);
 console.log("[aha build] Tests/build/rights guard passed. Ready for explicit Wrangler deploy.");
