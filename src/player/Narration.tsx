@@ -12,6 +12,7 @@ export default function Narration({
   onAnswer,
   hasNext,
   onContinue,
+  onShowVisual,
 }: {
   scene: StoryScene;
   playing: boolean;
@@ -21,6 +22,7 @@ export default function Narration({
   onAnswer: (id: string) => void;
   hasNext: boolean;
   onContinue: () => void;
+  onShowVisual: () => void;
 }) {
   const [readingOriginal, setReadingOriginal] = useState(false);
   const [insightOpen, setInsightOpen] = useState(false);
@@ -107,6 +109,11 @@ export default function Narration({
           onClick={() => setReadingOriginal(!readingOriginal)}
         >
           {readingOriginal ? "Показать ответ" : "Показать объяснение"}
+        </button>
+      )}
+      {answered && (
+        <button className="mobile-show-graph" onClick={onShowVisual}>
+          Посмотреть, что изменилось на схеме <ArrowRight size={15} />
         </button>
       )}
       {answered && hasNext && (
