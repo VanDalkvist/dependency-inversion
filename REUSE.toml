@@ -36,6 +36,7 @@ path = [
   "docs/series/season-01/02-both-channels.md",
   "docs/series/season-01/03-who-sets-rules.md",
   "docs/series/season-01/04-swap-writer.md",
+  "docs/series/season-01/SEASON_BIBLE.md",
   "docs/storyboards/AGENT_PUBLISHER_SCRIPT_V1.md",
   "docs/storyboards/AGENT_PUBLISHER_SCRIPT_V2_DIP.md",
   "src/player/GuidedExperience.tsx",
