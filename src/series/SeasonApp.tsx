@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Bot, CheckCircle2, FileText, Globe2, MessageCircle, RotateCcw, TriangleAlert, Wrench } from "lucide-react";
 import { ActionButton, CraftCard, Tag, ThemeToggle, WorkflowStrip, useTheme } from "@vanya/ui";
@@ -12,6 +12,7 @@ type StageProps = {
   result: EpisodeResult | null;
   websiteFailed: boolean;
   websiteRecovered: boolean;
+  deliveryOverride: PublicationReceipt[] | null;
 };
 function PostCard({ label, text, accent = false }: { label: string; text: string; accent?: boolean }) {
   return <CraftCard className={`season-post ${accent ? "season-post-accent" : ""}`}>
@@ -27,14 +28,9 @@ function Receipt({ receipt }: { receipt: PublicationReceipt }) {
     <Tag size="md" isActive={receipt.status === "готово"}>{receipt.status}</Tag>
   </CraftCard>;
 }
-function Stage({ episode, problemVisible, result, websiteFailed, websiteRecovered }: StageProps) {
+function Stage({ episode, problemVisible, result, websiteFailed, websiteRecovered, deliveryOverride }: StageProps) {
   const reduced = useReducedMotion();
-  const receipts = useMemo(() => {
-    if (episode.id !== "both-channels" || result?.choice !== "compose" || !websiteFailed)
-      return result?.receipts ?? [];
-    const failed = simulateWebsiteFailure();
-    return websiteRecovered ? retryOnlyWebsite(failed) : failed;
-  }, [episode.id, result, websiteFailed, websiteRecovered]);
+  const receipts = deliveryOverride ?? result?.receipts ?? [];
   const fullyDelivered = !!result?.achieved && (!websiteFailed || websiteRecovered);
   const stageNote = episode.id === "one-post"
     ? "Один утверждённый текст. Сравните дату в обоих каналах."
@@ -116,6 +112,8 @@ export default function SeasonApp() {
   const [episodeId, setEpisodeId] = useState<EpisodeId>(initial.id);
   const [problemVisible, setProblemVisible] = useState(false);
   const [choice, setChoice] = useState<ChoiceId | null>(null);
+  const [result, setResult] = useState<EpisodeResult | null>(null);
+  const [deliveryOverride, setDeliveryOverride] = useState<PublicationReceipt[] | null>(null);
   const [websiteFailed, setWebsiteFailed] = useState(false);
   const [websiteRecovered, setWebsiteRecovered] = useState(false);
   const reduced = useReducedMotion();
@@ -127,12 +125,11 @@ export default function SeasonApp() {
   const beat = problemVisible ? episode.problem : episode.start;
   // Publishing adapters are local but their calls must still run once per choice,
   // not again on every UI render or when we reveal a partial-failure example.
-  const result = useMemo(() => choice ? playChoice(episode.id, choice) : null, [episode.id, choice]);
   useEffect(() => {
     const restore = () => {
       const selected = episodeById(new URLSearchParams(window.location.search).get("episode"));
       setEpisodeId(selected.id);
-      setProblemVisible(false);setChoice(null);setWebsiteFailed(false);setWebsiteRecovered(false);
+      setProblemVisible(false);setChoice(null);setResult(null);setDeliveryOverride(null);setWebsiteFailed(false);setWebsiteRecovered(false);
     };
     window.addEventListener("popstate", restore);
     return () => window.removeEventListener("popstate", restore);
@@ -179,7 +176,7 @@ export default function SeasonApp() {
             </section>
             {!problemVisible ? (
               <ActionButton variant="accent" size="md" className="season-primary"
-                onClick={()=>{setProblemVisible(true);setChoice(null)}}>
+                onClick={()=>{setProblemVisible(true);setChoice(null);setResult(null);setDeliveryOverride(null)}}>
                 {episode.reveal}<ArrowRight size={19} aria-hidden="true"/>
               </ActionButton>
             ) : (
@@ -188,7 +185,7 @@ export default function SeasonApp() {
                 <div className="season-choices">
                   {episode.choices.map((option)=><ActionButton key={option.id} variant="outline" size="md"
                     className="season-choice" aria-pressed={choice===option.id}
-                    onClick={()=>{setChoice(option.id);setWebsiteFailed(false);setWebsiteRecovered(false)}}>
+                    onClick={()=>{setChoice(option.id);setResult(playChoice(episode.id, option.id));setDeliveryOverride(null);setWebsiteFailed(false);setWebsiteRecovered(false)}}>
                     <span>{option.label}</span><ArrowRight size={18} aria-hidden="true"/>
                   </ActionButton>)}
                 </div>
@@ -206,12 +203,12 @@ export default function SeasonApp() {
                 </motion.div>}
                 {episode.id==="both-channels" && !!result?.achieved && (
                   <div className="season-failure">
-                    {!websiteFailed ? <ActionButton variant="text" size="md" onClick={()=>setWebsiteFailed(true)}>
+                    {!websiteFailed ? <ActionButton variant="text" size="md" onClick={()=>{setDeliveryOverride(simulateWebsiteFailure());setWebsiteFailed(true)}}>
                       Проверить, что будет при ошибке сайта
                     </ActionButton> :
                       websiteRecovered ? <p role="status">Повторили только сайт. Telegram не отправляли второй раз.</p> :
                       <><p role="status">Сайт временно не принимает пост. Telegram уже получил свой экземпляр.</p>
-                      <ActionButton variant="outline" size="md" onClick={()=>setWebsiteRecovered(true)}>Повторить только публикацию на сайте</ActionButton></>}
+                      <ActionButton variant="outline" size="md" onClick={()=>{if(deliveryOverride){setDeliveryOverride(retryOnlyWebsite(deliveryOverride));setWebsiteRecovered(true)}}}>Повторить только публикацию на сайте</ActionButton></>}
                   </div>
                 )}
                 {canContinue && <div className="season-afterword">
@@ -227,7 +224,7 @@ export default function SeasonApp() {
             )}
           </div>
           <Stage episode={episode} problemVisible={problemVisible} result={result}
-            websiteFailed={websiteFailed} websiteRecovered={websiteRecovered}/>
+            websiteFailed={websiteFailed} websiteRecovered={websiteRecovered} deliveryOverride={deliveryOverride}/>
         </motion.article>
       </AnimatePresence>
       <div className="season-bottom">
