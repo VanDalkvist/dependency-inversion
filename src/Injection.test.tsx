@@ -30,7 +30,12 @@ it("keeps the mobile explanation visible and offers one obvious next action", as
   expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
   fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
   expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
-  expect(screen.getByRole("button", { name: /Посмотреть, что изменилось на схеме/ })).toBeTruthy();
+  const reveal = screen.getByRole("button", { name: /Посмотреть, что изменилось на схеме/ });
+  expect(reveal).toBeTruthy();
+  fireEvent.click(reveal);
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("graph");
+  expect(screen.getByRole("button", { name: "Воспроизвести" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: /Текст/ }));
   fireEvent.click(screen.getByRole("button", { name: "Дальше сейчас" }));
   await waitFor(() =>
     expect(document.querySelector(".film")?.getAttribute("data-scene")).toBe("source"),
