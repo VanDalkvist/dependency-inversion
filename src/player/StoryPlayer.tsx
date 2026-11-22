@@ -207,7 +207,7 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                     </button>
                   ))}
                 </div>
-              )
+              )}
               <button
                 className="icon-button fullscreen-button"
                 onClick={fullscreen}
