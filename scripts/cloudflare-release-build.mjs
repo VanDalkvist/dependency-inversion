@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+// Portable, manual CI build for the existing IOC Worker. Builds and tests, but
+// never deploys. Deployment requires a separate explicit Wrangler command.
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const ui = resolve(root, "../vanya-ui");
+function run(bin, args, cwd = root) {
+  console.log("[aha build]", bin, ...args);
+  execFileSync(bin, args, { cwd, stdio: "inherit" });
+}
+if (!existsSync(join(ui, "package.json"))) {
+  run("git", ["clone", "--quiet", "--depth", "1",
+    "https://github.com/VanDalkvist/vanya-ui.git", ui]);
+}
+const config = {
+  name: "ioc",
+  compatibility_date: "2026-11-04",
+  workers_dev: false,
+  preview_urls: false,
+  assets: {
+    directory: "./dist",
+    html_handling: "auto-trailing-slash",
+    not_found_handling: "404-page",
+  },
+  routes: [
+    { pattern: "ioc.vanya-arc.dev", custom_domain: true },
+    { pattern: "aha.vanya-arc.dev", custom_domain: true },
+  ],
+};
+writeFileSync(join(root, "wrangler.aha.jsonc"), JSON.stringify(config, null, 2) + "\n");
+run("bun", ["install", "--frozen-lockfile"], ui);
+run("npm", ["ci"]);
+run("npm", ["test"]);
+run("npm", ["run", "build"]);
+run("npm", ["run", "check:licensing"]);
+console.log("[aha build] Tests/build/rights guard passed. Ready for explicit Wrangler deploy.");
