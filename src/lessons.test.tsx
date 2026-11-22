@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import App from "./App";
 beforeEach(() => {
   vi.stubGlobal("localStorage", { getItem: () => null, setItem() {} });

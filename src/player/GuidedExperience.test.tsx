@@ -48,48 +48,52 @@ it("advances only when the learner chooses Next, then shows a readable current s
   fireEvent.click(screen.getByRole("button", { name: "Я подключу инструменты снаружи" }));
   expect(document.querySelector(".experience")?.getAttribute("data-scene")).toBe("root");
   fireEvent.click(screen.getByRole("button", { name: "Посмотреть, что дальше" }));
+  await screen.findByRole("heading", { level: 1, name: "Откуда брать новости?" });
   expect(document.querySelector(".experience")?.getAttribute("data-scene")).toBe("source");
-  expect(screen.getByRole("heading", { level: 1, name: "Откуда брать новости?" })).toBeTruthy();
   expect(screen.getByRole("button", { name: "Из новостной ленты" })).toBeTruthy();
-  expect(screen.getByText("Пока не выбран")).toBeTruthy();
+  expect(screen.getAllByText("Пока не выбран").length).toBeGreaterThan(0);
   fireEvent.click(screen.getByRole("button", { name: "Из новостной ленты" }));
   expect(screen.getByText("Новостная лента")).toBeTruthy();
   expect(document.querySelector(".experience")?.getAttribute("data-scene")).toBe("source");
   expect(screen.queryByRole("button", { name: "Воспроизвести" })).toBeNull();
 });
 
-it("makes the actual selected tool visible and swaps it while keeping other choices", () => {
+it("makes the actual selected tool visible and swaps it while keeping other choices", async () => {
   render(<App />);
-  const next = () => fireEvent.click(screen.getByRole("button", { name: "Посмотреть, что дальше" }));
+  const next = async (heading: string) => {
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть, что дальше" }));
+    await screen.findByRole("heading", { level: 1, name: heading });
+  };
   fireEvent.click(screen.getByRole("button", { name: "Я подключу инструменты снаружи" }));
-  next();
+  await next("Откуда брать новости?");
   fireEvent.click(screen.getByRole("button", { name: "Из общей подборки" }));
-  next();
+  await next("Кто подготовит текст?");
   fireEvent.click(screen.getByRole("button", { name: "У меня на устройстве" }));
-  next();
+  await next("Куда отправить готовый выпуск?");
   fireEvent.click(screen.getByRole("button", { name: "На сайт" }));
   expect(screen.getByText("Подборка новостей")).toBeTruthy();
   expect(screen.getByText("Локальный AI")).toBeTruthy();
   expect(screen.getByText("Сайт")).toBeTruthy();
-  next();
+  await next("Подключим всё к помощнику");
   fireEvent.click(screen.getByRole("button", { name: "Сами работающие инструменты" }));
-  next();
+  await next("Запустим наш первый выпуск");
   fireEvent.click(screen.getByRole("button", { name: "Собрать выпуск" }));
   expect(screen.getByText("Выпуск собран")).toBeTruthy();
   expect(screen.getByText(/Из .* материалов выбрано/)).toBeTruthy();
-  next();
+  await next("А если публикацию нужно перенести?");
   fireEvent.click(screen.getByRole("button", { name: "Подключить Telegram" }));
   expect(screen.getByText("Telegram")).toBeTruthy();
   expect(screen.getByText("Подборка новостей")).toBeTruthy();
   expect(screen.getByText("Локальный AI")).toBeTruthy();
 });
 
-it("DIP explains the difference with a changing simple diagram, not API-first copy", () => {
+it("DIP explains the difference with a changing simple diagram, not API-first copy", async () => {
   history.replaceState(null, "", "/");
   render(<App />);
   expect(screen.getByRole("heading", { level: 1, name: "Как не привязать помощника к одному сервису?" })).toBeTruthy();
   expect(screen.getByText("Команды Telegram")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Начать историю" }));
+  await screen.findByRole("button", { name: "Добавить сайт" });
   fireEvent.click(screen.getByRole("button", { name: "Добавить сайт" }));
   expect(screen.getByText("Сайт")).toBeTruthy();
   expect(document.querySelector(".stage-svg")).toBeNull();
