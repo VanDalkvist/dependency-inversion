@@ -21,7 +21,7 @@ it.each(["/di/", "/di"])("loads the DI continuation directly at %s", (path) => {
   history.replaceState(null, "", path);
   render(<App />);
   expect(
-    screen.getByRole("heading", { level: 1, name: "Внедрение зависимостей" }),
+    screen.getByRole("heading", { level: 1, name: "Как менять инструменты у одного помощника?" }),
   ).toBeTruthy();
   const link = screen.getByRole("link", {
     name: "DI — Внедрение зависимостей",
