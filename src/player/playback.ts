@@ -4,6 +4,7 @@ export type PlaybackState = {
   index: number;
   elapsed: number;
   playing: boolean;
+  resumeAfterInspect: boolean;
   speed: 1 | 1.5 | 2;
   view: string;
   answers: Record<string, string>;
@@ -30,6 +31,7 @@ export const createPlayback = (): PlaybackState => ({
   index: 0,
   elapsed: 0,
   playing: false,
+  resumeAfterInspect: false,
   speed: 1,
   view: "code",
   answers: {},
@@ -59,6 +61,7 @@ export function playback(
       index: target,
       elapsed: 0,
       playing: false,
+      resumeAfterInspect: false,
       feedback: null,
       selectedNode: null,
       attempt: null,
@@ -85,7 +88,7 @@ export function playback(
         ? { ...createPlayback(), playing: true, speed: state.speed }
         : { ...state, playing: true };
     case "pause":
-      return { ...state, playing: false };
+      return { ...state, playing: false, resumeAfterInspect: false };
     case "tick": {
       if (!state.playing || !Number.isFinite(event.ms) || event.ms <= 0)
         return state;
@@ -102,6 +105,7 @@ export function playback(
         ...state,
         index: state.index + 1,
         elapsed: 0,
+        resumeAfterInspect: false,
         attempt: null,
         configuration: {},
         feedback: null,
@@ -134,9 +138,12 @@ export function playback(
     case "answer": {
       const action = scene.actions?.find((a) => a.id === event.id);
       if (!action) return state;
+      const completed = !!action.correct && !event.error;
       return {
         ...state,
-        playing: false,
+        // Let the reader see the effect, then advance without another Play.
+        playing: completed,
+        elapsed: completed ? Math.max(state.elapsed, scene.duration - 6000) : state.elapsed,
         feedback: event.error ?? action.feedback,
         attempt: action.id,
         results: {
@@ -170,7 +177,9 @@ export function playback(
     case "view":
       return { ...state, view: event.view, selectedNode: null };
     case "inspect":
-      return { ...state, selectedNode: event.id, playing: false };
+      return event.id
+        ? { ...state, selectedNode: event.id, resumeAfterInspect: state.playing, playing: false }
+        : { ...state, selectedNode: null, playing: state.resumeAfterInspect, resumeAfterInspect: false };
     case "reset":
       return createPlayback();
   }
