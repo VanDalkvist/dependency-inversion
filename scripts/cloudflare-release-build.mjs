@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ui = resolve(root, "../vanya-ui");
+// Pin Vanya UI to the exact public source reviewed for this design cycle.
+const VAN_YA_UI_SHA = "8a39e86fc276aa0b75726f308a00fdefd0b30934";
 function run(bin, args, cwd = root) {
   console.log("[aha build]", bin, ...args);
   execFileSync(bin, args, { cwd, stdio: "inherit" });
@@ -16,6 +18,8 @@ if (!existsSync(join(ui, "package.json"))) {
   run("git", ["clone", "--quiet", "--depth", "1",
     "https://github.com/VanDalkvist/vanya-ui.git", ui]);
 }
+run("git", ["fetch", "--quiet", "--depth", "1", "origin", VAN_YA_UI_SHA], ui);
+run("git", ["checkout", "--quiet", "--detach", VAN_YA_UI_SHA], ui);
 const config = {
   name: "ioc",
   compatibility_date: "2026-11-04",
@@ -45,6 +49,8 @@ for (const packageName of ["react", "react-dom"]) {
   symlinkSync(source, target, "dir");
   console.log("[aha build] shared @types/" + packageName + " with Vanya UI");
 }
+run("node", ["../vanya-ui/scripts/ui-pipeline.mjs", "inspect", "--project", root]);
+run("node", ["../vanya-ui/scripts/ui-pipeline.mjs", "check", "--project", root]);
 run("npm", ["test"]);
 run("npm", ["run", "build"]);
 run("npm", ["run", "check:licensing"]);
