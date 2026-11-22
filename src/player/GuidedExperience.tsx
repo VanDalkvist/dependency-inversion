@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, Moon, RotateCcw, Sun } from "lucide-react";
-import { useTheme } from "@vanya/ui";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
+import { ActionButton, ThemeToggle, WorkflowStrip, useTheme } from "@vanya/ui";
 import type { LessonLink, StoryDefinition } from "./contracts";
 import { answerEvent, presentScene } from "./interaction";
 import { createPlayback, playback, type PlaybackState } from "./playback";
@@ -19,175 +19,203 @@ type Props = {
 };
 
 export default function GuidedExperience({ story, navigation, onExplore, initialState }: Props) {
-  // Exactly one state owner: this is the same reducer and action.perform()
-  // used by the technical projection, without autoplay or a second fake model.
+  const journey = (story.guidedScenes?.length
+    ? story.guidedScenes.map((id) => story.scenes.findIndex((scene) => scene.id === id))
+      .filter((index) => index >= 0)
+    : story.scenes.map((_, index) => index));
+  const starting = initialState ?? createPlayback();
+  // Technical mode has all scenes. If its current scene is outside the short
+  // reader journey, return to the nearest earlier chapter without duplicating
+  // or synthesizing any answers/results.
+  const startingIndex = journey.includes(starting.index)
+    ? starting.index
+    : ([...journey].reverse().find((index) => index <= starting.index) ?? journey[0]);
   const [state, dispatch] = useReducer(
-    (s: ReturnType<typeof createPlayback>, e: Parameters<typeof playback>[2]) =>
-      playback(story, s, e),
-    initialState ?? createPlayback(),
+    (s: PlaybackState, e: Parameters<typeof playback>[2]) => playback(story, s, e),
+    { ...starting, index: startingIndex, playing: false, resumeAfterInspect: false },
   );
+  const journeyPosition = journey.indexOf(state.index);
+  const step = journeyPosition < 0 ? 0 : journeyPosition;
   const scene = presentScene(story.scenes[state.index], state);
   const beat = guidedBeat(story.id, scene);
   const answered = !!state.answers[scene.id];
-  const last = state.index === story.scenes.length - 1;
-  const { resolvedTheme, setTheme } = useTheme();
+  const isFinal = step === journey.length - 1;
+  const { resolvedTheme } = useTheme();
+  const reduced = useReducedMotion();
   const [practice, setPractice] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const continueButton = useRef<HTMLButtonElement>(null);
   const firstScene = useRef(true);
   useEffect(() => {
+    if (firstScene.current) {
+      firstScene.current = false;
+      return;
+    }
+    if (reduced) heading.current?.focus();
+  }, [scene.id, reduced]);
+  useEffect(() => {
     if (answered) continueButton.current?.focus();
   }, [answered]);
-  const choose = (id: string) => {
+
+  function choose(id: string) {
     dispatch(answerEvent(scene, state, id));
-    // The reducer's generic auto-play semantics remain available to the
-    // technical film. Here a decision never starts an invisible countdown.
+    // An answer never starts a hidden countdown in the reader's story.
     dispatch({ type: "pause" });
-  };
-  const advance = () => {
+  }
+  function advance() {
+    if (scene.gate && !answered) return;
+    if (isFinal) return;
     setPractice(false);
-    dispatch({ type: "next" });
-  };
-  const retry = () => {
+    dispatch({ type: "seek", index: journey[step + 1] });
+  }
+  function back() {
+    if (step <= 0) return;
+    setPractice(false);
+    dispatch({ type: "seek", index: journey[step - 1] });
+  }
+  function retry() {
     setPractice(false);
     dispatch({ type: "reset" });
-  };
+  }
   const selectedLabel = answered
     ? guidedActionLabel(story.id, scene, state.answers[scene.id])
     : null;
   const feedback = state.feedback
     ? (answered ? beat.result : beat.wrong?.[state.attempt ?? ""]) ?? state.feedback
     : null;
-  const otherLessons = navigation?.filter((l) => !l.current) ?? [];
+  const otherLessons = navigation?.filter((link) => !link.current) ?? [];
 
   return (
-    <div className="experience" data-story={story.id} data-scene={scene.id}>
-      <a className="skip-link" href="#experience-content">Перейти к истории</a>
+    <div className="experience" data-story={story.id} data-scene={scene.id} data-guided-step={step + 1}>
+      <a className="skip-link" href="#experience-content">К истории</a>
       <header className="experience-header">
         <a className="experience-brand" href="/" aria-label="Vanya Arc / Aha! — интерактивные истории">
           <img src={resolvedTheme === "dark" ? "/aha-impulse-mark-dark.svg" : "/aha-impulse-mark.svg"}
             alt="" width="44" height="26" />
           <span>Vanya Arc <span className="experience-brand-slash">/</span> <strong>Aha!</strong></span>
         </a>
-        <button className="experience-theme" type="button"
-          aria-label={resolvedTheme === "dark" ? "Включить светлую тему" : "Включить тёмную тему"}
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}>
-          {resolvedTheme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        <ThemeToggle className="experience-theme" variant="dropdown" />
       </header>
 
       <main className="experience-main" id="experience-content">
-        <div className="experience-progress" role="progressbar" aria-valuemin={1}
-          aria-valuemax={story.scenes.length} aria-valuenow={state.index + 1}
-          aria-label={`Шаг ${state.index + 1} из ${story.scenes.length}`}>
-          <span>История <b>{state.index + 1} / {story.scenes.length}</b></span>
-          <div className="experience-progress-track" aria-hidden="true">
-            <motion.div initial={false}
-              animate={{ width: `${((state.index + 1) / story.scenes.length) * 100}%` }}
-              transition={{ duration: .3 }} />
-          </div>
-        </div>
+        <WorkflowStrip
+          className="experience-progress"
+          label="История Ани"
+          status={`${step + 1} из ${journey.length}`}
+          progress={{ value: step + 1, max: journey.length, label: "Пройденная часть истории" }}
+        />
 
         <AnimatePresence mode="wait" initial={false}>
           <motion.article
             key={scene.id}
             className="experience-beat"
-            initial={{ opacity: 0, y: 12 }}
+            initial={reduced ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: .22 }}
+            exit={reduced ? undefined : { opacity: 0, y: -10 }}
+            transition={{ duration: reduced ? 0 : .23 }}
             onAnimationComplete={() => {
-              if (firstScene.current) firstScene.current = false;
-              else heading.current?.focus();
+              if (!reduced) heading.current?.focus();
             }}
           >
             <div className="experience-introduction">
-              <p className="experience-eyebrow">{state.index === 0 ? "Начнём с обычной ситуации" : "Что происходит дальше"}</p>
-              <h1 tabIndex={-1} ref={heading}>{state.index === 0 ? story.hook ?? beat.title : beat.title}</h1>
+              <span className="experience-eyebrow">{step === 0 ? "Всё началось с обычного выпуска" : "История продолжается"}</span>
+              <h1 tabIndex={-1} ref={heading}>{beat.title}</h1>
               <p className="experience-description">{beat.body}</p>
             </div>
 
             <div className="experience-illustration">
-              <FocusedVisual storyId={story.id} sceneId={scene.id}
-                index={state.index} state={state} />
+              <FocusedVisual storyId={story.id} sceneId={scene.id} index={state.index} state={state} />
             </div>
 
-            <section className="experience-decision" aria-label="Твой следующий шаг">
+            <section className="experience-decision" aria-label="Следующий шаг истории">
               {!answered && !!scene.actions?.length ? (
                 <>
-                  <h2>{beat.nudge ?? "Что сделаем?"}</h2>
+                  <h2>{beat.nudge ?? "Что сделает Аня?"}</h2>
                   <div className="experience-options">
                     {scene.actions.map((action) => (
-                      <button key={action.id} type="button"
-                        className={`experience-option${state.attempt === action.id ? " was-attempted" : ""}`}
-                        aria-pressed={state.attempt === action.id}
-                        onClick={() => choose(action.id)}>
+                      <ActionButton
+                        key={action.id}
+                        variant="outline"
+                        size="md"
+                        type="button"
+                        className="experience-option"
+                        data-attempted={state.attempt === action.id || undefined}
+                        onClick={() => choose(action.id)}
+                      >
                         <span>{guidedActionLabel(story.id, scene, action.id)}</span>
-                        <ArrowRight size={19} aria-hidden="true" />
-                      </button>
+                        <ArrowRight size={20} aria-hidden="true" />
+                      </ActionButton>
                     ))}
                   </div>
-                  {feedback && (
-                    <p className="experience-feedback is-retry" role="status">{feedback}</p>
-                  )}
+                  {feedback && <p className="experience-feedback is-retry" role="status">{feedback}</p>}
                 </>
               ) : (
                 <>
-                  {answered && selectedLabel && (
-                    <p className="experience-selected"><Check size={18} aria-hidden="true" /> {selectedLabel}</p>
-                  )}
+                  {answered && selectedLabel &&
+                    <p className="experience-selected"><Check size={18} aria-hidden="true"/> {selectedLabel}</p>}
                   {answered && feedback && (
                     <motion.p className="experience-feedback is-success" role="status"
-                      initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+                      initial={reduced ? false : {opacity:0,y:6}} animate={{opacity:1,y:0}}
+                      transition={{duration:reduced ? 0 : .2}}>
                       {feedback}
                     </motion.p>
                   )}
-                  {last ? (
+                  {isFinal ? (
                     <div className="experience-finish">
-                      <h2>Теперь ты знаешь главный принцип.</h2>
-                      <p>{beat.result ?? story.purpose ?? "Инструменты меняются. Правила работы можно сохранить."}</p>
+                      <h2>{story.id === "dependency-injection"
+                        ? "Аня может менять инструменты перед каждым выпуском"
+                        : "У Ани теперь два способа публиковать новости"}</h2>
+                      <p>{beat.result ?? story.purpose}</p>
                       {scene.experiment && story.experiment && (
-                        <button className="experience-primary" type="button"
-                          aria-expanded={practice} onClick={() => setPractice((v) => !v)}>
-                          {practice ? "Скрыть эксперимент" : "Попробовать свои инструменты"}
-                          <ArrowRight size={20} aria-hidden="true" />
-                        </button>
+                        <ActionButton variant="accent" size="md" className="experience-primary"
+                          type="button" aria-expanded={practice}
+                          onClick={() => setPractice((open) => !open)}>
+                          {practice ? "Свернуть пробный выпуск" : "Собрать другой выпуск"}
+                          <ArrowRight size={20} aria-hidden="true"/>
+                        </ActionButton>
                       )}
                     </div>
                   ) : (
-                    <button ref={continueButton} className="experience-primary" type="button" onClick={advance}>
-                      {state.index === 0 && !answered ? "Начать историю" : answered ? "Посмотреть, что дальше" : "Продолжить"}
-                      <ArrowRight size={20} aria-hidden="true" />
-                    </button>
+                    <ActionButton variant="accent" size="md" className="experience-primary"
+                      type="button" onClick={advance} ref={continueButton}>
+                      {beat.next ?? (step === 0 && !answered
+                        ? "Посмотреть, что случилось дальше"
+                        : "Продолжить историю")}
+                      <ArrowRight size={20} aria-hidden="true"/>
+                    </ActionButton>
                   )}
                 </>
               )}
             </section>
+
             {practice && scene.experiment && story.experiment && (
-              <motion.div className="experience-practice" initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}>
+              <motion.div className="experience-practice" initial={reduced ? false : {opacity:0}}
+                animate={{opacity:1}}>
                 <ExperimentPanel experiment={story.experiment}
                   initialConfiguration={scene.experimentDefaults}
-                  onConfigurationChange={(value) => dispatch({ type: "configuration", value })} />
+                  onConfigurationChange={(value) => dispatch({ type: "configuration", value })}/>
               </motion.div>
             )}
           </motion.article>
         </AnimatePresence>
 
-        <nav className="experience-secondary" aria-label="Дополнительно">
-          {state.index > 0 && <button type="button" onClick={() => dispatch({ type: "previous" })}>
-            <ArrowLeft size={16} aria-hidden="true" /> Назад
-          </button>}
-          <button type="button" onClick={retry}>
-            <RotateCcw size={16} aria-hidden="true" /> С начала
-          </button>
+        <nav className="experience-secondary" aria-label="Навигация по истории">
+          {step > 0 &&
+            <ActionButton size="md" variant="text" type="button" onClick={back}>
+              <ArrowLeft size={17} aria-hidden="true"/> Назад
+            </ActionButton>}
+          <ActionButton size="md" variant="text" type="button" onClick={retry}>
+            <RotateCcw size={17} aria-hidden="true"/> С начала
+          </ActionButton>
         </nav>
       </main>
 
       <footer className="experience-footer">
-        <span>Для тех, кто хочет глубже</span>
+        <span>Учебная история · вымышленный пример</span>
         <div className="experience-extra-links">
-          <button onClick={() => onExplore(state)} type="button">Исследовать схему и код</button>
+          <ActionButton size="md" variant="text" type="button" onClick={() => onExplore(state)}>
+            Посмотреть схему и код
+          </ActionButton>
           <LessonDetails conclusion={story.conclusion} sources={story.sources} />
           {otherLessons.map((item) => <a href={item.href} key={item.href}>{item.title}</a>)}
         </div>
