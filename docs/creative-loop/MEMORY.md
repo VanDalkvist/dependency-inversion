@@ -11,3 +11,13 @@
 **Important limitation:** No new novice user sessions, 320px browser screenshots, contrast measurements or screen-reader sessions have been observed. The user's next feedback and 3–5 independent first-use sessions must determine whether the direction is actually better. The older 9-scene structure remains a potential source of fatigue.
 
 **Next creative cycle must start by re-reading this file, the current live code and prior Cycle 02 research.** Do not declare the user job solved because tests are green. A repeated complaint about overload should trigger a story-length/content model critique, not another icon or animation experiment.
+
+## 2026-11-23 · Cycle 03 — a question isn't a dramatic opening
+
+**OWNER-OBSERVED (2026-11-22):** the released default home story began `Как не привязать помощника к одному сервису?`, and the owner found it unintelligible and unrelated to storytelling. A sentence beginning with negation in the first contact was the immediate failure; the deeper failure was an abstract programming issue where a concrete event should be.
+
+**Current repair, SOURCE+BUILD OBSERVED:** first DIP scene is `Аня отправила выпуск в Telegram`; the next beat introduces a website demand. Source now contains complete heroine/event/obstacle/action/consequence copy for both routes; the novice route selects 6 DIP / 5 DI beats, leaves the nine-scene expert view opt-in and uses actual pinned Vanya UI components (`ActionButton`, `CraftCard`, `WorkflowStrip`, `Tag`, `ThemeToggle`) with Motion for causal transitions. Portable Vanya UI inspect/check/verify and 100/100 tests passed in Cloudflare remote environment, deployed Worker version `4368966b-f000-4eaa-a5db-38b1ef0e4ba0`. This is NOT user comprehension evidence.
+
+**Next-cycle operational rule:** Before UI implementation, read only the authored *scene headings*: do they describe actions taken by a person in a situation, including an interruption, and is there a consequence? If they are concept labels or generic questions, rebuild the story arc first. Then use the original Sarycheva/Arkhipov editorial source with seven passes (meaning before polish) and the **actual** `@vanya/ui` source; add a copy-level negative-first test and a full state-journey test. This is bounded to narrative onboarding, not a universal prohibition on negative factual statements or technical reference docs.
+
+**Not verified:** actual visual composition at 320/390/1440 CSS px, reduced motion in an actual browser, 200% zoom, uncoached human comprehension, artistic acceptance. Cloudflare screenshot service returned HTTP 429; continue to treat this as a real blocker, not evidence of success. Next cycle should start from owner observations, not celebrate green tests.

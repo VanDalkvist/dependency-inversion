@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "format": "ioc-film-consumer-local-adaptation",
   "phase": "handoff",
-  "cycleId": "ioc-film-2026-11-23-02",
-  "method": "world-creative-loop-adapted-educational-film",
+  "cycleId": "ioc-storytelling-2026-11-23-03",
+  "method": "game-tools/world-creative-loop adapted explanatory storytelling",
   "status": "COMPLETE",
   "runMode": "ONE_INVOCATION",
   "repository": "VanDalkvist/dependency-inversion",
@@ -11,100 +11,161 @@
   "pr": "https://github.com/VanDalkvist/dependency-inversion/pull/1",
   "prDraft": true,
   "mainMerged": false,
-  "priorResult": "OWNER_REJECTED_OVERLOADED_INTERFACE",
-  "memoryReplay": "READ_PREVIOUS_CYCLE_SUPERSEDE_GRAPH_ONLY_SIMPLIFICATION",
-  "job": "Non-developer understands one AI helper can change tools without rewriting its work",
-  "research": "docs/creative-loop/2026-11-23-first-view-rebuild-cycle-02.md",
-  "memory": "docs/creative-loop/MEMORY.md",
+  "sourceMemory": "docs/creative-loop/MEMORY.md",
+  "ownerFeedback": "OWNER_REJECTED_NEGATIVE_ABSTRACT_OPENING_AND_QUIZ_STORY",
+  "memoryReplay": {
+    "status": "READ",
+    "source": "docs/creative-loop/MEMORY.md and cycle-02 research/handoff",
+    "decisions": [
+      "SUPERSEDE abstract question-as-story",
+      "APPLY shell removal",
+      "APPLY genuine service state",
+      "APPLY shorter beginner path"
+    ]
+  },
+  "job": "Show in one fictional news-editor story how an AI assistant's channel can be changed while a release stays the same",
+  "research": "docs/creative-loop/2026-11-23-storytelling-cycle-03.md",
   "handoff": "docs/creative-loop/HANDOFF.md",
   "candidateCount": 12,
-  "criticMode": "ADVERSARIAL_SELF_PASS_NOT_INDEPENDENT",
-  "vetoed": [
-    1,
-    2,
-    3,
-    12
-  ],
-  "reworked": [
-    4
-  ],
-  "selected": [
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11
-  ],
-  "targetExperiences": 5,
-  "deliveredExperiences": 6,
+  "criticMode": "adversarial-self-pass-not-independent",
+  "critic": {
+    "accepted": [
+      2,
+      5,
+      8,
+      9,
+      10,
+      12
+    ],
+    "vetoed": [
+      1,
+      3,
+      6,
+      7,
+      11
+    ],
+    "reworked": [
+      4
+    ]
+  },
+  "targetExperiences": 1,
+  "deliveredExperiences": 1,
   "deliveries": [
     {
-      "kind": "cold-start",
-      "file": "src/player/GuidedExperience.tsx",
-      "result": "Single human problem and action; expert film controls absent by default"
-    },
-    {
-      "kind": "decision-feedback",
-      "file": "src/player/guided-copy.ts",
-      "result": "Concrete source-backed action -> visible reasoning and correct vs wrong consequence"
-    },
-    {
-      "kind": "causal-visual",
-      "file": "src/player/FocusedVisual.tsx",
-      "result": "Selected source/writer/channel and actual run output change in place with Motion"
-    },
-    {
-      "kind": "reader-pacing",
-      "file": "src/player/GuidedExperience.tsx",
-      "result": "Explicit continue, no automatic timer or Play needed"
-    },
-    {
-      "kind": "optional-depth",
-      "file": "src/player/StoryPlayer.tsx",
-      "result": "Source diagram/code available only on demand with progress preserved"
-    },
-    {
-      "kind": "readability",
-      "file": "src/player/guided.css",
-      "result": "18–20px text, large options and naturally scrolling responsive layout"
+      "id": "one-coherent-narrative",
+      "result": "Editor Anya's concrete released Telegram news issue, changed website requirement, failed coupling, shared publishing rule, same issue to website, and 5/6-beat reader journeys with actual source-backed DI run",
+      "sourceFiles": [
+        "src/player/guided-copy.ts",
+        "src/player/GuidedExperience.tsx",
+        "src/player/FocusedVisual.tsx",
+        "src/player/guided.css",
+        "src/stories/dip/index.ts",
+        "src/stories/di/index.ts"
+      ]
     }
   ],
-  "runCompletion": "COMPLETE_DEV_AND_DEPLOY_NOT_HUMAN_RAT",
-  "staticReview": "SOURCE_REVIEWED_POST_IMPLEMENTATION",
-  "automatedTests": "PASS_100_OF_100_IN_21_FILES",
-  "build": "PASS_TYPESCRIPT_VITE",
-  "licenseGuard": "PASS_23_RESERVED_2_CC",
+  "sourceUi": {
+    "repo": "VanDalkvist/vanya-ui",
+    "pinnedSha": "8a39e86fc276aa0b75726f308a00fdefd0b30934",
+    "actualComponents": [
+      "ActionButton",
+      "ThemeToggle",
+      "WorkflowStrip",
+      "CraftCard",
+      "Tag"
+    ],
+    "pseudoUi": false
+  },
+  "sourceEditorial": {
+    "skills": "N1arko/redaktura-skills",
+    "read": [
+      "redaktura/SKILL.md",
+      "ux-copy/SKILL.md",
+      "statya/SKILL.md",
+      "redaktura/references/neirotekst.md",
+      "redaktura/references/ritm.md"
+    ],
+    "copiedThirdPartyText": false
+  },
+  "build": {
+    "sourceSha": "06ace1a5a3c91afe48bbfeb2531417acfc78b836",
+    "buildId": "ef6ace74-a19c-4f72-99bd-b7ea66ce9823",
+    "fullTests": "PASS_100_OF_100_IN_21_FILES",
+    "uiTests": "PASS_8_OF_8_JSDOM",
+    "typescript": "PASS",
+    "vite": "PASS",
+    "licensingSourceGuard": "PASS_23_RESERVED_AND_2_CC",
+    "vanyaPipeline": {
+      "inspect": "PASS",
+      "check": "PASS",
+      "verify": "PASS_NOT_BROWSER_VISUAL"
+    },
+    "chunkWarning": "MAIN_JS_GT_500KB_NONBLOCKING"
+  },
   "release": {
-    "sourceSha": "ddc7b940f4466067f8c64a0464d004c1d0ed712f",
-    "buildId": "0fd737cb-8e01-486d-9db7-76443fa76b61",
     "worker": "ioc",
-    "workerVersionId": "0cb590bf-53c5-4df4-abd2-ec9be47ca576",
+    "versionId": "4368966b-f000-4eaa-a5db-38b1ef0e4ba0",
     "domains": [
       "aha.vanya-arc.dev",
       "ioc.vanya-arc.dev"
     ],
-    "status": "DEPLOYED_MANUAL_CLOUDFLARE_BUILDS"
+    "status": "DEPLOYED_MANUAL_CF_BUILD",
+    "mainMerged": false
   },
-  "browserVisualReview": "NOT_RUN",
-  "humanComprehensionRAT": "NOT_RUN",
-  "keyboardAndAccessibilityManualReview": "NOT_RUN",
-  "productAcceptance": "NOT_CONFIRMED_BY_OWNER_OR_NOVICE_REVIEW",
-  "risks": [
-    "Nine scenes may be too long",
-    "320px screenshot & 200% zoom not checked",
-    "No independent comprehension sessions",
-    "Large JS bundle warning"
+  "runCompletion": "COMPLETE_SOURCE_BUILD_DEPLOY_NOT_HUMAN_RAT",
+  "staticReview": "SOURCE_REVIEWED_WITH_FOUR_SEMANTIC_PROBES",
+  "findings": [
+    {
+      "severity": "P1",
+      "finding": "Abstract negative first sentence was not a story",
+      "resolution": "Concrete actor, event, interruption and consequence"
+    },
+    {
+      "severity": "P1",
+      "finding": "Source-linked React double hook dispatcher",
+      "resolution": "Same React runtime in remote build, tests PASS"
+    },
+    {
+      "severity": "P1",
+      "finding": "Missing portable UI contract/test",
+      "resolution": "UI_CONTRACT.md and test:ui, Vanya UI pipeline PASS"
+    },
+    {
+      "severity": "P1",
+      "finding": "Nine technical scenes forced on beginner",
+      "resolution": "Curated 6 DIP/5 DI journey with expert view preserved"
+    },
+    {
+      "severity": "P2_UNVERIFIED",
+      "finding": "Actual mobile visuals, readability, keyboard, focus, 200% zoom",
+      "resolution": "BROWSER_NOT_RUN_CF_429"
+    },
+    {
+      "severity": "P2_UNVERIFIED",
+      "finding": "Can novices explain and enjoy story",
+      "resolution": "HUMAN_RAT_NOT_RUN"
+    }
   ],
-  "learning": "Previously simplified diagrams did not repair an overloaded shell. Replace primary mode with a focused reader journey.",
+  "browserVisualReview": "BLOCKED_CF_BROWSER_RENDERING_429_NOT_RUN",
+  "humanComprehensionRAT": "NOT_RUN",
+  "artAcceptance": "NOT_CLAIMED",
+  "ownerReview": "PENDING",
+  "prStatus": "OPEN_DRAFT_UNMERGED",
+  "learning": {
+    "decision": "UPDATED",
+    "memory": "docs/creative-loop/MEMORY.md",
+    "rule": "Verify person-event-obstacle-choice-consequence using only scene headings before writing UI or tests",
+    "confidence": "SOURCE_AND_OWNER_OLD_FAILURE_ONLY"
+  },
   "toolExtraction": {
     "decision": "REUSE",
     "tools": [
-      "Motion",
       "Vanya UI",
-      "existing player reducer"
+      "Sarycheva/Arkhipov original redaktura & ux-copy",
+      "Motion",
+      "game-tools creative loop",
+      "existing reducer"
     ],
-    "newFramework": false
+    "newToolCreated": false
   }
 }

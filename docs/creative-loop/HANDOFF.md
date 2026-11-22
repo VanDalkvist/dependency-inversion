@@ -1,5 +1,7 @@
 # IOC Film — handoff for PR #1
 
+> **Current release · Cycle 03 · 2026-11-23:** [Storytelling research and proof](2026-11-23-storytelling-cycle-03.md). Published source `06ace1a5a3c91afe48bbfeb2531417acfc78b836`; Cloudflare Worker `ioc` version `4368966b-f000-4eaa-a5db-38b1ef0e4ba0` on both `aha.vanya-arc.dev` and `ioc.vanya-arc.dev`. 100/100 tests, TypeScript/Vite, licensing source guard and portable Vanya UI `inspect/check/verify` passed; independent browser/human comprehension gates remain NOT VERIFIED. Prior 2026-11-22 handoffs below are preserved as historical snapshots.
+
 **Date:** 2026-11-22 · **branch:** `feat/ioc-creative-loop-ux-20261122` → `main` · **PR:** https://github.com/VanDalkvist/dependency-inversion/pull/1 (DRAFT) · **deploy:** NOT DONE.
 
 ## What shipped to the PR
@@ -70,3 +72,24 @@ Open locally as a first-time viewer at `/di/` and `/`. At 1440×900, 1024×768, 
 **Limitations remain:** no browser screenshot at 320/390/1440 or at 200% zoom, no actual assistive tech/keyboard walkthrough, no 3–5 novice comprehension interview; browser context unavailable and Cloudflare Browser Rendering rate-limited. These remain **NOT RUN**; positive unit tests are not user acceptance. No PR merge or main mutation was made, and the branch has diverged since `main` received licensing. Draft [PR #1](https://github.com/VanDalkvist/dependency-inversion/pull/1) remains open; resolve that conflict deliberately before any merge.
 
 **Concrete user test:** open `https://aha.vanya-arc.dev/di/` without explanation. In the first 10 seconds, ask “Что ты здесь можешь сделать?”; after switching the publication channel ask “Что изменилось и что осталось прежним?”. Record unprompted clicks and whether the ninth step is worth reaching. If two people fail to find the choice or can't explain the channel swap, the next cycle should consider a shorter 4–5-beat story and simpler conceptual model, **not** another logo or decorative Motion pass.
+
+## Cycle 03 final handoff — 2026-11-23
+
+### Current experience
+
+- The first home heading is now **“Аня отправила выпуск в Telegram”** (positive concrete event), followed by a lunch-time request to publish the same issue on a website. The observer sees Anya's attempt, changed shared publication rule, and the two channels. The DI route starts **“Аня собирает помощника для новостей”** and makes a genuine source-backed publication choice and channel swap.
+- Beginner-directed route: **6 DIP / 5 DI authored beats**, not nine technical quiz scenes. The underlying expert nine-scene lessons are available behind **“Посмотреть схему и код”**. The single `PlaybackState` remains authoritative, no duplicate business simulation.
+- Visual props use actual Vanya UI `CraftCard`, `Tag`, `WorkflowStrip`, `ActionButton`, `ThemeToggle` from commit `8a39e86fc276aa0b75726f308a00fdefd0b30934`; Motion updates only relevant selected channel/artifact and respects reduced-motion. `UI_CONTRACT.md` documents portable integration. No local recreation of the UI component APIs.
+- The Russian story copy was authored with sources from Sarycheva/Arkhipov `redaktura`, `ux-copy`, `statya` and independent narrative guides. The full 12-option creative brainstorm and source-backed critic are in [Cycle 03](2026-11-23-storytelling-cycle-03.md). Fictional character/situation disclosed on-screen.
+
+### Build receipts and limits
+
+- **Release source SHA** `06ace1a5a3c91afe48bbfeb2531417acfc78b836`, manual Cloudflare build `ef6ace74-a19c-4f72-99bd-b7ea66ce9823`. `npm test` **100/100** across 21 test files, `npm run build` TypeScript + Vite **PASS**, `npm run check:licensing` **PASS** (23 reserved scene/brand files, 2 CC BY docs).
+- Portable Vanya UI `inspect`, `check`, `verify`: **PASS** with the pinned real sibling library, including `test:ui` **8/8** jsdom interactive story tests. **This is not a real-browser E2E or screenshot pass.** It proves source/test behavior, not visual acceptance.
+- Wrangler production result: **`Success: Deploy command completed`**, Worker `ioc` version **`4368966b-f000-4eaa-a5db-38b1ef0e4ba0`**, both custom domains. A prior version `f362e3e8-3982-43ca-9e05-9b2d13046c0e` included the same app assets; final build added the canonical UI verification runner and deployed with no changed assets.
+- Real browser screenshot/service: **BLOCKED**, Cloudflare Browser Rendering HTTP 429 / rate limit (asked not to retry ~4124 seconds). Browser-origin tabs connector unavailable in this chat. No visuals actually observed. No 320px, 390px, 1024px, 1440px screenshots or 200% zoom keyboard/screen-reader audit. Human first-time story RAT **NOT RUN**; the owner has NOT yet accepted this edit.
+- **PR safety**: [Draft PR #1](https://github.com/VanDalkvist/dependency-inversion/pull/1) remains OPEN, DRAFT, no merge; base `main` has diverged. The latest added docs (this commit) do not change the deployed runtime code. Avoid force-merge and clear conflicts deliberatively.
+
+### Next acceptance observation (not another UI feature request)
+
+Ask a fresh non-programmer to open `https://aha.vanya-arc.dev/` and **say what happened to Anya** before they click; then ask what changes when the site receives the same text, and observe actual clicks/reactions. A working DOM test cannot answer this. If the viewer still feels they are choosing correct multiple-choice quiz answers rather than influencing the release, investigate the **choice grammar and story stakes** before adding animations or controls.

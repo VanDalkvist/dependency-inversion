@@ -115,3 +115,40 @@ Important negatives: Browser tabs connector is unavailable without the originati
 **Deliverable is one coherent revised experience** on both DIP and DI, not five unrelated effects. The owner has explicitly requested source implementation/release on the existing Draft PR; leave `main` and PR status unchanged.
 
 **Open empirical decision:** read-only first minute and actual channel change must be watched by the owner or independent non-programmers. If story still feels like a quiz, redesign the *choice grammar*, not the logo or number of components.
+
+## 9. Actual build and post-implementation review (same invocation)
+
+### Recorded execution receipts
+
+- First manual build `d5ec5841-a3cc-4037-9e39-6c29893c84c3` failed **portable Vanya UI check**. Root causes: missing `UI_CONTRACT.md` and no declared `test:ui` script. Both corrected with [commit 2cdfcc9](https://github.com/VanDalkvist/dependency-inversion/commit/2cdfcc9061e293209740afc1754a5d41d1693dda), without adding GitHub Actions or copying components.
+- Second build `0e4d8208-a8df-46f6-b902-5bbd60ce404d` passed portable UI check but exposed **two React hook dispatchers** in the adjacent-source dependency. Fixed in disposable release runner [commit 93e7ab1](https://github.com/VanDalkvist/dependency-inversion/commit/93e7ab15994ae63362c844e5a931c9e98dabf84c) by resolving UI runtime React/ReactDOM to the app's single physical package. No upstream Vanya UI source was altered.
+- Third build `94c8dcdd-9d54-47b0-ba23-78edd0cfceb6` passed **99/100**, exposing one stale negative-first copy assertion. Repaired with [commit 48fe6da](https://github.com/VanDalkvist/dependency-inversion/commit/48fe6da32cd7c183c0fb33fd09df071d89b63f38): the test now positively checks the literal event and rejects opening `/^(Как|Почему|Зачем) не /`.
+- Build `5f94c186-4106-4df8-ba1c-f3b864622779`: **100/100 Vitest**, portable Vanya UI inspect/check **PASS**, TypeScript and Vite production build **PASS**, source licensing check **PASS**; deployed version `f362e3e8-3982-43ca-9e05-9b2d13046c0e` to both domains.
+- Final build `ef6ace74-a19c-4f72-99bd-b7ea66ce9823` from code/runner SHA `06ace1a5a3c91afe48bbfeb2531417acfc78b836`: 21 test files / **100/100**; TypeScript/Vite **PASS**; licensing source guard **PASS** (23 reserved visual/script files, 2 CC BY research documents); Vanya UI portable **inspect / check / verify PASS**, with `verify` repeating build and **8/8 `test:ui` jsdom interaction tests**. Wrangler deploy **SUCCESS**, Worker `ioc` version **`4368966b-f000-4eaa-a5db-38b1ef0e4ba0`** on `aha.vanya-arc.dev` and `ioc.vanya-arc.dev`. No new binary assets needed upload; verification included same already-deployed application source.
+- Rendered live browser content inspection attempted through Cloudflare Browser Rendering but returned **HTTP 429 rate limit**, ~4124 seconds. Do not retry inside that window. Browser visual screenshots, mobile/200%-zoom and independent human RAT are **NOT RUN**. Test:ui is explicitly jsdom and is not misreported as a real browser.
+
+### STATIC ARCH/PRODUCT REVIEW — not formal S9
+
+**Entry trace (actual source):** `App.tsx → lessons.ts → StoryPlayer.tsx:25–44 → GuidedExperience.tsx:22–77 → presentScene/answerEvent → playback reducer → StoryScene.action.perform`; DI `execute / assembleFactory / runFactory` produce derived state read by `FocusedVisual.tsx:30–70`. No second business state, invented API response, or fake external publication. Technical view remains in the original source and works with the same state; a regression confirms a complete choice survives a mode switch.
+
+**Cold start:** `src/stories/dip/index.ts:7–8` selects the concrete event; `guided-copy.ts:20–32` supplies action and interruption. The first event has no binary quiz — one action advances into the site request. No old diagram/timeline shown. `src/player/GuidedExperience.test.tsx` asserts the literal header, real kit classes and visible state.
+
+**Happy path:** six curated DIP chapters `first → growth → invert → channel → directions → sandbox`, and five DI chapters `root → channel → run → swap → sandbox`. `GuidedExperience.tsx:22–34,68–77` maps the IDs to real original scene indices, and `FocusedVisual.tsx:30–125` derives the changing paper/channel state from the reducer. Actual choice on DI `run` executes the browser-side source/AI-adapter/publisher pipeline, with prewritten learning inputs and resulting artifacts.
+
+**Recovery and tech handoff:** wrong answer stays gated; Next is disabled until correct completion; Back jumps to previous **curated** beat and uses the original `seek` semantics to clear later state; switching modes preserves selections but pauses playback. Reduced-motion hook prevents spatial transitions for users who prefer it. Keyboard/screen-reader **human** acceptance remains unverified.
+
+| Finding | Priority | Actual evidence | Verdict |
+|---|---|---|---|
+| Prior abstract negative hook caused immediate reader confusion | P1 **PLAYER_OBSERVED** | Owner direct feedback + `guided-copy.ts:21–32`, `dip/index.ts:7` | **FIX NOW**: event-first opening and edit entire narrative |
+| UI-kit primitive use was source-imprecise | P1 SOURCE+RUN | `GuidedExperience/FocusedVisual` use actual `@vanya/ui` exports; original hooked duplicate React led to real tests failing | **FIXED**, pinned source + shared runtime, evidence above |
+| UI contract and executable interaction gate missing | P1 SOURCE+RUN | First build pipeline FAIL | **FIXED**, `UI_CONTRACT.md`, `test:ui`, remote inspect/check/verify PASS |
+| Reader screens were a nine-step quiz rather than authored drama | P1 OWNER_OBSERVED | First mode `guidedScenes` now 6/5 while original technical length stays 9 | **FIXED IN SOURCE**; reading pleasure remains to be tested on people |
+| Main bundle still approximately 531 kB before gzip (164.8 kB gzip) | P3 BUILD | Vite warning in remote build | **LOG ONLY**; consider separate chunk for expert mode after measuring load |
+| 320px layout, 200% zoom, focus behavior and visual hierarchy in actual browser | P1 UNKNOWN | Cloudflare HTTP 429; no user screenshot in this cycle | **NOT VERIFIED**, no false pass claim |
+| Is the story engaging and does the reader grasp the change? | P1 PRODUCT UNKNOWN | No uncoached human observation yet | **NOT VERIFIED**, original owner complaint only falsifies old version |
+
+**Learning:** the owner-observed negative-first opening refuted the idea that renaming a question would create a story. A reusable structure is person → event → new demand → attempt → observable consequence. In future cycles read only the headings aloud; if they describe concepts instead of actions, rewrite the drama before UI work. **Counterexample:** pure technical documentation may appropriately start with an abstract question — this rule is for first-contact narrative products.
+
+**Tool scout:** `REUSE` existing Sarycheva UX-copy/redaktura, actual pinned Vanya UI, Motion, existing single-state player, and game-tools world-creative-loop. No generic storytelling library extracted; second independent use/value unproven.
+
+**Final status:** code COMMITTED, release DEPLOYED, reproducible tests/build and portable UI pipeline PASS; static architecture/product REVIEWED, **browser visual acceptance NOT RUN, actual novice comprehension NOT RUN, owner art acceptance NOT IMPLIED**. The consuming repo's current handoff and checkpoint supersede older records. No merge or main writes.
