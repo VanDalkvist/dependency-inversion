@@ -1,6 +1,6 @@
 # aha! — brand and visual-artwork usage
 
-**Approved design direction (22 November 2026): `Vanya Arc / Aha!` with variant #4 «С импульсом».** The parent Vanya Arc asymmetric wave is preserved and adapted with three short terracotta rays above its terminal crest. This creative selection does not assert trademark registration or exclusive rights in a generic wave. The application work is being implemented in Draft PR #1; deployment status must be verified separately.
+**Approved design direction (22 November 2026): `Vanya Arc / Aha!` with variant #4 «С импульсом».** The parent Vanya Arc asymmetric wave is preserved and adapted with three short terracotta rays above its terminal crest. This creative selection does not assert trademark registration or exclusive rights in a generic wave. The selected artwork is published on both `aha.vanya-arc.dev` and `ioc.vanya-arc.dev` via Cloudflare Worker `ioc` version `00f232b0-9e19-464c-82c4-fbf14d20159f` (22 November 2026). Draft PR #1 remains unmerged.
 
 - Project: interactive educational films **aha!**
 - Creator signature: **VANYA / ARC** · https://vanya-arc.dev/
