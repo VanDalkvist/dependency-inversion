@@ -13,6 +13,7 @@ export default function Narration({
   hasNext,
   onContinue,
   onShowVisual,
+  onReadMore,
 }: {
   scene: StoryScene;
   playing: boolean;
@@ -23,6 +24,7 @@ export default function Narration({
   hasNext: boolean;
   onContinue: () => void;
   onShowVisual: () => void;
+  onReadMore: () => void;
 }) {
   const [readingOriginal, setReadingOriginal] = useState(false);
   const [insightOpen, setInsightOpen] = useState(false);
@@ -48,7 +50,10 @@ export default function Narration({
         {scene.insight && (
           <button
             className="insight-button"
-            onClick={() => setInsightOpen(true)}
+            onClick={() => {
+              onReadMore();
+              setInsightOpen(true);
+            }}
           >
             <Info size={13} />
             Почему это важно
@@ -106,7 +111,10 @@ export default function Narration({
       {feedback && (
         <button
           className="feedback-switch"
-          onClick={() => setReadingOriginal(!readingOriginal)}
+          onClick={() => {
+            if (!readingOriginal) onReadMore();
+            setReadingOriginal(!readingOriginal);
+          }}
         >
           {readingOriginal ? "Показать ответ" : "Показать объяснение"}
         </button>
