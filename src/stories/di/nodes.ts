@@ -76,17 +76,28 @@ function serviceNode(
     },
   };
 }
-function candidatesFor(phase: number) {
-  return phase < 5 || phase === 8
-    ? services.filter((s) => !["probe", "both"].includes(s.id))
-    : phase === 6
-      ? services.filter(
-          (s) =>
-            s.role === "publisher" && ["telegram", "website"].includes(s.id),
-        )
-      : phase === 7
-        ? services.filter((s) => s.id === "probe")
-        : [];
+function candidatesFor(phase: number, attempt: string | null) {
+  // Show only the choice needed *now*. The first scene is about the problem,
+  // not a catalogue of six unrelated implementation cards.
+  if (phase === 0)
+    return attempt === "inside" ? services.filter((s) => s.id === "telegram") : [];
+  const activeRole: Record<number, Role> = {
+    1: "source",
+    2: "writer",
+    3: "publisher",
+  };
+  if (phase in activeRole)
+    return services.filter(
+      (s) => s.role === activeRole[phase] && !["probe", "both"].includes(s.id),
+    );
+  if (phase === 8)
+    return services.filter((s) => !["probe", "both"].includes(s.id));
+  if (phase === 6)
+    return services.filter(
+      (s) => s.role === "publisher" && ["telegram", "website"].includes(s.id),
+    );
+  if (phase === 7) return services.filter((s) => s.id === "probe");
+  return [];
 }
 function emptySlots(
   context: StoryContext,
@@ -128,7 +139,7 @@ export function assemblyNodes(
     .map((role) =>
       services.find((s) => s.role === role && s.id === config[role])!,
     );
-  const candidates = candidatesFor(phase);
+  const candidates = candidatesFor(phase, context.attempt);
   const unique = [
     ...new Map(
       [...candidates, ...chosen].map((s) => [`${s.role}-${s.id}`, s]),
