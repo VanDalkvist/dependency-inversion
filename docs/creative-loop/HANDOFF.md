@@ -1,5 +1,7 @@
 # IOC Film — handoff for PR #1
 
+> **Script pre-production update · 2026-11-23:** the owner likes the new story but wants **Anya chatting with a neural agent** and an unmistakable before/after change in the agent-facing publishing interface. [Story screenplay v1](../storyboards/AGENT_PUBLISHER_SCRIPT_V1.md) + [research, 12-way brainstorm, critic](2026-11-23-agent-story-storm-04.md) are **proposal-only**; **no live code, production UI or release updated** by this script round. The last actually deployed runtime and its test receipts below remain authoritative. Do not mark this as game-tools code-loop COMPLETE or claim browser/human RAT.
+
 > **Current release · Cycle 03 · 2026-11-23:** [Storytelling research and proof](2026-11-23-storytelling-cycle-03.md). Published source `06ace1a5a3c91afe48bbfeb2531417acfc78b836`; Cloudflare Worker `ioc` version `4368966b-f000-4eaa-a5db-38b1ef0e4ba0` on both `aha.vanya-arc.dev` and `ioc.vanya-arc.dev`. 100/100 tests, TypeScript/Vite, licensing source guard and portable Vanya UI `inspect/check/verify` passed; independent browser/human comprehension gates remain NOT VERIFIED. Prior 2026-11-22 handoffs below are preserved as historical snapshots.
 
 **Date:** 2026-11-22 · **branch:** `feat/ioc-creative-loop-ux-20261122` → `main` · **PR:** https://github.com/VanDalkvist/dependency-inversion/pull/1 (DRAFT) · **deploy:** NOT DONE.
