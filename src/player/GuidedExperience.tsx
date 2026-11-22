@@ -44,7 +44,6 @@ export default function GuidedExperience({ story, navigation, onExplore, initial
   const reduced = useReducedMotion();
   const [practice, setPractice] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
-  const continueButton = useRef<HTMLButtonElement>(null);
   const firstScene = useRef(true);
   useEffect(() => {
     if (firstScene.current) {
@@ -54,7 +53,7 @@ export default function GuidedExperience({ story, navigation, onExplore, initial
     if (reduced) heading.current?.focus();
   }, [scene.id, reduced]);
   useEffect(() => {
-    if (answered) continueButton.current?.focus();
+    if (answered) document.querySelector<HTMLButtonElement>(".experience-primary")?.focus();
   }, [answered]);
 
   function choose(id: string) {
@@ -177,7 +176,7 @@ export default function GuidedExperience({ story, navigation, onExplore, initial
                     </div>
                   ) : (
                     <ActionButton variant="accent" size="md" className="experience-primary"
-                      type="button" onClick={advance} ref={continueButton}>
+                      type="button" onClick={advance}>
                       {beat.next ?? (step === 0 && !answered
                         ? "Посмотреть, что случилось дальше"
                         : "Продолжить историю")}

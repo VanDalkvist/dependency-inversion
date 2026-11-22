@@ -13,6 +13,8 @@ export type GuidedBeat = {
   options?: Record<string, string>;
   wrong?: Record<string, string>;
   outcomeLabel?: string;
+  /** Next action labels must reveal the actual following event. */
+  next?: string;
 };
 
 const inversion: Record<string, GuidedBeat> = {
@@ -20,6 +22,7 @@ const inversion: Record<string, GuidedBeat> = {
     title: "Аня отправила выпуск в Telegram",
     body: "К девяти утра помощник собрал новости, подготовил текст и отправил его читателям. Аня закрыла ноутбук. К обеду пришла новая задача: тот же выпуск нужен на сайте.",
     outcomeLabel: "Выпуск № 1 · Telegram",
+    next: "Открыть новую задачу",
   },
   growth: {
     title: "Редактор попросил выпуск для сайта",
@@ -28,6 +31,7 @@ const inversion: Record<string, GuidedBeat> = {
     options: { expand: "Добавить публикацию на сайте" },
     result: "Сайт подключился, но пришлось менять работу самого помощника. Следующий канал снова потребует правки.",
     outcomeLabel: "Потребовалась правка программы",
+    next: "Посмотреть решение Ани",
   },
   wrapper: {
     title: "Аня вынесла Telegram в отдельный файл",
@@ -44,6 +48,7 @@ const inversion: Record<string, GuidedBeat> = {
     options: { lift: "Принять и опубликовать готовый выпуск" },
     result: "Помощник отдаёт готовый текст. Telegram и сайт сами решают, как его показать читателям.",
     outcomeLabel: "Одно задание для разных каналов",
+    next: "Подключить сайт по новым правилам",
   },
   channel: {
     title: "Сайт получил тот же выпуск",
@@ -52,6 +57,7 @@ const inversion: Record<string, GuidedBeat> = {
     options: { website: "Опубликовать выпуск на сайте" },
     result: "Оба канала принимают готовый выпуск. Для новой площадки понадобится отдельный способ оформления, а помощник продолжит готовить новости.",
     outcomeLabel: "Telegram и сайт работают с одним выпуском",
+    next: "Посмотреть, что сохранилось",
   },
   sources: {
     title: "Теперь Аня меняет источник новостей",
@@ -78,6 +84,7 @@ const inversion: Record<string, GuidedBeat> = {
     wrong: { runtime: "Новости и черновик помощник готовил так же. Изменился способ передачи результата." },
     result: "Да. Каждый канал принимает готовый выпуск и оформляет его для своих читателей.",
     outcomeLabel: "Один процесс — разные каналы",
+    next: "Посмотреть следующий выпуск",
   },
   sandbox: {
     title: "Аня подготовила следующий выпуск",
@@ -100,6 +107,7 @@ const injection: Record<string, GuidedBeat> = {
     },
     result: "Теперь Аня выбирает канал перед запуском. Помощник будет готовить новости своим обычным способом.",
     outcomeLabel: "Канал выбирается перед выпуском",
+    next: "Выбрать первый канал",
   },
   source: {
     title: "Аня выбирает, откуда придут новости",
@@ -122,6 +130,7 @@ const injection: Record<string, GuidedBeat> = {
     options: { telegram: "В Telegram", website: "На сайт" },
     result: "Аня подключила канал. Теперь помощник может собрать для него выпуск.",
     outcomeLabel: "Выбран канал для первого выпуска",
+    next: "Собрать первый выпуск",
   },
   inject: {
     title: "Аня подключает инструменты к помощнику",
@@ -138,6 +147,7 @@ const injection: Record<string, GuidedBeat> = {
     options: { run: "Собрать выпуск" },
     result: "Помощник выполнил учебный прогон. В выпуске появились реальные результаты работы выбранных программных инструментов.",
     outcomeLabel: "Первый выпуск готов",
+    next: "Попробовать другую площадку",
   },
   swap: {
     title: "Наутро Аня выбирает другой канал",
@@ -153,6 +163,7 @@ const injection: Record<string, GuidedBeat> = {
     },
     result: "Аня заменила только канал. Помощник подготовил выпуск тем же способом.",
     outcomeLabel: "Канал заменён, выпуск работает",
+    next: "Сравнить оба выпуска",
   },
   probe: {
     title: "Аня проверяет, какой текст получил канал",
