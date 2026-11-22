@@ -38,6 +38,14 @@ it("keeps the mobile explanation visible and offers one obvious next action", as
   expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
   expect(screen.getByRole("button", { name: "Выбрать RSS" })).toBeTruthy();
 });
+it("does not advance underneath a deliberately opened explanation", () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
+  expect(screen.getByRole("button", { name: "Пауза" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Показать объяснение" }));
+  expect(screen.getByRole("button", { name: "Воспроизвести" })).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Дальше сейчас" })).toBeTruthy();
+});
 it("builds through clickable cards and carries selections into the sandbox", async () => {
   render(<App />);
   fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 2:/ }));
