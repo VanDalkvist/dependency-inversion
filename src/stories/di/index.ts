@@ -4,9 +4,10 @@ import { injectionExperiment } from "./experiment";
 export const dependencyInjectionStory: StoryDefinition = {
   id: "dependency-injection",
   title: "Внедрение зависимостей",
-  hook: "Как менять инструменты у одного помощника?",
+  hook: "Аня собирает помощника для новостей",
+  guidedScenes: ["root", "channel", "run", "swap", "sandbox"],
   subtitle:
-    "Представь: помощник собирает новости и готовит выпуск. Сегодня он публикует в Telegram, завтра — на сайте. Нужно ли его переделывать?",
+    "У Ани уже есть новости и редактор. Она будет менять место публикации перед выпуском и запускать одного помощника с разными инструментами.",
   purpose: "Ты соберёшь выпуск, заменишь канал и увидишь, почему сам процесс остался прежним.",
   topic: "dependency injection",
   chapters: [

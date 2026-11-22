@@ -4,9 +4,10 @@ import { experiment } from "./experiment";
 export const dependencyInversionStory: StoryDefinition = {
   id: "dependency-inversion",
   title: "Инверсия зависимостей",
-  hook: "Как не привязать помощника к одному сервису?",
+  hook: "Аня отправила выпуск в Telegram",
+  guidedScenes: ["first", "growth", "invert", "channel", "directions", "sandbox"],
   subtitle:
-    "Представь помощника для выпуска новостей: он должен работать, даже когда ты меняешь источник, AI-редактора или место публикации.",
+    "К обеду тот же выпуск понадобился на сайте. Аня ищет способ подключать новые каналы и сохранять привычную работу помощника.",
   purpose: "Ты увидишь разницу между жёсткой привязкой к сервису и заменяемым способом работы.",
   topic: "dependency inversion principle",
   viewLabels: { code: "Зависимости кода", runtime: "Порядок работы" },

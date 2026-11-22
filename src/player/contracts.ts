@@ -108,6 +108,8 @@ export type StoryDefinition = {
   title: string;
   subtitle: string;
   hook?: string;
+  /** Short, author-curated path for non-technical readers. Full scenes stay in expert mode. */
+  guidedScenes?: readonly string[];
   purpose?: string;
   topic?: string;
   conclusion?: { title: string; body: string };
