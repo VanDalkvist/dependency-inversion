@@ -20,6 +20,7 @@ afterEach(() => {
 it.each(["/di/", "/di"])("loads the DI continuation directly at %s", (path) => {
   history.replaceState(null, "", path);
   render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
   expect(
     screen.getByRole("heading", { level: 1, name: "Как менять инструменты у одного помощника?" }),
   ).toBeTruthy();
@@ -37,6 +38,7 @@ it.each(["/di/", "/di"])("loads the DI continuation directly at %s", (path) => {
 it("keeps the original lesson and external new-tab link", () => {
   history.replaceState(null, "", "/");
   render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
   expect(
     screen.getByRole("heading", { level: 1, name: "Как не привязать помощника к одному сервису?" }),
   ).toBeTruthy();
