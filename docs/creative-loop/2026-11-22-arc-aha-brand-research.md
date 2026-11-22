@@ -1,7 +1,7 @@
 # Research Loop 02 — ARC × aha! · 2026-11-22
 
 Status: **RESEARCH COMPLETE / BRAND UNDECIDED / NO VISUAL BUILD OR DOMAIN CHANGE**.
-Consumer: \`VanDalkvist/dependency-inversion\` on the existing PR #1. Public-safe research intended to remain in the repository if made public. This is an independent *brand research pass*, not a new deployment and not evidence of trademark clearance or user testing.
+Consumer: `VanDalkvist/dependency-inversion` on the existing PR #1. Public-safe research intended to remain in the repository if made public. This is an independent *brand research pass*, not a new deployment and not evidence of trademark clearance or user testing.
 
 ## 0. Source reality / brief
 
@@ -23,7 +23,7 @@ Consumer: \`VanDalkvist/dependency-inversion\` on the existing PR #1. Public-saf
 
 **Public repository job:** a contributor can understand the purpose, run the example from public sources, and see what is reusable without needing a private system or privileged design assets.
 
-**Unmet tension:** \`aha!\` is emotionally immediate but generic and occupied commercially; \`ARC\` is an existing author's signature, but without context could look like the Arc browser or an abstract agency acronym. Stitching both words into the main title can reduce comprehension rather than increase it.
+**Unmet tension:** `aha!` is emotionally immediate but generic and occupied commercially; `ARC` is an existing author's signature, but without context could look like the Arc browser or an abstract agency acronym. Stitching both words into the main title can reduce comprehension rather than increase it.
 
 **Success tests (NOT RUN):** in an unassisted 5-second exposure, 4/5 people can describe the kind of experience and 4/5 identify the film's own topic; 3/5 read the personal endorsement as *author*, not another required product to navigate. At 320px, the branding stays legible but does not consume the film's hierarchy.
 
@@ -35,8 +35,8 @@ Consumer: \`VanDalkvist/dependency-inversion\` on the existing PR #1. Public-saf
 | [Explorable Explanations](https://explorabl.es/) | Explicit *genre* descriptor (“learning through play”) acts as information scent independent of any clever brand name. | Always retain a plain-language subtitle to explain the experience. |
 | [The Pudding — About](https://pudding.cool/about/) | Clear publication identity for visual essays, individual editorial stories, author ownership. | An endorsed editorial *series* is a better model than a complex new software company name. |
 | [Brilliant — About](https://brilliant.org/about/) | Interaction and approachable problems are the identity; content does the work. | Avoid an abstract logo system that competes with the scene. |
-| [NN/g — Information Scent](https://www.nngroup.com/articles/information-scent/) | The link label and surrounding description must convey the destination's value. | Share previews, page title, heading, and navigation must use the question/topic, not \`DIP\` alone. |
-| [Brand Architecture — Endorsed Brands](https://www.creativeans.com/resources/brand-architecture-for-multi-brand-companies-when-to-create-sub-brands-when-to-endorse-when-to-merge) | Sub-brand gets its own character, but a visible “by [parent]” lends attribution. | The series title can be “aha!”, with a smaller \`VANYA / ARC\` author credit. |
+| [NN/g — Information Scent](https://www.nngroup.com/articles/information-scent/) | The link label and surrounding description must convey the destination's value. | Share previews, page title, heading, and navigation must use the question/topic, not `DIP` alone. |
+| [Brand Architecture — Endorsed Brands](https://www.creativeans.com/resources/brand-architecture-for-multi-brand-companies-when-to-create-sub-brands-when-to-endorse-when-to-merge) | Sub-brand gets its own character, but a visible “by [parent]” lends attribution. | The series title can be “aha!”, with a smaller `VANYA / ARC` author credit. |
 | [Arc of Learning — Connected Mathematics](https://connectedmath.msu.edu/research/msu-cmp-royalty-funded/arc-of-learning-research-project.aspx) | “Arc” can describe movement from informal exploration to more sophisticated synthesis. | Make ARC part of **the experience's grammar**: question → attempt → observation → insight; don't assert that the research validates this particular name. |
 | [Aha! software](https://www.aha.io/) and [Arc browser](https://arc.net/) | The two simple words are already highly visible in unrelated software markets. | Standalone global trademark strategy needs separate clearance; avoid representing either name as exclusive or unoccupied. |
 | [GitHub docs — visibility](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility) / [licensing](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) | Public visibility exposes repository code/history; public ≠ open-source licensed. | Perform history/secret/license gate before changing visibility. |
@@ -47,7 +47,7 @@ Caution: these are descriptive references and source-grounded observations, not 
 
 | # | Candidate / architecture | What is strong | Counter-argument / cold critic | Verdict |
 | --- | --- | --- | --- | --- |
-| 01 | **aha! by Vanya** (current provisional) | Short, human and legible | Cuts \`ARC\` away from the existing public identity | HOLD |
+| 01 | **aha! by Vanya** (current provisional) | Short, human and legible | Cuts `ARC` away from the existing public identity | HOLD |
 | 02 | **aha! — VANYA / ARC** (endorsed identity) | Emotional series plus established author; two levels, no verbal mashup | “ARC” doesn't explain itself to new visitors; must stay secondary | **SHORTLIST A** |
 | 03 | **arc → aha!** (transition formula) | Expresses the whole learning journey; can animate a meaningful arrival | As an official product name it's awkward to pronounce and search | **SHORTLIST B — MOTIF, NOT NAME** |
 | 04 | **VANYA / ARC: aha!** (parent-first series) | Familiar personal signature and future scalability | Too abstract for strangers; makes the studio the hero | HOLD as portfolio presentation |
@@ -65,7 +65,7 @@ The real conceptual idea is not the invented compound word; it is **two levels o
 ## 4. Adversarial critique (single-agent, NOT independent)
 
 - **VETO: “beautiful but mysterious”.** A decorative arc curve without a clear question, choice, result is the same failure as the former unexplained code graph.
-- **VETO: name stacking.** The film should not demand readers decode four labels (\`Vanya\`, \`Arc\`, \`Aha\`, \`DI\`) before starting.
+- **VETO: name stacking.** The film should not demand readers decode four labels (`Vanya`, `Arc`, `Aha`, `DI`) before starting.
 - **VETO: stolen attention.** Do not play an intro logo animation every time a new scene starts; do not animate the mark continuously.
 - **VETO: fake “aha!”** A celebratory effect is not proof the viewer learned something. Reserve a small payoff animation for a real causal observation, and permit reduced-motion.
 - **VETO: artificial trademark certainty.** Web collisions are preliminary signals, not legal clearance, which varies by territories/classes and confusion test.
@@ -74,26 +74,26 @@ The real conceptual idea is not the invented compound word; it is **two levels o
 ## 5. Three coherent visual / editorial directions for a quick comparison
 
 **A. Editorial / endorsed (best default candidate).**
-\`aha!\` is the primary mark, \`VANYA / ARC\` is a small linked author credit (not a second hero). The actual story question owns the H1. Under it, plain-language promise like **“Понять, попробовав.”**. This preserves the current layout and requires only a small credit change *if chosen*.
+`aha!` is the primary mark, `VANYA / ARC` is a small linked author credit (not a second hero). The actual story question owns the H1. Under it, plain-language promise like **“Понять, попробовав.”**. This preserves the current layout and requires only a small credit change *if chosen*.
 
 **B. Journey / animated insight (best idea for an ownable motif).**
 Keep the same title hierarchy as A, but use a tiny curved line between “?” and “!” as the *progression from question to answer*. A motion cue occurs when the viewer successfully changes the tool and sees the effect; it must represent causality, not a generic brand reveal. Could live in story end-card or progress state, not the fixed header.
 
 **C. Author portfolio / collection (best if the format grows).**
-A parent landing page marked \`VANYA / ARC\` collects *aha! explorables*, interactive stories and other experiments; the individual \`aha!\` pages show a small signature only. This is a possible future IA, not a reason to build a catalog before enough independent stories exist.
+A parent landing page marked `VANYA / ARC` collects *aha! explorables*, interactive stories and other experiments; the individual `aha!` pages show a small signature only. This is a possible future IA, not a reason to build a catalog before enough independent stories exist.
 
 ### Candidate page lockup (text-level, not a rendered mock)
 
-\`\`\`text
+```text
 aha!          VANYA / ARC                           DI · DIP   ☼
 
 Как менять инструменты у одного помощника?
 Поймёшь, когда попробуешь.
 
 [interactive story – clear first action]
-\`\`\`
+```
 
-Do not put brand text into the H1; screen readers must reach the actual film topic. On narrow screens preserve \`aha!\`, then compress or move the author credit, never hide the film topic.
+Do not put brand text into the H1; screen readers must reach the actual film topic. On narrow screens preserve `aha!`, then compress or move the author credit, never hide the film topic.
 
 ## 6. Decision matrix / action
 
@@ -115,10 +115,10 @@ Qualitative evaluation (hypotheses, **not measured**), 1 = weakest, 5 = stronges
 ## 7. Public repository readiness gate (partial source audit, no release approval)
 
 Verified GitHub state on 2026-11-22:
-- \`VanDalkvist/dependency-inversion\` **PRIVATE** (not changed).
-- \`VanDalkvist/vanya-ui\` is **PUBLIC**, but this project currently imports it via a local sibling \`file:../vanya-ui\`: public visitors need explicit clone instructions or a packaged dependency.
-- Conventional root \`LICENSE\`, \`LICENSE.md\`, \`LICENSE.txt\` were **NOT FOUND**; **do not invent a license choice**. Public source visibility does not mean open-source use rights.
-- Root \`.gitignore\` excludes \`.env\`, \`*.local\`, \`node_modules/\`, \`dist/\`, Wrangler/.cloudflare folders. This is a useful guard but **does not prove** no secret ever entered a commit.
+- `VanDalkvist/dependency-inversion` **PRIVATE** (not changed).
+- `VanDalkvist/vanya-ui` is **PUBLIC**, but this project currently imports it via a local sibling `file:../vanya-ui`: public visitors need explicit clone instructions or a packaged dependency.
+- Conventional root `LICENSE`, `LICENSE.md`, `LICENSE.txt` were **NOT FOUND**; **do not invent a license choice**. Public source visibility does not mean open-source use rights.
+- Root `.gitignore` excludes `.env`, `*.local`, `node_modules/`, `dist/`, Wrangler/.cloudflare folders. This is a useful guard but **does not prove** no secret ever entered a commit.
 - Earlier README uses a technical audience label, stale product name, and a private deployment sibling; should be rewritten for prospective public readers without revealing private deployment practices.
 - An earlier creative-loop note links a private method repository; such links do not work for outside readers. Keep the research self-contained and public links only.
 - This session **did not** audit all repository history or run a full credential scan. No safety certification can be made from selected file reads.
