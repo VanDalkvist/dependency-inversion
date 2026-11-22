@@ -28,7 +28,7 @@ afterEach(() => {
 });
 it("keeps the mobile explanation visible and offers one obvious next action", async () => {
   render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
   fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
   expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
@@ -48,7 +48,7 @@ it("keeps the mobile explanation visible and offers one obvious next action", as
 });
 it("does not advance underneath a deliberately opened explanation", () => {
   render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
   expect(screen.getByRole("button", { name: "Пауза" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Показать объяснение" }));
@@ -57,7 +57,7 @@ it("does not advance underneath a deliberately opened explanation", () => {
 });
 it("builds through clickable cards and carries selections into the sandbox", async () => {
   render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 2:/ }));
   fireEvent.click(
     document.querySelector('[data-node-id="source-aggregate"] .node-select')!,
@@ -91,7 +91,7 @@ it("builds through clickable cards and carries selections into the sandbox", asy
 });
 it("runs the configured factory and renders the actually captured Draft", async () => {
   render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
   fireEvent.change(screen.getByLabelText("Источник материалов"), {
     target: { value: "aggregate" },

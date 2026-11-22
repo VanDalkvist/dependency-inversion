@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "test": "vitest run",
     "deploy": "npm --prefix ../cloudflare-deploy run deploy:ioc",
-    "check:licensing": "node scripts/check-licensing.mjs"
+    "check:licensing": "node scripts/check-licensing.mjs",
+    "test:ui": "vitest run src/player/GuidedExperience.test.tsx"
   },
   "dependencies": {
     "@vanya/ui": "file:../vanya-ui",
