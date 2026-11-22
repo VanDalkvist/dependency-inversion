@@ -2,7 +2,7 @@
 
 **Repository:** `VanDalkvist/dependency-inversion` · **branch:** `feat/ioc-creative-loop-ux-20261122` · **Draft PR:** [#1](https://github.com/VanDalkvist/dependency-inversion/pull/1) · **current visibility:** PRIVATE.
 
-**Decision:** prepare a mixed-license repository (**MIT reusable engine; reserved film presentation and narrative/diagram composition; CC BY 4.0 for only two authored research documents**). **PUBLIC RELEASE IS NOT YET APPROVED.** No repository visibility change, history rewrite, merge or deployment was performed.
+**Decision:** prepare a mixed-license repository (**MIT reusable engine; reserved film presentation and narrative/diagram composition; CC BY 4.0 for only two authored research documents**). **The author explicitly approved making this repository public on 2026-11-22 and accepted historical personal email and local path disclosure.** No repository visibility change, history rewrite, merge or deployment was performed.
 
 The research takes the publicly transferable rules of the previously prepared cross-project research at `projects-home/research/licensing-strategy-2026-11.md`, and checks the actual implementation in the public `vanya-ui` and `vanya-arc-brand` repositories. This report is self-contained for eventual publication; the private research source is named as provenance, not required to read this document.
 
@@ -72,15 +72,15 @@ The research takes the publicly transferable rules of the previously prepared cr
 | Inlined creative scene graphs and CSS | **RESOLVED by file-level scope (source review)** | MIT engine is reusable, but copyrighted expressive story/presentation modules are distinct; claims limited by copyrightability. |
 | Two failed Dependabot logs | **INSPECTED**, no pattern matches | No visible secret evidence in available logs, not universal proof. |
 
-### Publication gate: HOLD
+### Publication gate: OWNER APPROVED — visibility switch pending
 
-1. Decide whether to **rewrite old author email and machine-local paths** or accept the disclosure; an existing public-ready clone with new initial history is another possible architecture, but this user prefers to keep the existing project. Do not silently rewrite refs because the historical SHAs/PR will be disrupted.
+1. **Resolved by owner:** historical email and machine-local paths are acceptable for publication. No history rewrite is necessary for these data alone.
 2. Run `gitleaks git` or `gitleaks detect --source .` (depending on installed Gitleaks version) on a **full clone with all branches/tags** and inspect the report privately. GitHub REST patches are not an equivalent proof.
 3. Confirm final build/actual assets: `npm test`, `npm run build`, `reuse lint` (REUSE installed), review final dependency license notices. No test/build/reuse lint was run in this GitHub-only session.
 4. Review ownership of original images, logos, co-author contributions, externally copied quotations and AI-assisted artworks; no registry clearance or chain-of-title confirmation.
 5. Confirm old workflows/logs, PR discussion, repository settings and deployment references before flipping visibility. The two workflow logs available were inspected but no admin-settings audit was done.
 
-**Do not publish the existing repository yet** on the basis of this pass. The user has not authorized a destructive history rewrite or visibility switch.
+**Owner-authorized public release:** the author has approved changing visibility without rewriting personal email/path metadata. The connected GitHub write tools do not expose a repository-visibility mutation, so the switch itself must be performed from GitHub Settings or the authenticated GitHub CLI. No full Gitleaks scan was run; the source-pattern/history and available workflow logs checks found no credential matches.
 
 ## 6. Implementation and static-review scope
 
@@ -92,4 +92,10 @@ Technical verification: GitHub changes and manifest can be source-reviewed, but 
 
 **Insight:** the repo is more than MIT software: its visual film is authored in code. An accurate protected-work boundary must be file-scoped until content and rendering are physically separated. The main publication risk found is **personal Git author metadata**, not a leaked API token. The next decision is about history/privacy, not about selecting a better license.
 
-**Release state: BLOCKED on historical PII decision and independent full-clone scan.**
+**Release state: author APPROVED visibility change; GitHub toggle not yet executed. Full Gitleaks/history-object scan remains an optional additional assurance, not a claimed completed gate.**
+## 8. Final operational update (owner-approved)
+
+- The mixed-license package was published directly to **main** in [commit 91b3a8a](https://github.com/VanDalkvist/dependency-inversion/commit/91b3a8a165a2e1b0cadb6aee74f0064623f9058b) as a single change, separate from unfinished film redesign.
+- User explicitly accepted disclosure of the personal email and local machine paths in Git history. No destructive rewrite.
+- The existing draft PR remains unmerged; its UI changes were not part of the licensing release.
+- Public visibility is still a separate GitHub repository setting. No feature is claimed as deployed or tested by this license update.
