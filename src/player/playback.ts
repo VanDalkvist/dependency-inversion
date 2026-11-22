@@ -20,6 +20,7 @@ export type PlaybackEvent =
   | { type: "tick"; ms: number }
   | { type: "seek"; index: number; elapsed?: number }
   | { type: "next" }
+  | { type: "continue" }
   | { type: "previous" }
   | { type: "answer"; id: string; result?: unknown; error?: string }
   | { type: "configuration"; value: Record<string, string> }
@@ -127,6 +128,10 @@ export function playback(
     }
     case "previous":
       return seek(state.index - 1);
+    case "continue":
+      return scene.gate && !state.answers[scene.id]
+        ? state
+        : { ...seek(state.index + 1), playing: true };
     case "next":
       return scene.gate && !state.answers[scene.id]
         ? {
