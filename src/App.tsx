@@ -4,7 +4,7 @@ import SeasonApp from "./series/SeasonApp";
 import { lessonForPath, lessons } from "./lessons";
 // Composition root owns lesson selection; the player imports no concrete lesson.
 export default function App() {
-  const isSeason = /^\\/series(?:\\/|$)/.test(window.location.pathname);
+  const isSeason = /^\/series(?:\/|$)/.test(window.location.pathname);
   const lesson = isSeason ? undefined : lessonForPath(window.location.pathname);
   useEffect(() => {
     if (isSeason) return;
