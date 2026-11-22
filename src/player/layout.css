@@ -60,9 +60,29 @@
   padding-bottom: 10px;
 }
 .lesson-screen .intro {
-  padding: 14px 0 12px;
-  gap: 0;
+  padding: 12px 0;
+  gap: 24px;
   min-width: 0;
+}
+.lesson-screen .intro-copy { min-width: 0; flex: 1; }
+.lesson-screen .story-kicker {
+  margin: 0 0 3px;
+  color: var(--accent);
+  font: 500 10px/1.4 var(--font-mono);
+}
+.lesson-screen .intro-purpose {
+  align-self: center;
+  max-width: 275px;
+  flex: 0 1 275px;
+  margin: 0;
+  color: var(--ink-soft);
+  font: 11px/1.5 var(--font-sans);
+}
+.lesson-screen .intro-purpose strong {
+  display: block;
+  margin-bottom: 3px;
+  font: 600 10px/1.4 var(--font-sans);
+  color: var(--ink);
 }
 .lesson-screen .intro h1 {
   font-size: clamp(24px, 2.5vw, 36px);
@@ -131,10 +151,48 @@
   line-height: 1.5;
   font-size: 10px;
 }
+.lesson-screen .stage-key {
+  flex: none;
+  margin: 0 8px 2px;
+  color: var(--ink-faint);
+  font: 10px/1.5 var(--font-sans);
+}
+.lesson-screen .stage-key summary {
+  cursor: pointer;
+  width: fit-content;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+}
+.lesson-screen .stage-key summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.lesson-screen .stage-key .stage-legend {
+  padding: 6px 0 0;
+}
+.scene-continue {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 9px;
+  min-height: 36px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  color: var(--ground);
+  background: var(--ink);
+  border: 0;
+  border-radius: 3px;
+  font: 600 11px var(--font-sans);
+}
+.scene-continue:hover:not(:disabled) { background: var(--ink-soft); }
 .lesson-screen .narration {
   min-height: 0;
   padding: 14px 16px;
   border-left: 1px solid var(--border);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .lesson-screen .narration-bottom {
   margin: 0;
@@ -369,11 +427,12 @@
     font-size: 25px;
     letter-spacing: -0.9px;
   }
-  .lesson-screen .intro > div > p {
+  .lesson-screen .intro-copy > p:not(.story-kicker) {
     font-size: 11px;
     line-height: 1.4;
     margin-top: 4px;
   }
+  .lesson-screen .intro-purpose { display: none; }
   .lesson-screen .brand-description,
   .lesson-screen .brand-divider {
     display: none;
