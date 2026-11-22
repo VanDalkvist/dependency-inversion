@@ -36,7 +36,7 @@ it("opens with Anya doing something concrete, not an abstract negative question"
 it("uses real Vanya UI progress, buttons, cards, theme and no copycat graph on first contact", () => {
   render(<App />);
   expect(document.querySelector(".ui-workflow-strip.experience-progress")).toBeTruthy();
-  expect(screen.getByRole("progressbar", { name: "Пройденная часть истории" })).toHaveAttribute("aria-valuemax", "5");
+  expect(screen.getByRole("progressbar", { name: "Пройденная часть истории" }).getAttribute("aria-valuemax")).toBe("5");
   expect(document.querySelectorAll(".story-visual .story-paper").length).toBe(1);
   expect(document.querySelectorAll(".story-visual .ui-size").length).toBeGreaterThan(0);
   expect(screen.getByRole("button", { name: "Выбирать канал перед запуском" }).className).toContain("ui-action-button");
@@ -72,7 +72,7 @@ it("reads five chosen chapters rather than nine technical quiz screens", async (
   expect((await screen.findByText("Сайт")).textContent).toBe("Сайт");
   expect(screen.getByText(/Аня заменила только канал/)).toBeTruthy();
   await nextScene("Сравнить оба выпуска", "Теперь собери свой выпуск");
-  expect(screen.getByRole("progressbar", { name: "Пройденная часть истории" })).toHaveAttribute("aria-valuenow", "5");
+  expect(screen.getByRole("progressbar", { name: "Пройденная часть истории" }).getAttribute("aria-valuenow")).toBe("5");
   expect(screen.getByRole("button", { name: "Собрать другой выпуск" })).toBeTruthy();
 });
 
@@ -80,7 +80,7 @@ it("DIP follows Anya's conflict and shows the effect of a shared publishing rule
   history.replaceState(null, "", "/");
   render(<App />);
   await nextScene("Открыть новую задачу", "Редактор попросил выпуск для сайта");
-  expect(screen.getByRole("progressbar", { name: "Пройденная часть истории" })).toHaveAttribute("aria-valuemax", "6");
+  expect(screen.getByRole("progressbar", { name: "Пройденная часть истории" }).getAttribute("aria-valuemax")).toBe("6");
   fireEvent.click(screen.getByRole("button", { name: "Добавить публикацию на сайте" }));
   expect(screen.getByText(/пришлось менять работу самого помощника/)).toBeTruthy();
   await nextScene("Посмотреть решение Ани", "Аня оставила помощнику одну задачу");
