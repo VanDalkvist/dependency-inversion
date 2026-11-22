@@ -5,7 +5,7 @@ import { lessonForPath, lessons } from "./lessons";
 export default function App() {
   const lesson = lessonForPath(window.location.pathname);
   useEffect(() => {
-    document.title = `${lesson?.title ?? "Урок не найден"} — Простые вещи`;
+    document.title = `${lesson?.title ?? "Урок не найден"} — aha! by Vanya`;
     if (lesson)
       document
         .querySelector('meta[name="description"]')
