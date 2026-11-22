@@ -43,7 +43,7 @@ it("keeps wrong choices on screen and explains the consequence without jumping",
   expect(screen.getByRole("button", { name: "Посмотреть, что дальше" })).toBeTruthy();
 });
 
-it("advances only when the learner chooses Next, then shows a readable current slot", () => {
+it("advances only when the learner chooses Next, then shows a readable current slot", async () => {
   render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Я подключу инструменты снаружи" }));
   expect(document.querySelector(".experience")?.getAttribute("data-scene")).toBe("root");
@@ -116,4 +116,16 @@ it("shows the full wordmark and makes the optional experiment available only at 
   expect(screen.getByRole("link", { name: "Vanya Arc / Aha! — интерактивные истории" })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Попробовать свои инструменты" })).toBeNull();
   expect(document.querySelector(".experience-practice")).toBeNull();
+});
+
+it("preserves the completed choice when opening and closing the technical view", () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Я подключу инструменты снаружи" }));
+  expect(screen.getByRole("button", { name: "Посмотреть, что дальше" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+  expect(document.querySelector(".film")?.getAttribute("data-scene")).toBe("root");
+  fireEvent.click(screen.getByRole("button", { name: "← Вернуться к истории" }));
+  expect(document.querySelector(".experience")?.getAttribute("data-scene")).toBe("root");
+  expect(screen.getByRole("button", { name: "Посмотреть, что дальше" })).toBeTruthy();
+  expect(screen.getByRole("status").textContent).toContain("три независимых места");
 });
