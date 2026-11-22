@@ -22,7 +22,7 @@ it("starts with one readable job, one decision and no film toolbar", () => {
   expect(story).toBeTruthy();
   expect(story.getAttribute("data-scene")).toBe("root");
   expect(within(story).getByRole("heading", { level: 1, name: "Как менять инструменты у одного помощника?" })).toBeTruthy();
-  expect(within(story).getByRole("heading", { level: 2, name: /Кто должен выбирать/ })).toBeTruthy();
+  expect(within(story).getByRole("heading", { level: 2, name: /Кто выбирает/ })).toBeTruthy();
   expect(within(story).getAllByRole("button", { name: /Я подключу инструменты|Пусть выбирает сам помощник/ })).toHaveLength(2);
   expect(document.querySelector(".stage-svg")).toBeNull();
   expect(document.querySelector(".transport")).toBeNull();
