@@ -12,12 +12,31 @@ import ExperimentPanel from "./ExperimentPanel";
 import Narration from "./Narration";
 import LessonDetails from "./LessonDetails";
 import "./layout.css";
+import GuidedExperience from "./GuidedExperience";
 type PlayerProps = {
   story: StoryDefinition;
   navigation?: readonly LessonLink[];
 };
 export default function StoryPlayer({ story, navigation }: PlayerProps) {
-  return <PlayerSession key={story.id} story={story} navigation={navigation} />;
+  const [mode, setMode] = useState<"guided" | "technical">("guided");
+  if (mode === "guided") {
+    return (
+      <GuidedExperience
+        key={story.id}
+        story={story}
+        navigation={navigation}
+        onExplore={() => setMode("technical")}
+      />
+    );
+  }
+  return (
+    <>
+      <button className="experience-mode-switch" type="button" onClick={() => setMode("guided")}>
+        ← Вернуться к истории
+      </button>
+      <PlayerSession key={story.id} story={story} navigation={navigation} />
+    </>
+  );
 }
 
 function PlayerSession({ story, navigation }: PlayerProps) {
