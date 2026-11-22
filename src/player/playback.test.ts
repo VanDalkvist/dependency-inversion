@@ -2,6 +2,24 @@ import { describe, expect, it } from "vitest";
 import { createPlayback, playback } from "./playback";
 import { fixture } from "../test/story-fixture";
 describe("generic film playback", () => {
+  it("resumes after a correct choice, without another Play", () => {
+    const done = playback(fixture, { ...createPlayback(), index: 1, elapsed: 150 }, { type: "answer", id: "yes" });
+    expect(done.playing).toBe(true);
+    expect(done.answers.b).toBe("yes");
+    expect(playback(fixture, done, { type: "tick", ms: 10000 }).index).toBe(2);
+  });
+  it("stays paused after an incorrect choice", () => {
+    const wrong = playback(fixture, { ...createPlayback(), index: 1 }, { type: "answer", id: "no" });
+    expect(wrong.playing).toBe(false);
+    expect(wrong.answers.b).toBeUndefined();
+  });
+  it("restores prior playback only after closing an inspector", () => {
+    const open = playback(fixture, { ...createPlayback(), playing: true }, { type: "inspect", id: "block" });
+    expect(open.playing).toBe(false);
+    expect(playback(fixture, open, { type: "inspect", id: null }).playing).toBe(true);
+    const paused = playback(fixture, createPlayback(), { type: "inspect", id: "block" });
+    expect(playback(fixture, paused, { type: "inspect", id: null }).playing).toBe(false);
+  });
   it("rewinds interactive transformations when seeking back to a scene", () => {
     const s = playback(
       fixture,
