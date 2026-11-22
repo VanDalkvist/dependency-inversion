@@ -258,6 +258,7 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                 hasNext={state.index < story.scenes.length - 1}
                 onContinue={() => dispatch({ type: "continue" })}
                 onShowVisual={() => setPane("graph")}
+                onReadMore={() => dispatch({ type: "pause" })}
               />
             </div>
             <div className="caption">
