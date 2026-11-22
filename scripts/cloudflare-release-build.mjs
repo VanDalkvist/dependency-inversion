@@ -51,6 +51,18 @@ for (const packageName of ["react", "react-dom"]) {
 }
 run("node", ["../vanya-ui/scripts/ui-pipeline.mjs", "inspect", "--project", root]);
 run("node", ["../vanya-ui/scripts/ui-pipeline.mjs", "check", "--project", root]);
+// When source-importing Vanya UI from an adjacent repository, its own
+// node_modules/react is a second hook dispatcher in Vitest (Invalid hook call).
+// Keep ONE physical React runtime in this disposable CI workspace.
+// This does not modify the upstream library repository or its lockfile.
+for (const packageName of ["react", "react-dom"]) {
+  const source = join(root, "node_modules", packageName);
+  const target = join(ui, "node_modules", packageName);
+  if (!existsSync(source)) throw new Error("Missing React runtime: " + source);
+  rmSync(target, { recursive: true, force: true });
+  symlinkSync(source, target, "dir");
+  console.log("[aha build] shared React runtime " + packageName + " with Vanya UI");
+}
 run("npm", ["test"]);
 run("npm", ["run", "build"]);
 run("npm", ["run", "check:licensing"]);
