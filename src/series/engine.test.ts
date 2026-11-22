@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { playChoice, isApprovedSameContent } from "./engine";
+import { playChoice, isApprovedSameContent, simulateWebsiteFailure, retryOnlyWebsite } from "./engine";
 import { APPROVED_POST, REGENERATED_POST, episodeById, nextEpisode, episodes } from "./model";
 
 describe("Фабрика Ани: четыре настоящих причины для архитектурных решений", () => {
@@ -30,6 +30,16 @@ describe("Фабрика Ани: четыре настоящих причины 
     expect(both.receipts.map(x=>x.status)).toEqual(["готово","готово"]);
     expect(isApprovedSameContent(both.receipts)).toBe(true);
     expect(both.proof).toContain("publishTelegram(post)");
+  });
+  it("a failed website send retains the exact Telegram receipt and retries only the website adapter", () => {
+    const failed=simulateWebsiteFailure();
+    expect(failed.map(x=>x.status)).toEqual(["готово","ошибка"]);
+    const telegramReceipt=failed[0];
+    const after=retryOnlyWebsite(failed);
+    expect(after[0]).toBe(telegramReceipt);
+    expect(after.map(x=>x.status)).toEqual(["готово","готово"]);
+    expect(after[1].artifact?.body).toContain("<article><h1>");
+    expect(() => retryOnlyWebsite(after)).toThrow("Нет допустимого");
   });
   it("DIP episode distinguishes site formatting fix inside core versus adapter, same draft and channel", () => {
     const before=playChoice("rules","patch-core"),after=playChoice("rules","own-rule");
