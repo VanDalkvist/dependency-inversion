@@ -104,4 +104,44 @@ Before selecting, every idea was challenged with “if I remove animation, will 
 **Owner confirmation:** NOT RECEIVED. **Human RAT:** NOT RUN. **Visual browser QA:** NOT RUN because Cloudflare Browser Rendering was rate-limited in the previous release and direct browser connector was unavailable.  
 **Next empirical test:** unprompted reader at `/di/`: where do they look in 10 seconds? can they choose without explanation? at the channel swap, can they tell what stayed unchanged? These observations determine whether to retain or further shorten the nine-beat story.
 
-The final current-turn build SHA, any repairs and status are appended to `HANDOFF.md` and `ACTIVE_CYCLE.json` only after actual verification.
+The final source-backed proof, repairs, residual risks and release status are included below. The authoritative checkpoint and handoff are updated in the same GitHub commit as this final report.
+
+## 9. Final verification and post-implementation adversarial source review
+
+### Real reproducible build evidence
+
+**Source release:** `ddc7b940f4466067f8c64a0464d004c1d0ed712f`. Manual Cloudflare build `0fd737cb-8e01-486d-9db7-76443fa76b61` reported:
+
+- Vitest: **21 test files, 100/100 tests passed**, including 8 new guided-first-use/real-run/technical-mode cases; all legacy expert-mode regressions still pass.
+- `tsc -b && vite build`: **PASS**; two HTML outputs and shared client assets; a **nonblocking JS chunk-size warning** remains (>500kB, gzip approximately 160kB).
+- `npm run check:licensing`: **PASS**, 23 reserved film/brand source files and 2 CC BY research reports. This does not equal an independently executed REUSE CLI audit.
+- Cloudflare Wrangler: **successful production deployment** of Worker `ioc` to both custom domains, final version `0cb590bf-53c5-4df4-abd2-ec9be47ca576`; explicit “Deploy command completed” and “Build completed”.
+- The prior full release `aca04512-4ba4-40ad-8dbd-8bed45ee18ba` also passed 100/100 and deployed as Worker version `f65a7fb2-b227-4144-ae43-c570fb4abed0`. The newer release includes subsequent source fixes for semantic progress and label contrast. Research/memory docs after the release do not alter runtime.
+
+### Source review — four semantic probes
+
+1. **Dependency traceability:** `src/player/StoryPlayer.tsx:25-44` → `GuidedExperience.tsx:21-54` → `presentScene/answerEvent` → unchanged `src/stories/di/lesson-model.ts` → `assembleFactory` and `runFactory`; no disconnected “pretend” story engine. `FocusedVisual.tsx:65-101` reflects the actual reducer's answer/result state, not hardcoded fake counts.
+2. **Runtime/split-brain:** the guided and technical modes are mutually exclusive and use the same `playback` event semantics, not separate business result stores; `StoryPlayer.tsx:25-49` copies `PlaybackState` during a mode switch and disables ticking. A regression test proves the completed initial choice survives a round trip to the technical mode. **Remaining P2:** a long story and mode transitions have not been watched by a real novice.
+3. **Entry point:** `App.tsx` and `lessons.ts` continue resolving `/` and `/di/`; by default `StoryPlayer` renders the new guided mode. Existing expert Stage/Inspector remain reachable only via explicit footer entry. No dead demo route; both HTML outputs built.
+4. **Implementation completeness:** actual action IDs/perform results drive next state, incorrect answers block advancement, correct decisions reveal consequence without countdown; beginner receives no graph, playback timer, chapter bar or nested inspector. `GuidedExperience.test.tsx:19-131` exercises initial composition, wrong choice, explicit continuation, real configured run, DIP causality, optional deep mode and progress retention. **No fake human interview receipt.**
+
+### Triage, bounded repairs and residual uncertainties
+
+| Priority | Finding | Action / evidence |
+|---|---|---|
+| P0 | Initial asynchronous story tests failed because Motion exit elements are removed after an animation | **FIXED**: `findByRole/findByText` correctly await the visible state; build now 100/100 |
+| P1 | First beginner experience had the old film control shell, unreadably small captions and split attention | **FIXED structurally**: `GuidedExperience` default, separate expert mode, `guided.css:5-378` with 18–20px copy and large choice controls; *UX effect still awaits users* |
+| P1 | Switching to technical details discarded a beginner's completed choices | **FIXED** in `StoryPlayer` and `usePlayback`; explicit regression test |
+| P1 | Scene transitions and answer feedback required attention/focus management | **MITIGATED**: continue gets focus after correct answer, scene heading focus after Motion completion, answer status announced, progressbar has semantic `aria-valuenow`. **Keyboard/screen reader not independently checked.** |
+| P2 | Nine total episodes can exhaust viewer before arriving at the real channel swap | **OPEN product hypothesis**, test actual time-to-insight; don't add more UI |
+| P2 | At 320×568 and 200% zoom the first decision may need a short page scroll | **NOT VERIFIED visually**. No screenshots/physical viewport metrics; the flow uses a natural single-column scroll rather than a hidden inner scroller |
+| P2 | No 3–5-person novice comprehension RAT | **NOT RUN**. Owner's original negative evaluation is evidence against the previous interface, not confirmation of this one |
+| P3 | Vite warns main JS chunk above 500 kB because expert controls still ship in main bundle | **LOG ONLY** until measured load; candidate dynamic import of expert player later |
+
+No independent second critic context was available; the critic is accurately labeled an **adversarial self-pass**. The technical tests prove execution paths, *not* emotional comprehension.
+
+### Learn and tool extraction
+
+**Learning written to** [MEMORY.md](MEMORY.md): remove the control shell first, not merely graph nodes; prioritize the plain-language decision and visible consequence. **ToolExtraction: REUSE** existing `motion/react`, Vanya UI and the original reducer; no new library, CLI, cron or GitHub Action needed. The user has not accepted this redesign yet, so the acceptance gate remains open.
+
+**Development cycle state: COMPLETE (implemented, source-reviewed, tests passed, deployed). Product UX validation: UNVERIFIED by independent novice viewers.**

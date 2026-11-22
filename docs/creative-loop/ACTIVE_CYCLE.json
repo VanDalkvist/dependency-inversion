@@ -1,29 +1,110 @@
 {
-  "schemaVersion": 1,
-  "cycleId": "ioc-film-2026-11-22-01",
+  "schemaVersion": 2,
+  "format": "ioc-film-consumer-local-adaptation",
+  "phase": "handoff",
+  "cycleId": "ioc-film-2026-11-23-02",
   "method": "world-creative-loop-adapted-educational-film",
-  "status": "SOURCE_REVIEWED_UNVERIFIED",
+  "status": "COMPLETE",
   "runMode": "ONE_INVOCATION",
-  "baseSha": "b2b2a870846e56c617c8c8a00bf1dd106c75946a",
   "repository": "VanDalkvist/dependency-inversion",
   "branch": "feat/ioc-creative-loop-ux-20261122",
   "pr": "https://github.com/VanDalkvist/dependency-inversion/pull/1",
-  "sourceMemory": "NO_MEMORY",
-  "candidateCount": 12,
-  "acceptedInterventions": 6,
-  "criticMode": "adversarial-pass-not-independent",
-  "delivery": "COMMITTED",
-  "staticReview": "SOURCE_REVIEWED",
-  "automatedTests": "NOT RUN",
-  "build": "NOT RUN",
-  "browserVisualReview": "NOT RUN",
-  "humanComprehensionRAT": "NOT RUN",
-  "deployment": "NOT DONE",
-  "release": "NOT APPROVED",
-  "research": "docs/creative-loop/2026-11-22-ioc-feedback-cycle-01.md",
+  "prDraft": true,
+  "mainMerged": false,
+  "priorResult": "OWNER_REJECTED_OVERLOADED_INTERFACE",
+  "memoryReplay": "READ_PREVIOUS_CYCLE_SUPERSEDE_GRAPH_ONLY_SIMPLIFICATION",
+  "job": "Non-developer understands one AI helper can change tools without rewriting its work",
+  "research": "docs/creative-loop/2026-11-23-first-view-rebuild-cycle-02.md",
+  "memory": "docs/creative-loop/MEMORY.md",
   "handoff": "docs/creative-loop/HANDOFF.md",
-  "blocker": "No runnable IOC / sibling Vanya UI checkout or verified browser access in this session",
-  "reviewedSourceHead": "476800ced79fb9a2176ceb5ae9e10e0f28f7301e",
-  "progressiveGraphReveal": true,
-  "readerControlledPauses": true
+  "candidateCount": 12,
+  "criticMode": "ADVERSARIAL_SELF_PASS_NOT_INDEPENDENT",
+  "vetoed": [
+    1,
+    2,
+    3,
+    12
+  ],
+  "reworked": [
+    4
+  ],
+  "selected": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "targetExperiences": 5,
+  "deliveredExperiences": 6,
+  "deliveries": [
+    {
+      "kind": "cold-start",
+      "file": "src/player/GuidedExperience.tsx",
+      "result": "Single human problem and action; expert film controls absent by default"
+    },
+    {
+      "kind": "decision-feedback",
+      "file": "src/player/guided-copy.ts",
+      "result": "Concrete source-backed action -> visible reasoning and correct vs wrong consequence"
+    },
+    {
+      "kind": "causal-visual",
+      "file": "src/player/FocusedVisual.tsx",
+      "result": "Selected source/writer/channel and actual run output change in place with Motion"
+    },
+    {
+      "kind": "reader-pacing",
+      "file": "src/player/GuidedExperience.tsx",
+      "result": "Explicit continue, no automatic timer or Play needed"
+    },
+    {
+      "kind": "optional-depth",
+      "file": "src/player/StoryPlayer.tsx",
+      "result": "Source diagram/code available only on demand with progress preserved"
+    },
+    {
+      "kind": "readability",
+      "file": "src/player/guided.css",
+      "result": "18–20px text, large options and naturally scrolling responsive layout"
+    }
+  ],
+  "runCompletion": "COMPLETE_DEV_AND_DEPLOY_NOT_HUMAN_RAT",
+  "staticReview": "SOURCE_REVIEWED_POST_IMPLEMENTATION",
+  "automatedTests": "PASS_100_OF_100_IN_21_FILES",
+  "build": "PASS_TYPESCRIPT_VITE",
+  "licenseGuard": "PASS_23_RESERVED_2_CC",
+  "release": {
+    "sourceSha": "ddc7b940f4466067f8c64a0464d004c1d0ed712f",
+    "buildId": "0fd737cb-8e01-486d-9db7-76443fa76b61",
+    "worker": "ioc",
+    "workerVersionId": "0cb590bf-53c5-4df4-abd2-ec9be47ca576",
+    "domains": [
+      "aha.vanya-arc.dev",
+      "ioc.vanya-arc.dev"
+    ],
+    "status": "DEPLOYED_MANUAL_CLOUDFLARE_BUILDS"
+  },
+  "browserVisualReview": "NOT_RUN",
+  "humanComprehensionRAT": "NOT_RUN",
+  "keyboardAndAccessibilityManualReview": "NOT_RUN",
+  "productAcceptance": "NOT_CONFIRMED_BY_OWNER_OR_NOVICE_REVIEW",
+  "risks": [
+    "Nine scenes may be too long",
+    "320px screenshot & 200% zoom not checked",
+    "No independent comprehension sessions",
+    "Large JS bundle warning"
+  ],
+  "learning": "Previously simplified diagrams did not repair an overloaded shell. Replace primary mode with a focused reader journey.",
+  "toolExtraction": {
+    "decision": "REUSE",
+    "tools": [
+      "Motion",
+      "Vanya UI",
+      "existing player reducer"
+    ],
+    "newFramework": false
+  }
 }
