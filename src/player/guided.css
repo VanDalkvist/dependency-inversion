@@ -52,11 +52,13 @@
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  min-height: 42px;
+  min-height: 28px;
   margin: 0;
-  padding: 0 0 18px;
-  gap: 16px;
-  border-bottom: 1px solid var(--border);
+  padding: 0;
+  gap: 12px;
+  /* The page header owns the only separator. Vanya UI's generic
+     WorkflowStrip has a border-block default; suppress both edges here. */
+  border: 0;
   background: transparent;
 }
 .experience-progress .ui-workflow-strip-leading {
