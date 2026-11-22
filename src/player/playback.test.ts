@@ -8,6 +8,17 @@ describe("generic film playback", () => {
     expect(done.answers.b).toBe("yes");
     expect(playback(fixture, done, { type: "tick", ms: 10000 }).index).toBe(2);
   });
+  it("continue starts the next scene rather than requiring Play", () => {
+    const solved = playback(fixture, { ...createPlayback(), index: 1 }, { type: "answer", id: "yes" });
+    const next = playback(fixture, solved, { type: "continue" });
+    expect(next.index).toBe(2);
+    expect(next.playing).toBe(true);
+  });
+  it("does not skip an unresolved gate with continue", () => {
+    const blocked = playback(fixture, { ...createPlayback(), index: 1 }, { type: "continue" });
+    expect(blocked.index).toBe(1);
+    expect(blocked.playing).toBe(false);
+  });
   it("stays paused after an incorrect choice", () => {
     const wrong = playback(fixture, { ...createPlayback(), index: 1 }, { type: "answer", id: "no" });
     expect(wrong.playing).toBe(false);
