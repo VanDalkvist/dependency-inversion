@@ -33,7 +33,7 @@ describe("Фабрика Ани: четыре настоящих причины 
   });
   it("DIP episode distinguishes site formatting fix inside core versus adapter, same draft and channel", () => {
     const before=playChoice("rules","patch-core"),after=playChoice("rules","own-rule");
-    expect(before.changed).toContain("Фабрика");
+    expect(before.changed).toBe("Сама фабрика · contentFactory");
     expect(after.changed).toContain("websitePublisher");
     expect(after.unchanged).toContain("Фабрика");
     expect(after.proof).toBe("Factory → Publisher ← WebsitePublisher");

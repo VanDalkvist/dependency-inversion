@@ -26,7 +26,7 @@ it("episode 1 reveals a visible conflicting date, then resolves it with one appr
   render(<App/>);
   fireEvent.click(screen.getByRole("button",{name:"Посмотреть публикацию на сайте"}));
   expect(await screen.findByRole("heading",{level:1,name:"На сайте появилась другая дата."})).toBeTruthy();
-  expect(screen.getByText(/воскресенье в 12:00/)).toBeTruthy();
+  expect(screen.getAllByText(/воскресенье в 12:00/)).toHaveLength(2);
   fireEvent.click(screen.getByRole("button",{name:"Снова написать текст для сайта"}));
   expect(screen.getByRole("status").textContent).toContain("Тексты разошлись");
   expect(screen.queryByRole("button",{name:/Следующая серия/})).toBeNull();
@@ -46,7 +46,7 @@ it("episode 2 displays two receipts and makes partial failure recoverable withou
   fireEvent.click(screen.getByRole("button",{name:"Собрать одну команду из двух публикаций"}));
   expect(screen.getByRole("status").textContent).toContain("Оба канала");
   fireEvent.click(screen.getByRole("button",{name:"Проверить, что будет при ошибке сайта"}));
-  expect(screen.getByRole("status").textContent).toContain("не принимает пост");
+  expect(screen.getAllByRole("status").some((n)=>n.textContent?.includes("не принимает пост"))).toBe(true);
   expect(document.querySelector('.season-receipt[data-status="ошибка"]')).toBeTruthy();
   fireEvent.click(screen.getByRole("button",{name:"Повторить только публикацию на сайте"}));
   expect(screen.getByText(/Telegram не отправляли второй раз/)).toBeTruthy();
