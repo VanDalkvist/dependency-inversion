@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Maximize2, Moon, Sun } from "lucide-react";
 import { useTheme } from "@vanya/ui";
@@ -26,16 +26,12 @@ function PlayerSession({ story, navigation }: PlayerProps) {
   const screen = useRef<HTMLDivElement>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [pane, setPane] = useState<"graph" | "text">("text");
+  // Each new scene returns mobile readers to the narrative action;
+  // a previous graph inspection must not hide the next question.
+  useEffect(() => setPane("text"), [scene.id]);
   function answer(id: string) {
     dispatch(answerEvent(scene, state, id));
-    if (scene.revealOnAction && pane !== "graph") {
-      setPane("graph");
-      if (window.matchMedia("(max-width: 900px)").matches)
-        requestAnimationFrame(() => {
-          const target=screen.current?.querySelector<SVGElement>('.node-select[aria-pressed="true"]') ?? screen.current?.querySelector<SVGElement>(".node-select, .node-open-document, .node-info") ?? screen.current?.querySelector<SVGElement>(".stage-node");
-          target?.focus();
-        });
-    }
+    // The reader decides when to inspect the graph; don't steal focus or hide feedback.
   }
   const answered = !!state.answers[scene.id];
   const sceneViews =
@@ -260,7 +256,8 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                 feedback={state.feedback}
                 onAnswer={answer}
                 hasNext={state.index < story.scenes.length - 1}
-                onContinue={() => dispatch({ type: "next" })}
+                onContinue={() => dispatch({ type: "continue" })}
+                onShowVisual={() => setPane("graph")}
               />
             </div>
             <div className="caption">
