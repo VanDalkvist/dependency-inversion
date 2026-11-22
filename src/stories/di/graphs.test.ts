@@ -1,6 +1,26 @@
 import { expect, it } from "vitest";
 import { createPlayback } from "../../player/playback";
 import { lessonView } from "./graphs";
+it("starts with one understandable helper, not the complete service catalogue", () => {
+  const first = lessonView(createPlayback(), 0);
+  expect(first.nodes.map((n) => n.id)).toEqual(["scenario"]);
+  expect(first.nodes[0].label).toBe("Помощник для выпуска");
+  expect(first.nodes[0].lines).toBeUndefined();
+  expect(first.regions).toEqual([]);
+});
+it("progressively reveals only the services relevant to the current decision", () => {
+  const ctx = createPlayback();
+  const source = lessonView(ctx, 1);
+  expect(source.nodes.some((n) => n.id === "source-rss")).toBe(true);
+  expect(source.nodes.some((n) => n.id === "writer-cloud")).toBe(false);
+  expect(source.nodes.some((n) => n.id === "publisher-telegram")).toBe(false);
+  const writer = lessonView(ctx, 2);
+  expect(writer.nodes.some((n) => n.id === "writer-cloud")).toBe(true);
+  expect(writer.nodes.some((n) => n.id === "publisher-website")).toBe(false);
+  expect(writer.nodes.filter((n) => n.action).map((n) => n.action!.id)).toEqual(["cloud", "local"]);
+  const afterWrong = lessonView({ ...ctx, attempt: "inside" }, 0);
+  expect(afterWrong.nodes.some((n) => n.id === "publisher-telegram")).toBe(true);
+});
 it("moves the actual chosen card from the catalog into its matching slot", () => {
   const ctx = createPlayback();
   const before = lessonView(ctx, 1);
