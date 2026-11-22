@@ -107,6 +107,8 @@ export type StoryDefinition = {
   id: string;
   title: string;
   subtitle: string;
+  hook?: string;
+  purpose?: string;
   topic?: string;
   conclusion?: { title: string; body: string };
   viewLabels?: Record<string, string>;
