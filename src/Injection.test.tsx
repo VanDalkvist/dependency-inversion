@@ -6,6 +6,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import App from "./App";
 import { runInjectionExperiment } from "./stories/di/experiment";
@@ -41,7 +42,8 @@ it("keeps the mobile explanation visible and offers one obvious next action", as
     expect(document.querySelector(".film")?.getAttribute("data-scene")).toBe("source"),
   );
   expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
-  expect(screen.getByRole("button", { name: "Выбрать RSS" })).toBeTruthy();
+  const narration = document.querySelector(".narration") as HTMLElement;
+  expect(within(narration).getByRole("button", { name: "Выбрать RSS" })).toBeTruthy();
 });
 it("does not advance underneath a deliberately opened explanation", () => {
   render(<App />);

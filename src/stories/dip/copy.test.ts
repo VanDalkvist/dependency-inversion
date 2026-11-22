@@ -4,8 +4,9 @@ import { runExperiment } from "./experiment";
 import { architecture } from "./graphs";
 
 describe("content factory explanation",()=>{
-  it("establishes the content factory and concrete workflow before introducing contracts",()=>{
-    expect(story.subtitle).toContain("фабрики контента");
+  it("introduces the familiar helper before revealing the factory and contracts",()=>{
+    expect(story.hook).toContain("Как не привязать помощника");
+    expect(story.subtitle).toContain("помощника для выпуска новостей");
     expect(story.scenes[0].body).toContain("Фабрика контента");
     expect(story.scenes[0].body).toContain("согласования");
     expect(story.scenes[0].body).toContain("Telegram");
