@@ -31,7 +31,7 @@ describe("DIP film user journeys", () => {
   it("shows the lesson subject in the page heading", () => {
     render(<App />);
     expect(
-      screen.getByRole("heading", { level: 1, name: "Инверсия зависимостей" }),
+      screen.getByRole("heading", { level: 1, name: "Как не привязать помощника к одному сервису?" }),
     ).toBeTruthy();
     expect(
       screen.getByRole("heading", {
