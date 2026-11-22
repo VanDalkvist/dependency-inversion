@@ -92,9 +92,14 @@ describe("DIP film user journeys", () => {
       (document.querySelector(".narration-body") as HTMLElement).hidden,
     ).toBe(true);
   });
-  it("links the header back to the main website", () => {
+  it("shows the aha! series and links the author to the main website", () => {
     render(<App />);
-    const link = screen.getByRole("link", { name: "vanya-arc.dev" });
+    const brand = screen.getByRole("link", {
+      name: "aha! — интерактивные объяснения",
+    });
+    expect(brand.getAttribute("href")).toBe("/");
+    expect(brand.closest("header")).toBeTruthy();
+    const link = screen.getByRole("link", { name: /by Vanya/ });
     expect(link.getAttribute("href")).toBe("https://vanya-arc.dev/");
     expect(link.getAttribute("target")).toBe("_blank");
     expect(link.getAttribute("rel")?.split(/\s+/)).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
