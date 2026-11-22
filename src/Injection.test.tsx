@@ -25,6 +25,19 @@ afterEach(() => {
   cleanup();
   history.replaceState(null, "", "/");
 });
+it("keeps the mobile explanation visible and offers one obvious next action", async () => {
+  render(<App />);
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
+  fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
+  expect(screen.getByRole("button", { name: /Посмотреть, что изменилось на схеме/ })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Дальше сейчас" }));
+  await waitFor(() =>
+    expect(document.querySelector(".film")?.getAttribute("data-scene")).toBe("source"),
+  );
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
+  expect(screen.getByRole("button", { name: "Выбрать RSS" })).toBeTruthy();
+});
 it("builds through clickable cards and carries selections into the sandbox", async () => {
   render(<App />);
   fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 2:/ }));
