@@ -57,14 +57,25 @@ function PlayerSession({ story, navigation }: PlayerProps) {
           Перейти к фильму
         </a>
         <header className="site-header">
-          <a className="wordmark" href="/" aria-label="Простые вещи">
-            <span className="brand-mark">↗</span>
-            <strong>Простые вещи</strong>
-            <span className="brand-divider" />
-            <span className="brand-description">
-              Архитектура, которую можно потрогать
-            </span>
-          </a>
+          <div className="brand-lockup">
+            <a
+              className="wordmark"
+              href="/"
+              aria-label="aha! — интерактивные объяснения"
+            >
+              <strong>
+                aha<span className="brand-bang">!</span>
+              </strong>
+            </a>
+            <a
+              className="brand-credit"
+              href="https://vanya-arc.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              by Vanya <ArrowUpRight size={11} aria-hidden="true" />
+            </a>
+          </div>
           {!!navigation?.length && (
             <nav className="lesson-nav" aria-label="Уроки">
               {navigation.map((link) => (
@@ -80,15 +91,6 @@ function PlayerSession({ story, navigation }: PlayerProps) {
             </nav>
           )}
           <div className="header-actions">
-            <a
-              className="home-link"
-              href="https://vanya-arc.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              vanya-arc.dev
-              <ArrowUpRight size={13} />
-            </a>
             <button
               className="icon-button"
               aria-label={
@@ -287,7 +289,7 @@ function PlayerSession({ story, navigation }: PlayerProps) {
           </div>
         </main>
         <footer>
-          <span>Простые вещи · интерактивные объяснения</span>
+          <span>aha! · интерактивные истории, в которых сложное становится понятным</span>
           <LessonDetails
             conclusion={story.conclusion}
             sources={story.sources}
