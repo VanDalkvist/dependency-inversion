@@ -91,7 +91,7 @@
 .experience-eyebrow {
   font-size: 14px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--ink-soft);
   margin-bottom: 8px;
 }
 .experience-introduction h1 {
@@ -271,7 +271,7 @@
 .experience-feedback.is-success { color: var(--ink); font-weight: 550; margin: 7px 0 18px; }
 .experience-selected {
   font-size: 15px;
-  color: var(--accent);
+  color: var(--ink);
   display: inline-flex;
   align-items: center;
   gap: 8px;

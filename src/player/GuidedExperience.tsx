@@ -77,7 +77,9 @@ export default function GuidedExperience({ story, navigation, onExplore, initial
       </header>
 
       <main className="experience-main" id="experience-content">
-        <div className="experience-progress" aria-label={`Шаг ${state.index + 1} из ${story.scenes.length}`}>
+        <div className="experience-progress" role="progressbar" aria-valuemin={1}
+          aria-valuemax={story.scenes.length} aria-valuenow={state.index + 1}
+          aria-label={`Шаг ${state.index + 1} из ${story.scenes.length}`}>
           <span>История <b>{state.index + 1} / {story.scenes.length}</b></span>
           <div className="experience-progress-track" aria-hidden="true">
             <motion.div initial={false}
