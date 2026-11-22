@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Bot, CheckCircle2, FileText, Globe2, MessageCircle, RotateCcw, TriangleAlert, Wrench } from "lucide-react";
-import { ActionButton, CraftCard, Tag, ThemeToggle, WorkflowStrip } from "@vanya/ui";
+import { ActionButton, CraftCard, Tag, ThemeToggle, WorkflowStrip, useTheme } from "@vanya/ui";
 import { APPROVED_POST, REGENERATED_POST, episodes, episodeById, nextEpisode, type Episode, type ChoiceId, type EpisodeId } from "./model";
-import { isApprovedSameContent, playChoice, type EpisodeResult, type PublicationReceipt } from "./engine";
+import { isApprovedSameContent, playChoice, retryOnlyWebsite, simulateWebsiteFailure, type EpisodeResult, type PublicationReceipt } from "./engine";
 import "./season.css";
 
 type StageProps = {
@@ -29,10 +29,13 @@ function Receipt({ receipt }: { receipt: PublicationReceipt }) {
 }
 function Stage({ episode, problemVisible, result, websiteFailed, websiteRecovered }: StageProps) {
   const reduced = useReducedMotion();
-  let receipts = result?.receipts ?? [];
-  if (episode.id === "both-channels" && result?.choice === "compose" && websiteFailed && !websiteRecovered) {
-    receipts = receipts.map((r) => r.channel === "Сайт" ? {...r, status:"ошибка" as const} : r);
-  }
+  const receipts = useMemo(() => {
+    if (episode.id !== "both-channels" || result?.choice !== "compose" || !websiteFailed)
+      return result?.receipts ?? [];
+    const failed = simulateWebsiteFailure();
+    return websiteRecovered ? retryOnlyWebsite(failed) : failed;
+  }, [episode.id, result, websiteFailed, websiteRecovered]);
+  const fullyDelivered = !!result?.achieved && (!websiteFailed || websiteRecovered);
   const stageNote = episode.id === "one-post"
     ? "Один утверждённый текст. Сравните дату в обоих каналах."
     : episode.id === "both-channels"
@@ -45,7 +48,7 @@ function Stage({ episode, problemVisible, result, websiteFailed, websiteRecovere
   return <aside className="season-stage" aria-label="Сцена с результатами фабрики">
     <div className="season-stage-header">
       <span>РАБОЧИЙ СТОЛ АНИ</span>
-      <Tag size="md" isActive={!!result?.achieved}>{result?.achieved ? "Изменение видно" : problemVisible ? "Есть задача" : "Начало"}</Tag>
+      <Tag size="md" isActive={fullyDelivered}>{fullyDelivered ? "Изменение видно" : websiteFailed ? "Частичный результат" : problemVisible ? "Есть задача" : "Начало"}</Tag>
     </div>
     {episode.id === "rules" ? (
       <div className="season-rules">
@@ -116,6 +119,7 @@ export default function SeasonApp() {
   const [websiteFailed, setWebsiteFailed] = useState(false);
   const [websiteRecovered, setWebsiteRecovered] = useState(false);
   const reduced = useReducedMotion();
+  const {resolvedTheme} = useTheme();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
   const episode = episodeById(episodeId);
@@ -125,6 +129,15 @@ export default function SeasonApp() {
   // not again on every UI render or when we reveal a partial-failure example.
   const result = useMemo(() => choice ? playChoice(episode.id, choice) : null, [episode.id, choice]);
   useEffect(() => {
+    const restore = () => {
+      const selected = episodeById(new URLSearchParams(window.location.search).get("episode"));
+      setEpisodeId(selected.id);
+      setProblemVisible(false);setChoice(null);setWebsiteFailed(false);setWebsiteRecovered(false);
+    };
+    window.addEventListener("popstate", restore);
+    return () => window.removeEventListener("popstate", restore);
+  }, []);
+  useEffect(() => {
     document.title = `${episode.name} — Фабрика Ани · Vanya Arc / Aha!`;
     if(firstRender.current){firstRender.current=false;return}
     titleRef.current?.focus();
@@ -133,12 +146,12 @@ export default function SeasonApp() {
     history.pushState(null,"",`/series/?episode=${id}`);
     setEpisodeId(id);setProblemVisible(false);setChoice(null);setWebsiteFailed(false);setWebsiteRecovered(false);
   }
-  const canContinue = !!result?.achieved;
+  const canContinue = !!result?.achieved && (!websiteFailed || websiteRecovered);
   return <div className="season" data-episode={episode.id} data-beat={problemVisible ? "problem" : "intro"}>
     <a className="skip-link" href="#season-story">Перейти к истории</a>
     <header className="season-header">
       <a href="/" className="season-brand" aria-label="Vanya Arc / Aha! — главная">
-        <img src="/aha-impulse-mark.svg" alt="" width="44" height="28"/>
+        <img src={resolvedTheme==="dark"?"/aha-impulse-mark-dark.svg":"/aha-impulse-mark.svg"} alt="" width="44" height="28"/>
         <span>Vanya Arc <span>/</span> <strong>Aha!</strong></span>
       </a>
       <ThemeToggle variant="dropdown"/>
@@ -182,16 +195,16 @@ export default function SeasonApp() {
                 {result && <motion.div className="season-consequence" role="status"
                   key={result.choice} initial={reduced ? false : {opacity:0,y:7}} animate={{opacity:1,y:0}}>
                   <div className="season-consequence-heading">
-                    {result.achieved ? <CheckCircle2 size={22} aria-hidden="true"/> : <TriangleAlert size={22} aria-hidden="true"/>}
-                    <strong>{result.heading}</strong>
+                    {canContinue ? <CheckCircle2 size={22} aria-hidden="true"/> : <TriangleAlert size={22} aria-hidden="true"/>}
+                    <strong>{websiteFailed && !websiteRecovered ? "Сайт не получил пост. Telegram уже получил." : result.heading}</strong>
                   </div>
-                  <p>{result.explanation}</p>
+                  <p>{websiteFailed && !websiteRecovered ? "Пост не нужно генерировать заново и отправлять в Telegram повторно. Исправим только сайт." : result.explanation}</p>
                   <dl>
                     <div><dt>Изменилось</dt><dd>{result.changed}</dd></div>
                     <div><dt>Осталось</dt><dd>{result.unchanged}</dd></div>
                   </dl>
                 </motion.div>}
-                {episode.id==="both-channels" && canContinue && (
+                {episode.id==="both-channels" && !!result?.achieved && (
                   <div className="season-failure">
                     {!websiteFailed ? <ActionButton variant="text" size="md" onClick={()=>setWebsiteFailed(true)}>
                       Проверить, что будет при ошибке сайта
