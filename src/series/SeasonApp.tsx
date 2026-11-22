@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Bot, CheckCircle2, FileText, Globe2, MessageCircle, RotateCcw, TriangleAlert, Wrench } from "lucide-react";
 import { ActionButton, CraftCard, Tag, ThemeToggle, WorkflowStrip } from "@vanya/ui";
@@ -121,12 +121,12 @@ export default function SeasonApp() {
   const episode = episodeById(episodeId);
   const next = nextEpisode(episode);
   const beat = problemVisible ? episode.problem : episode.start;
-  const result = choice ? playChoice(episode.id, choice) : null;
+  // Publishing adapters are local but their calls must still run once per choice,\n  // not again on every UI render or when we reveal a partial-failure example.\n  const result = useMemo(() => choice ? playChoice(episode.id, choice) : null, [episode.id, choice]);
   useEffect(() => {
     document.title = `${episode.name} — Фабрика Ани · Vanya Arc / Aha!`;
     if(firstRender.current){firstRender.current=false;return}
     titleRef.current?.focus();
-  }, [episodeId, problemVisible, choice, episode.name]);
+  }, [episodeId, problemVisible, episode.name]);
   function chooseNext(id: EpisodeId) {
     history.pushState(null,"",`/series/?episode=${id}`);
     setEpisodeId(id);setProblemVisible(false);setChoice(null);setWebsiteFailed(false);setWebsiteRecovered(false);
