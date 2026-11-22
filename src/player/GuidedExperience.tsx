@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Moon, RotateCcw, Sun } from "lucide-react
 import { useTheme } from "@vanya/ui";
 import type { LessonLink, StoryDefinition } from "./contracts";
 import { answerEvent, presentScene } from "./interaction";
-import { createPlayback, playback } from "./playback";
+import { createPlayback, playback, type PlaybackState } from "./playback";
 import { guidedActionLabel, guidedBeat } from "./guided-copy";
 import FocusedVisual from "./FocusedVisual";
 import ExperimentPanel from "./ExperimentPanel";
@@ -14,17 +14,17 @@ import "./guided.css";
 type Props = {
   story: StoryDefinition;
   navigation?: readonly LessonLink[];
-  onExplore: () => void;
+  onExplore: (state: PlaybackState) => void;
+  initialState?: PlaybackState | null;
 };
 
-export default function GuidedExperience({ story, navigation, onExplore }: Props) {
+export default function GuidedExperience({ story, navigation, onExplore, initialState }: Props) {
   // Exactly one state owner: this is the same reducer and action.perform()
   // used by the technical projection, without autoplay or a second fake model.
   const [state, dispatch] = useReducer(
     (s: ReturnType<typeof createPlayback>, e: Parameters<typeof playback>[2]) =>
       playback(story, s, e),
-    undefined,
-    createPlayback,
+    initialState ?? createPlayback(),
   );
   const scene = presentScene(story.scenes[state.index], state);
   const beat = guidedBeat(story.id, scene);
@@ -33,14 +33,11 @@ export default function GuidedExperience({ story, navigation, onExplore }: Props
   const { resolvedTheme, setTheme } = useTheme();
   const [practice, setPractice] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
+  const continueButton = useRef<HTMLButtonElement>(null);
   const firstScene = useRef(true);
   useEffect(() => {
-    if (firstScene.current) {
-      firstScene.current = false;
-      return;
-    }
-    heading.current?.focus();
-  }, [scene.id]);
+    if (answered) continueButton.current?.focus();
+  }, [answered]);
   const choose = (id: string) => {
     dispatch(answerEvent(scene, state, id));
     // The reducer's generic auto-play semantics remain available to the
@@ -97,6 +94,10 @@ export default function GuidedExperience({ story, navigation, onExplore }: Props
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: .22 }}
+            onAnimationComplete={() => {
+              if (firstScene.current) firstScene.current = false;
+              else heading.current?.focus();
+            }}
           >
             <div className="experience-introduction">
               <p className="experience-eyebrow">{state.index === 0 ? "Начнём с обычной ситуации" : "Что происходит дальше"}</p>
@@ -152,7 +153,7 @@ export default function GuidedExperience({ story, navigation, onExplore }: Props
                       )}
                     </div>
                   ) : (
-                    <button className="experience-primary" type="button" onClick={advance}>
+                    <button ref={continueButton} className="experience-primary" type="button" onClick={advance}>
                       {state.index === 0 && !answered ? "Начать историю" : answered ? "Посмотреть, что дальше" : "Продолжить"}
                       <ArrowRight size={20} aria-hidden="true" />
                     </button>
@@ -184,7 +185,7 @@ export default function GuidedExperience({ story, navigation, onExplore }: Props
       <footer className="experience-footer">
         <span>Для тех, кто хочет глубже</span>
         <div className="experience-extra-links">
-          <button onClick={onExplore} type="button">Исследовать схему и код</button>
+          <button onClick={() => onExplore(state)} type="button">Исследовать схему и код</button>
           <LessonDetails conclusion={story.conclusion} sources={story.sources} />
           {otherLessons.map((item) => <a href={item.href} key={item.href}>{item.title}</a>)}
         </div>

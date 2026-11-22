@@ -5,6 +5,7 @@ import { useTheme } from "@vanya/ui";
 import type { LessonLink, StoryDefinition } from "./contracts";
 import { usePlayback } from "./usePlayback";
 import { answerEvent } from "./interaction";
+import type { PlaybackState } from "./playback";
 import Stage from "./Stage";
 import Transport from "./Transport";
 import Inspector from "./Inspector";
@@ -19,28 +20,44 @@ type PlayerProps = {
 };
 export default function StoryPlayer({ story, navigation }: PlayerProps) {
   const [mode, setMode] = useState<"guided" | "technical">("guided");
+  const [handoff, setHandoff] = useState<{ storyId: string; state: PlaybackState } | null>(null);
+  const saved = handoff?.storyId === story.id ? handoff.state : null;
+  function switchMode(next: "guided" | "technical", state: PlaybackState) {
+    setHandoff({ storyId: story.id, state: { ...state, playing: false, resumeAfterInspect: false } });
+    setMode(next);
+  }
   if (mode === "guided") {
     return (
       <GuidedExperience
         key={story.id}
         story={story}
         navigation={navigation}
-        onExplore={() => setMode("technical")}
+        initialState={saved}
+        onExplore={(state) => switchMode("technical", state)}
       />
     );
   }
   return (
-    <>
-      <button className="experience-mode-switch" type="button" onClick={() => setMode("guided")}>
-        ← Вернуться к истории
-      </button>
-      <PlayerSession key={story.id} story={story} navigation={navigation} />
-    </>
+    <PlayerSession
+      key={story.id}
+      story={story}
+      navigation={navigation}
+      initialState={saved}
+      onReturn={(state) => switchMode("guided", state)}
+    />
   );
 }
 
-function PlayerSession({ story, navigation }: PlayerProps) {
-  const { state, dispatch, scene } = usePlayback(story);
+function PlayerSession({
+  story,
+  navigation,
+  initialState,
+  onReturn,
+}: PlayerProps & {
+  initialState?: PlaybackState | null;
+  onReturn: (state: PlaybackState) => void;
+}) {
+  const { state, dispatch, scene } = usePlayback(story, initialState);
   const { resolvedTheme, setTheme } = useTheme();
   const screen = useRef<HTMLDivElement>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -70,8 +87,12 @@ function PlayerSession({ story, navigation }: PlayerProps) {
     }
   }
   return (
-    <div className={`app-shell${navigation?.length ? " has-lesson-nav" : ""}`}>
-      <div className="lesson-screen">
+    <>
+      <button className="experience-mode-switch" type="button" onClick={() => onReturn(state)}>
+        ← Вернуться к истории
+      </button>
+      <div className={`app-shell${navigation?.length ? " has-lesson-nav" : ""}`}>
+        <div className="lesson-screen">
         <a className="skip-link" href="#film">
           Перейти к фильму
         </a>
@@ -328,6 +349,7 @@ function PlayerSession({ story, navigation }: PlayerProps) {
           />
         </section>
       )}
-    </div>
+      </div>
+    </>
   );
 }
