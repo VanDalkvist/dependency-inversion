@@ -10,6 +10,8 @@ export default function Narration({
   answer,
   feedback,
   onAnswer,
+  hasNext,
+  onContinue,
 }: {
   scene: StoryScene;
   playing: boolean;
@@ -17,6 +19,8 @@ export default function Narration({
   answer?: string;
   feedback: string | null;
   onAnswer: (id: string) => void;
+  hasNext: boolean;
+  onContinue: () => void;
 }) {
   const [readingOriginal, setReadingOriginal] = useState(false);
   const [insightOpen, setInsightOpen] = useState(false);
@@ -31,7 +35,7 @@ export default function Narration({
         ) : answered ? (
           <>
             <Check size={13} />
-            Шаг завершён
+            Получилось!
           </>
         ) : (
           <>
@@ -105,6 +109,11 @@ export default function Narration({
           {readingOriginal ? "Показать ответ" : "Показать объяснение"}
         </button>
       )}
+      {answered && hasNext && (
+        <button className="scene-continue" onClick={onContinue}>
+          Дальше сейчас <ArrowRight size={16} />
+        </button>
+      )
       <div className="narration-bottom">
         {insightOpen && scene.insight && (
           <Dialog
