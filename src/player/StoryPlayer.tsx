@@ -114,10 +114,17 @@ function PlayerSession({ story, navigation }: PlayerProps) {
         </header>
         <main className="lesson-main">
           <section className="intro">
-            <div>
-              <h1>{story.title}</h1>
+            <div className="intro-copy">
+              {story.hook && <p className="story-kicker">{story.title}</p>}
+              <h1>{story.hook ?? story.title}</h1>
               <p>{story.subtitle}</p>
             </div>
+            {story.purpose && (
+              <p className="intro-purpose">
+                <strong>Что увидишь</strong>
+                {story.purpose}
+              </p>
+            )}
           </section>
           <div
             id="film"
@@ -159,8 +166,12 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                 {String(state.index + 1).padStart(2, "0")}{" "}
                 <span>/ {String(story.scenes.length).padStart(2, "0")}</span>
               </span>
-              <span className="film-topic">
-                {story.topic ?? story.subtitle}
+              <span className="film-topic" role="status">
+                {scene.gate && !answered
+                  ? "Твой ход: выбери вариант"
+                  : state.playing
+                    ? "История продолжается"
+                    : "Исследуй сцену"}
               </span>
               <div
                 className="pane-toggle"
@@ -180,21 +191,23 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                   Текст{scene.gate && !answered ? " · действие" : ""}
                 </button>
               </div>
-              <div
-                className="view-toggle"
-                role="group"
-                aria-label="Режим схемы"
-              >
-                {Object.keys(sceneViews).map((key) => (
-                  <button
-                    key={key}
-                    aria-pressed={activeView === key}
-                    onClick={() => dispatch({ type: "view", view: key })}
-                  >
-                    {story.viewLabels?.[key] ?? key}
-                  </button>
-                ))}
-              </div>
+              {Object.keys(sceneViews).length > 1 && (
+                <div
+                  className="view-toggle"
+                  role="group"
+                  aria-label="Режим схемы"
+                >
+                  {Object.keys(sceneViews).map((key) => (
+                    <button
+                      key={key}
+                      aria-pressed={activeView === key}
+                      onClick={() => dispatch({ type: "view", view: key })}
+                    >
+                      {story.viewLabels?.[key] ?? key}
+                    </button>
+                  ))}
+                </div>
+              )
               <button
                 className="icon-button fullscreen-button"
                 onClick={fullscreen}
@@ -218,29 +231,25 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                   onInspect={(id) => dispatch({ type: "inspect", id })}
                   onAction={answer}
                 />
-                <div className="stage-legend">
-                  <span>
-                    <span className="legend-square contract-square" />
-                    Контракт
-                  </span>
-                  <span>
-                    <span className="legend-square" />
-                    Реализация
-                  </span>
-                  <span className="inspect-hint">
-                    {view.explicitControls
-                      ? "Выбрать — подключение · ⓘ — описание"
-                      : view.nodes.some((n) => n.action)
-                        ? "+ Подключить · ↗ Подробнее"
-                        : "Нажми на блок ↗"}
-                  </span>
-                  <span className="mobile-stage-hint">
-                    {view.explicitControls
-                      ? "Выбор: «Выбрать» · описание: ⓘ"
-                      : "↗ Детали — по клику на блок"}
-                  </span>
-                </div>
-                <p className="graph-note">{view.note ?? " "}</p>
+                <details className="stage-key">
+                  <summary>Как читать схему</summary>
+                  <div className="stage-legend">
+                    <span>
+                      <span className="legend-square contract-square" />
+                      Контракт
+                    </span>
+                    <span>
+                      <span className="legend-square" />
+                      Реализация
+                    </span>
+                    <span className="inspect-hint">
+                      {view.explicitControls
+                        ? "Выбрать — подключить · ⓘ — подробности"
+                        : "Нажми на блок для подробностей"}
+                    </span>
+                  </div>
+                  <p className="graph-note">{view.note ?? ""}</p>
+                </details>
               </div>
               <Narration
                 key={scene.id}
@@ -250,6 +259,8 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                 answer={state.attempt ?? state.answers[scene.id]}
                 feedback={state.feedback}
                 onAnswer={answer}
+                hasNext={state.index < story.scenes.length - 1}
+                onContinue={() => dispatch({ type: "next" })}
               />
             </div>
             <div className="caption">
