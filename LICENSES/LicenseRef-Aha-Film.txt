@@ -1,0 +1,42 @@
+aha! Film and Visual Work — Reserved Rights and Limited Uses
+Copyright © 2026 Vanya Afanasov, to the extent these rights are held.
+
+SCOPE
+This notice applies only to the original film/story expression, original
+illustrations and diagrams, film-specific layout and CSS presentation, and
+brand artwork identified as "LicenseRef-Aha-Film" in REUSE.toml and LICENSING.md.
+It does NOT apply to files explicitly released under MIT or CC BY 4.0,
+external works, independent ideas, algorithms or third-party trademarks.
+
+RIGHTS RESERVED
+No permission is granted to reproduce, modify, redistribute, sublicense,
+commercially exploit, rebrand, or incorporate the protected work into another
+product, except for the limited permissions and applicable legal exceptions
+below. Publication of the source on GitHub does not grant a general license
+to the protected artistic expression.
+
+LIMITED PERMISSIONS
+You may view and inspect the work, run the unchanged film locally for personal
+evaluation, education or review, and link to or factually describe the original
+project with appropriate identification. You may make otherwise legally
+permitted quotations, criticism, accessibility uses and references; nothing
+here limits exceptions and rights provided by applicable law. GitHub's own
+Terms of Service may provide additional platform-specific rights.
+
+BRANDING
+Do not adopt the film's artwork or distinctive branding as the identity of
+another product or claim affiliation, official endorsement or sponsorship.
+Descriptive references to the project, technologies and creator are allowed
+when not misleading. No claim of a registered trademark is made. The Vanya Arc
+mark, if used, has its own rights map at:
+https://github.com/VanDalkvist/vanya-arc-brand/blob/main/LICENSING.md
+
+LIMITATIONS
+Copyright protection for typefaces, short names, simple symbols, basic
+geometric curves, AI-assisted works or overall "look and feel" depends on
+originality, ownership and applicable law. This notice does not grant rights
+the listed copyright holder does not possess, and does not override any
+previously valid grants or upstream third-party rights.
+
+For permissions beyond the above, contact the copyright holder through
+the project's GitHub repository.
