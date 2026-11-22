@@ -113,7 +113,7 @@ export default function Narration({
         <button className="scene-continue" onClick={onContinue}>
           Дальше сейчас <ArrowRight size={16} />
         </button>
-      )
+      )}
       <div className="narration-bottom">
         {insightOpen && scene.insight && (
           <Dialog
