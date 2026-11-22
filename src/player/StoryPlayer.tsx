@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Maximize2, Moon, Sun } from "lucide-react";
+import { Maximize2, Moon, Sun } from "lucide-react";
 import { useTheme } from "@vanya/ui";
 import type { LessonLink, StoryDefinition } from "./contracts";
 import { usePlayback } from "./usePlayback";
@@ -61,19 +61,18 @@ function PlayerSession({ story, navigation }: PlayerProps) {
             <a
               className="wordmark"
               href="/"
-              aria-label="aha! — интерактивные объяснения"
+              aria-label="Vanya Arc / Aha! — интерактивные истории"
             >
-              <strong>
-                aha<span className="brand-bang">!</span>
-              </strong>
-            </a>
-            <a
-              className="brand-credit"
-              href="https://vanya-arc.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              by Vanya <ArrowUpRight size={11} aria-hidden="true" />
+              <img
+                className="brand-symbol"
+                src={resolvedTheme === "dark" ? "/aha-impulse-mark-dark.svg" : "/aha-impulse-mark.svg"}
+                alt=""
+                width="46"
+                height="26"
+              />
+              <span className="brand-parent">Vanya Arc</span>
+              <span className="brand-slash" aria-hidden="true">/</span>
+              <strong>Aha<span className="brand-bang">!</span></strong>
             </a>
           </div>
           {!!navigation?.length && (

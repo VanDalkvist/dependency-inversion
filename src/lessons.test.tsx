@@ -41,8 +41,8 @@ it("keeps the original lesson and external new-tab link", () => {
     screen.getByRole("heading", { level: 1, name: "Как не привязать помощника к одному сервису?" }),
   ).toBeTruthy();
   expect(
-    screen.getByRole("link", { name: /by Vanya/ }).getAttribute("target"),
-  ).toBe("_blank");
+    screen.getByRole("link", { name: "Vanya Arc / Aha! — интерактивные истории" }).getAttribute("href"),
+  ).toBe("/");
   expect(
     screen
       .getByRole("link", { name: "DIP — Инверсия зависимостей" })

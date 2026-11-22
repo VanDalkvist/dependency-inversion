@@ -92,18 +92,17 @@ describe("DIP film user journeys", () => {
       (document.querySelector(".narration-body") as HTMLElement).hidden,
     ).toBe(true);
   });
-  it("shows the aha! series and links the author to the main website", () => {
+  it("renders the approved Vanya Arc / Aha! impulse identity", () => {
     render(<App />);
     const brand = screen.getByRole("link", {
-      name: "aha! — интерактивные объяснения",
+      name: "Vanya Arc / Aha! — интерактивные истории",
     });
     expect(brand.getAttribute("href")).toBe("/");
+    expect(brand.textContent).toContain("Vanya Arc");
+    expect(brand.textContent).toContain("Aha!");
+    expect(brand.querySelector("img.brand-symbol")?.getAttribute("src")).toContain("aha-impulse-mark");
+    expect(brand.querySelector("img.brand-symbol")?.getAttribute("alt")).toBe("");
     expect(brand.closest("header")).toBeTruthy();
-    const link = screen.getByRole("link", { name: /by Vanya/ });
-    expect(link.getAttribute("href")).toBe("https://vanya-arc.dev/");
-    expect(link.getAttribute("target")).toBe("_blank");
-    expect(link.getAttribute("rel")?.split(/\s+/)).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
-    expect(link.closest("header")).toBeTruthy();
   });
   it("inverts contract ownership through the actual scene action", async () => {
     render(<App />);
