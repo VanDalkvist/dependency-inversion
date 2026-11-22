@@ -7,10 +7,11 @@
 - Familiar promise before architecture terminology on DI / DIP
 - Plain-language DI narrative and three recognizable chapters
 - Single visible instruction and optional schema explainer
+- Cold start with one centered helper; choices emerge one phase at a time (source → writer → channel) after the viewer acts
 - Automatic playback continuation after successful choice, explicit “Дальше сейчас” without separate Play
-- Mobile narration not concealed after a choice; optional graph reveal
+- Mobile narration not concealed after a choice; optional graph reveal and extended explanation pause the timer so readers can inspect
 - Pause/resume around inspector, purposeful Motion response, reduced-motion awareness
-- Regression test cases written for reducer and mobile first choice; **not yet run**
+- Regression test cases written for reducer, phase-scoped stage, mobile first choice and reader-controlled pauses; **not yet run**
 
 See [complete creative cycle](2026-11-22-ioc-feedback-cycle-01.md) for NMT, 12 alternatives, critic decisions, research, source-only static review and falsifiable RAT.
 
@@ -32,6 +33,6 @@ node ../vanya-ui/scripts/ui-pipeline.mjs verify --project .
 
 Open locally as a first-time viewer at `/di/` and `/`. At 1440×900, 1024×768, 390×844, 320×568, verify first focal point, viewport stability, independent scrolling, keyboard, large-text/zoom and reduced motion. Choose wrong/right, open/close inspector, pause, switch graph/text, advance and replay. Verify actual documents differ when changing publisher. Record screenshots and outcomes in this same repo, not just “looks fine”.
 
-**Highest-risk test:** ask 3–5 people without software background to describe in their own words what stays the same when changing the channel, and where they would use the idea. If they cannot, revise story/diagram from zero; do not add more animations as a substitute.
+**Highest-risk test:** first verify the one-card cold start and only the active service pair per phase, then ask 3–5 people without software background to describe in their own words what stays the same when changing the channel, and where they would use the idea. If they cannot, revise story/diagram from zero; do not add more animations as a substitute.
 
 **Do not** merge PR #1 or assume Cloudflare deployed this branch. The next iteration should be a *new full Creative Loop* informed by observed first-use data, not an administrative continuation of this cycle.

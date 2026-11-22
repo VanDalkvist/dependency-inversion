@@ -22,5 +22,8 @@
   "release": "NOT APPROVED",
   "research": "docs/creative-loop/2026-11-22-ioc-feedback-cycle-01.md",
   "handoff": "docs/creative-loop/HANDOFF.md",
-  "blocker": "No runnable IOC / sibling Vanya UI checkout or verified browser access in this session"
+  "blocker": "No runnable IOC / sibling Vanya UI checkout or verified browser access in this session",
+  "reviewedSourceHead": "476800ced79fb9a2176ceb5ae9e10e0f28f7301e",
+  "progressiveGraphReveal": true,
+  "readerControlledPauses": true
 }

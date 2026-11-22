@@ -37,6 +37,7 @@ Existing asset: a real DI demonstration wired to `assembly.ts`, actual alternati
 | [Julian Shapiro: Writing Well](https://www.julian.com/guide/write/intro) and [rewriting](https://www.julian.com/guide/write/rewriting) | Promise a meaningful outcome immediately; simplify the explanation, not just individual jargon |
 | [Nielsen Norman Group: Progressive Disclosure](https://www.nngroup.com/articles/progressive-disclosure/) | Hide optional explanations and advanced controls until wanted; keep the current task obvious |
 | [NN/g: Heuristics for complex applications](https://www.nngroup.com/articles/usability-heuristics-complex-applications/) | In-context guidance and clear feedback instead of a manual |
+| [Mayer: Segmenting Principle](https://www.cambridge.org/core/books/abs/multimedia-learning/segmenting-principle/37240877DDA0362355ADB39936027982) | Reader pacing and explicit continue; optional explanation / graph inspection should pause timed progress |
 | [Motion for React: reduced motion](https://motion.dev/docs/react-use-reduced-motion) | Animate meaningful changes with accessible defaults |
 | [Bablo motion source](https://github.com/VanDalkvist/knopka-bablo/blob/main/app/src/motion.css) and [package](https://github.com/VanDalkvist/knopka-bablo/blob/main/app/package.json) | `motion` for component reactions + CSS keyframes for theatrical loops. IOC already has Motion, so **reuse**, do not add or clone Bablo's money-printer animation |
 | [Vanya UI canonical skill](https://github.com/VanDalkvist/vanya-ui/blob/main/skills/vanya-ui/SKILL.md) | Screen hierarchy, scroll ownership, real tokens/exports and local inspect/check/verify gate |
@@ -50,7 +51,7 @@ All proposals share the same positive RAT above unless otherwise noted. This is 
 | # | Candidate; tension / TRIZ | Feeling → mechanism / observable consequence | Critic |
 |---|---|---|---|
 | 01 | Familiar question before the label; abstraction vs accessibility / inversion | Recognize a personal problem → hook: helper with changeable tools → know what to watch | **ACCEPT; implemented** |
-| 02 | One purposeful first choice; exploratory richness vs clarity / subtraction | “I have a move” → source-owned scenario asks who connects tools → action changes graph | **ACCEPT; implemented** |
+| 02 | One purposeful first choice + progressive stage; richness vs clarity / subtraction | Initially one centered helper → action expands three ports → only two relevant service cards appear each step | **ACCEPT; implemented** |
 | 03 | Continuity after successful choice; agency vs interruption / dynamization | No extra Play → conditional resume and short effect dwell → next scene flows | **ACCEPT; implemented** |
 | 04 | Explicit faster next; pacing vs speed / local quality | Reader decides → “Дальше сейчас” continues and starts next scene → no repeated Play | **ACCEPT; implemented** |
 | 05 | Optional graph legend; expertise vs first-use overload / subtraction | Uncluttered stage → `details` disclosure → technical legend reachable, not mandatory | **ACCEPT; implemented** |
@@ -70,8 +71,9 @@ Source locations in PR #1:
 - `src/stories/{di,dip}/index.ts`: problem-first hooks, purpose and understandable chapter names.
 - `src/stories/di/{assembly-scenes,execution-scenes}.ts`: plain-language explanations without changing existing action IDs or real execution.
 - `src/player/{StoryPlayer,Narration,layout.css}`: clear intro hierarchy, contextual “Твой ход”, optional schema key, mobile narrative stays visible after choices, explicit “посмотреть, что изменилось”, and advance control.
-- `src/player/{playback,Stage}.ts(x)`: correct choice continues automatically; open/close inspector remembers playback; explicit continue starts next scene; motion responds to graph state with `useReducedMotion`.
-- `src/{App,lessons,Injection}.test.tsx` and `src/player/playback.test.ts`: expected revised titles and new regression cases. **Written, NOT RUN**.
+- `src/player/{playback,Stage}.ts(x)`: correct choice continues automatically, but opening an explanation or graph **pauses** playback; open/close inspector remembers the prior state; explicit continue starts next scene; Motion responds to graph changes with `useReducedMotion`.
+- `src/stories/di/{graphs,nodes}.ts`: empty jargon-heavy first frame replaced with **one centered helper**. On the first correct action it moves into a three-port system; each subsequent phase shows just its current source/writer/publisher choices, not all six at once. Wrong attempt still reveals a concrete Telegram dependency.
+- `src/{App,lessons,Injection}.test.tsx`, `src/stories/di/graphs.test.ts`, `src/player/playback.test.ts`: title, first-frame simplicity, step-specific service cards, optional pause / resume, mobile action and playback regression cases. **Written, NOT RUN**.
 
 ## 7 · PROOF / technical receipts
 
@@ -83,28 +85,28 @@ Source locations in PR #1:
 
 **Dependency traceability:** `App.tsx → StoryPlayer → usePlayback/playback`; real `src/stories/di/scene-actions.ts` invokes `interaction.answerEvent → action.perform → assembly/execute`; existing service contracts remain authoritative. No invented backend.
 
-**Runtime completeness:** no parallel second playback store. New `resumeAfterInspect` belongs to existing reducer and resets on seek/pause. Viewer-focused additions extend the generic story fields, not hardcoded DI branches in the player.
+**Runtime completeness:** staged graph is computed from the original `lessonView` / `assemblyNodes` and selected source-owned service inventory, not a competing fake model. No parallel second playback store. New `resumeAfterInspect` belongs to existing reducer and resets on seek/pause. Viewer-focused additions extend the generic story fields, not hardcoded DI branches in the player.
 
 **Entrypoint wiring:** `lessons.ts` routes `/di/` and `/` to same generic player; motion targets existing `Stage` nodes and existing story actions. `continue` is a real reducer event.
 
 **Implementation completeness:** controls dispatch concrete events; no fake progress. A correct action continues and retains its selected result; a wrong choice stays gated; inspection only resumes if playback was active.
 
 **Source-inferred journeys (not real user observations):**
-- **Cold start:** explicit familiar hook, story goal and “Твой ход”; no need to parse legend.
-- **Happy path:** choose outside services → optional diagram → next with automatic play → run and compare output.
-- **Recovery/repetition:** incorrect answer leaves gate; inspector returns to prior state; seek intentionally pauses and rewinds choices; mobile resets to narrative on scene changes.
+- **Cold start:** familiar hook and “Твой ход” with one centered helper, zero code lines, zero competing service cards and no need to parse the hidden legend.
+- **Happy path:** choose outside services → helper physically moves to the left and three empty ports appear → only the current phase’s services show → explicit next with automatic play → run and compare output.
+- **Recovery/repetition:** incorrect answer leaves gate and shows a concrete bad Telegram link; inspector returns to prior state; opening explanation or graph pauses playback; seek intentionally pauses and rewinds choices; mobile resets to narrative on scene changes.
 
 | Finding | Evidence / severity | Decision |
 |---|---|---|
 | Conditional JSX closing syntax accidentally omitted during editing | `src/player/StoryPlayer.tsx`, `Narration.tsx` · P0 compile | **FIX NOW**, corrected and re-read |
 | Answer forcibly opened graph and hid feedback on mobile | `src/player/StoryPlayer.tsx` initial source · P1 first-use | **FIX NOW**, keep text and offer optional graph |
 | Manual “next” used seek and would still need Play | `playback.ts` + `Narration.tsx` · P1 | **FIX NOW**, dedicated `continue` event |
-| Nine scenes and dense diagrams still constitute cognitive load | `src/stories/di/*`, `Stage.tsx` · P2 product hypothesis | **LOG ONLY**, validate against novice RAT before bigger redesign |
-| 6-second default automatic transition may cut off slow readers, with no countdown | `playback.ts` · P2 **unverified** pacing risk | **LOG ONLY**; observe real reading time; add stop/cancel or pacing if needed |
+| Nine scenes and later-stage diagrams still constitute cognitive load | `src/stories/di/*`, `Stage.tsx` · P2 product hypothesis | **MITIGATED** by first-frame simplification + progressive options; test novice RAT before a larger story redesign |
+| 6-second default automatic transition may cut off slow readers, with no countdown | `playback.ts` · P2 **unverified** pacing risk | **PARTIALLY MITIGATED** by pausing when deliberately reading explanation or examining graph; verify timed reading with actual novices |
 | Existing `@vanya/ui` uses local file dependency; no workspace mounted | `package.json` · verification blocker | **BLOCKED** here; use original multi-repo local checkout |
 | Visual composition 1440×900, 390×844; reduced-motion in live browser | `layout.css`, `Stage.tsx` · runtime unknown | **NOT VERIFIED**, needs screenshots and interaction |
 
-No black-box S9 review, formal architecture verdict or build PASS is claimed. This single-agent critic cannot be called independent review.
+**Final source readback after changes:** `src/stories/di/{graphs,nodes,graphs.test}.ts`, `src/player/{StoryPlayer,Narration,playback}.ts(x)`, `src/Injection.test.tsx` re-read, JSX blocks checked and interactions traced as source. No black-box S9 review, formal architecture verdict or build PASS is claimed. This single-agent critic cannot be called independent review.
 
 ## 7.6 · LEARN
 
