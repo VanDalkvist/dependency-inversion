@@ -2,7 +2,7 @@
 
 **Consumer:** VanDalkvist/dependency-inversion · **target:** `/di/` (plus reusable player and `/`).
 **Base:** `b2b2a870846e56c617c8c8a00bf1dd106c75946a` · **PR:** [#1](https://github.com/VanDalkvist/dependency-inversion/pull/1) · **release:** NOT DEPLOYED.
-**Method:** [World Creative Loop](https://github.com/VanDalkvist/game-tools/blob/f34a7aad1a934dfae3a36fd19b630b3a1b5dda79/skills/world-creative-loop/SKILL.md), adapted from game-world creation to an interactive educational film. No artificial five-game-experience quota; count independently useful viewer-facing changes, not animations/commits.
+**Method:** World Creative Loop adapted to an interactive educational film; its actionable steps and evidence are recorded self-contained below (source reality → NMT → research → 12 candidates → adversarial critic → implementation/source review → RAT). This report does not require access to the internal methodology repository. No artificial five-game-experience quota; count independently useful viewer-facing changes, not animations/commits.
 **Evidence status:** code is committed and source-reviewed, but build, automated browser runs and new viewer tests were **NOT RUN**, so this iteration is **NOT VERIFIED**. This is not a claim of completed black-box UX validation.
 
 ## 0 · Source reality / memory replay
