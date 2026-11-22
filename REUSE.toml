@@ -22,7 +22,9 @@ SPDX-License-Identifier = "MIT"
 [[annotations]]
 path = [
   "src/styles.css",
-  "public/*.svg",
+  "public/aha-impulse-mark.svg",
+  "public/aha-impulse-mark-dark.svg",
+  "public/favicon.svg",
   "src/player/layout.css",
   "src/stories/di/assembly-scenes.ts",
   "src/stories/di/catalog.ts",
