@@ -113,6 +113,30 @@ export function playChoice(episode: EpisodeId, choice: ChoiceId): EpisodeResult 
   throw new Error("Несовместимый выбор для эпизода: "+episode+"/"+choice);
 }
 
+
+/** Reproducible failure scenario: Telegram succeeds; the website endpoint fails.
+ * No external service is called, and there is deliberately no second generation.
+ */
+export function simulateWebsiteFailure(): PublicationReceipt[] {
+  const outbox: Artifact[] = [];
+  const draft = draftFor(APPROVED_POST);
+  const first = telegramPublisher(outbox).publish(draft);
+  return [
+    {channel:"Telegram",status:"готово",content:draft.intro,artifact:first},
+    {channel:"Сайт",status:"ошибка",content:draft.intro},
+  ];
+}
+/** Recovery invokes only the failing site adapter, preserving Telegram's exact receipt. */
+export function retryOnlyWebsite(receipts: readonly PublicationReceipt[]): PublicationReceipt[] {
+  const telegram = receipts.find((r) => r.channel === "Telegram");
+  const site = receipts.find((r) => r.channel === "Сайт");
+  if (!telegram || !site || telegram.status !== "готово" || site.status !== "ошибка")
+    throw new Error("Нет допустимого частичного сбоя публикации");
+  const outbox: Artifact[] = [];
+  const artifact = websitePublisher(outbox).publish(draftFor(APPROVED_POST));
+  return [telegram, {channel:"Сайт",status:"готово",content:APPROVED_POST.text,artifact}];
+}
+
 export function isApprovedSameContent(receipts: PublicationReceipt[]) {
   return receipts.every(x => x.status==="готово" && x.content===receipts[0]?.content);
 }
