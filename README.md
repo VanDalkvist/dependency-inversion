@@ -11,7 +11,7 @@
 
 ## Запустить локально
 
-Потребуются Node.js и два **публичных** репозитория по соседству. Сначала клонируйте [Vanya UI](https://github.com/VanDalkvist/vanya-ui), потому что приложение использует локальную зависимость `file:../vanya-ui`:
+Потребуются Node.js и два соседних checkout: этот репозиторий (пока приватный; в будущем может стать публичным) и публичный Vanya UI. Сначала клонируйте [Vanya UI](https://github.com/VanDalkvist/vanya-ui), потому что приложение использует локальную зависимость `file:../vanya-ui`:
 
 ```sh
 git clone https://github.com/VanDalkvist/vanya-ui.git ../vanya-ui
