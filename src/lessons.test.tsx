@@ -38,10 +38,10 @@ it("keeps the original lesson and external new-tab link", () => {
   history.replaceState(null, "", "/");
   render(<App />);
   expect(
-    screen.getByRole("heading", { level: 1, name: "Инверсия зависимостей" }),
+    screen.getByRole("heading", { level: 1, name: "Как не привязать помощника к одному сервису?" }),
   ).toBeTruthy();
   expect(
-    screen.getByRole("link", { name: "vanya-arc.dev" }).getAttribute("target"),
+    screen.getByRole("link", { name: /by Vanya/ }).getAttribute("target"),
   ).toBe("_blank");
   expect(
     screen
