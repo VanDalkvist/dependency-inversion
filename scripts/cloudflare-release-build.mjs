@@ -2,7 +2,7 @@
 // Portable, manual CI build for the existing IOC Worker. Builds and tests, but
 // never deploys. Deployment requires a separate explicit Wrangler command.
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -34,6 +34,17 @@ const config = {
 writeFileSync(join(root, "wrangler.aha.jsonc"), JSON.stringify(config, null, 2) + "\n");
 run("bun", ["install", "--frozen-lockfile"], ui);
 run("npm", ["ci"]);
+// Vanya UI is a source-linked sibling package. Both projects install React
+// types independently, and TS sees incompatible Ref symbols in SVG props.
+// Use one canonical @types/react tree across both source workspaces.
+for (const packageName of ["react", "react-dom"]) {
+  const source = join(root, "node_modules", "@types", packageName);
+  const target = join(ui, "node_modules", "@types", packageName);
+  if (!existsSync(source)) throw new Error("Missing canonical types: " + source);
+  rmSync(target, { recursive: true, force: true });
+  symlinkSync(source, target, "dir");
+  console.log("[aha build] shared @types/" + packageName + " with Vanya UI");
+}
 run("npm", ["test"]);
 run("npm", ["run", "build"]);
 run("npm", ["run", "check:licensing"]);
