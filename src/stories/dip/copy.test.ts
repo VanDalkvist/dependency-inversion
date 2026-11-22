@@ -6,7 +6,7 @@ import { architecture } from "./graphs";
 describe("content factory explanation",()=>{
   it("introduces the familiar helper before revealing the factory and contracts",()=>{
     expect(story.hook).toContain("Как не привязать помощника");
-    expect(story.subtitle).toContain("помощника для выпуска новостей");
+    expect(story.subtitle).toContain("тот же выпуск понадобился на сайте");
     expect(story.scenes[0].body).toContain("Фабрика контента");
     expect(story.scenes[0].body).toContain("согласования");
     expect(story.scenes[0].body).toContain("Telegram");

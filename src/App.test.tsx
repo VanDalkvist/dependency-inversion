@@ -30,9 +30,9 @@ afterEach(cleanup);
 describe("DIP film user journeys", () => {
   it("shows the lesson subject in the page heading", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     expect(
-      screen.getByRole("heading", { level: 1, name: "Как не привязать помощника к одному сервису?" }),
+      screen.getByRole("heading", { level: 1, name: "Аня отправила выпуск в Telegram" }),
     ).toBeTruthy();
     expect(
       screen.getByRole("heading", {
@@ -43,7 +43,7 @@ describe("DIP film user journeys", () => {
   });
   it("shows rules on the card and reveals API details only in its inspector", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     const card = screen.getByRole("button", {
       name: "Блок Сценарий выпуска. Подробнее",
     });
@@ -58,7 +58,7 @@ describe("DIP film user journeys", () => {
   });
   it("keeps the late experiment outside the bounded lesson screen", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     expect(document.querySelector(".lesson-screen")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
     expect(document.querySelector(".lesson-screen .experiment")).toBeNull();
@@ -66,7 +66,7 @@ describe("DIP film user journeys", () => {
   });
   it("opens supplementary lesson content without expanding the page", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: "Вывод и источники" }));
     const dialog = screen.getByRole("dialog", { name: "Вывод и источники" });
     expect(dialog.textContent).toContain(
@@ -78,7 +78,7 @@ describe("DIP film user journeys", () => {
   });
   it("lets readers switch between feedback and the original explanation", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
     fireEvent.click(
       screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }),
@@ -99,7 +99,7 @@ describe("DIP film user journeys", () => {
   });
   it("renders the approved Vanya Arc / Aha! impulse identity", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     const brand = screen.getByRole("link", {
       name: "Vanya Arc / Aha! — интерактивные истории",
     });
@@ -112,7 +112,7 @@ describe("DIP film user journeys", () => {
   });
   it("inverts contract ownership through the actual scene action", async () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 4:/ }));
     expect(
       document.querySelector('[data-node-id="publish-port"]')?.textContent,
@@ -133,7 +133,7 @@ describe("DIP film user journeys", () => {
   });
   it("does not accept an incorrect explanation of inversion", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 3:/ }));
     fireEvent.click(
       screen.getByRole("button", { name: "Да: есть отдельный интерфейс" }),
@@ -151,7 +151,7 @@ describe("DIP film user journeys", () => {
   });
   it("switches code dependency view to execution without changing the scene", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: "Порядок работы" }));
     expect(
       screen.getByRole("button", { name: "Блок Согласовать. Подробнее" }),
@@ -162,7 +162,7 @@ describe("DIP film user journeys", () => {
   });
   it("runs selected integrations and renders actual artifacts", async () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
     fireEvent.change(screen.getByLabelText("Каналы публикации"), {
       target: { value: "both" },
@@ -181,7 +181,7 @@ describe("DIP film user journeys", () => {
   });
   it("switches both system themes", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Исследовать схему и код" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(
       screen.getByRole("button", { name: "Включить тёмную тему" }),
     );
