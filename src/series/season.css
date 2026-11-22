@@ -1,0 +1,270 @@
+/* Season 1: owned editorial composition using REAL @vanya/ui components.
+   The component styles/states live in the Vanya UI package. */
+.season {
+  --series-width: 1120px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.54;
+  display: flex;
+  flex-direction: column;
+}
+.season-header {
+  width: min(100%, var(--series-width));
+  margin: 0 auto;
+  padding: 0 30px;
+  height: 74px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.season-brand { display: inline-flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 650; letter-spacing: -.045em; }
+.season-brand img { width: 44px; height: 29px; display: block; }
+.season-brand > span > span { color: var(--ink-soft); font-weight: 400; margin: 0 5px; }
+.season-brand strong { color: var(--accent); }
+.season-main {
+  flex: 1 0 auto;
+  width: min(100%, var(--series-width));
+  max-width: var(--series-width);
+  padding: 26px 30px 44px;
+  margin: 0 auto;
+}
+.season-progress.ui-workflow-strip {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0 0 36px;
+  min-height: 26px;
+}
+.season-progress .ui-workflow-strip-leading { display: flex; align-items: center; gap: 12px; }
+.season-progress .ui-workflow-strip-leading > strong { font-size: 16px; color: var(--ink); white-space: nowrap; }
+.season-progress .ui-workflow-strip-status { font-size: 14px; color: var(--ink-soft); white-space: nowrap; }
+.season-progress .ui-workflow-strip-progress { margin: 0 0 0 15px; width: auto; flex: 1; height: 3px; }
+.season-progress .ui-workflow-strip-progress > span { background: var(--accent); }
+.season-episode {
+  display: grid;
+  grid-template-columns: minmax(0,1.04fr) minmax(360px,.96fr);
+  gap: clamp(24px,4vw,54px);
+  align-items: start;
+}
+.season-copy { min-width: 0; }
+.season-kicker {
+  font: 600 13px/1.4 var(--font-mono);
+  letter-spacing: .055em;
+  color: var(--accent);
+  margin-bottom: 15px;
+}
+.season-copy > h1 {
+  font-size: clamp(36px,3.55vw,51px);
+  letter-spacing: -.055em;
+  line-height: 1.14;
+  font-weight: 720;
+  text-wrap: balance;
+}
+.season-copy > h1:focus { outline: none; }
+.season-description {
+  margin-top: 20px;
+  max-width: 54ch;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.season-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin: 26px 0 20px;
+}
+.season-message {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-width: 94%;
+  align-self: flex-end;
+  border-radius: 14px 14px 3px 14px;
+  padding: 15px 20px;
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+.season-agent-message {
+  align-self: flex-start;
+  background: var(--surface-inset);
+  border-radius: 14px 14px 14px 3px;
+}
+.season-chat-speaker {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 650;
+}
+.season-message p { font-size: 18px; line-height: 1.52; max-width: 50ch; }
+.season-primary.ui-action-button {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 62px;
+  max-width: 100%;
+  min-width: min(100%,325px);
+  padding: 13px 20px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 9px;
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 650;
+  margin: 7px 0 0;
+}
+.season .season-primary:hover:not(:disabled) { color: #fff; background: var(--accent); filter: brightness(.93); }
+.season-primary svg { flex: none; }
+.season-decision { margin-top: 23px; }
+.season-decision > h2, .season-afterword h2 {
+  font-size: clamp(21px,2.1vw,25px);
+  line-height: 1.36;
+  letter-spacing: -.035em;
+  font-weight: 650;
+}
+.season-choices { display: flex; flex-direction: column; gap: 11px; margin-top: 16px; }
+.season-choice.ui-action-button {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 17px;
+  border-radius: 8px;
+  font-size: 17px;
+  line-height: 1.43;
+  text-align: left;
+  white-space: normal;
+}
+.season-choice svg { flex: none; color: var(--accent); }
+.season-choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.season-consequence { margin: 19px 0 0; padding: 17px 19px; border-radius: 10px; background: var(--surface-inset); }
+.season-consequence-heading { display: flex; align-items: center; gap: 9px; color: var(--ink); }
+.season-consequence-heading svg { flex: none; color: var(--accent); }
+.season-consequence-heading strong { font-size: 19px; line-height: 1.32; }
+.season-consequence > p { margin: 9px 0 12px; font-size: 17px; line-height: 1.55; color: var(--ink-soft); }
+.season-consequence dl { display: flex; gap: 15px; margin: 0; flex-wrap: wrap; }
+.season-consequence dl > div { flex: 1 1 130px; }
+.season-consequence dt { font-size: 13px; color: var(--ink-soft); }
+.season-consequence dd { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
+.season-failure { margin: 15px 0 0; display: flex; flex-direction: column; gap: 10px; color: var(--ink-soft); font-size: 16px; }
+.season-failure .ui-action-button { align-self: start; font-size: 16px; white-space: normal; text-align: left; }
+.season-afterword { padding-top: 22px; margin-top: 23px; border-top: 1px solid var(--border); }
+.season-afterword > .ui-size { margin-bottom: 12px; }
+.season-afterword > p { font-size: 17px; line-height: 1.55; color: var(--ink-soft); margin: 10px 0 0; }
+.season-afterword > .season-anya-last { color: var(--ink); font-weight: 570; margin-bottom: 20px; }
+.season-season-end { display: inline-block; padding: 16px 0; color: var(--accent); font-size: 17px; font-weight: 650; }
+.season-stage {
+  position: relative;
+  padding: 21px;
+  border-radius: 16px;
+  background: var(--surface-inset);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.season-stage-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.season-stage-header > span { font: 600 11px/1.4 var(--font-mono); letter-spacing: .06em; color: var(--ink-soft); }
+.season-stage .ui-size { font-size: 12px; white-space: nowrap; }
+.season-paper-stage { display: flex; flex-direction: column; gap: 13px; }
+.season-post {
+  min-height: 193px;
+  padding: 22px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 10px;
+}
+.season-post-accent { border-color: color-mix(in srgb,var(--accent) 45%,var(--border)); }
+.season-post-top { display: flex; align-items: center; gap: 8px; font: 600 12px var(--font-mono); color: var(--ink-soft); }
+.season-post-top svg { flex: none; color: var(--accent); }
+.season-post > strong { font-size: clamp(22px,2.2vw,28px); letter-spacing: -.035em; font-weight: 700; line-height: 1.23; }
+.season-post > p { font-size: 17px; line-height: 1.55; color: var(--ink-soft); }
+.season-receipts { display: flex; flex-direction: column; gap: 9px; }
+.season-receipt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  min-height: 77px;
+  border-radius: 9px;
+}
+.season-receipt > svg { flex: none; color: var(--accent); }
+.season-receipt > div { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.season-receipt strong { font-size: 17px; line-height: 1.3; }
+.season-receipt div span { font-size: 13px; line-height: 1.35; color: var(--ink-soft); }
+.season-receipt[data-status="ошибка"] { border-color: var(--ink-soft); }
+.season-stage-note { margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink-soft); }
+.season-simulation { font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
+.season-proof { font-size: 16px; font-weight: 650; color: var(--ink); }
+.season-proof-details { color: var(--ink-soft); font-size: 14px; }
+.season-proof-details > summary { cursor: pointer; }
+.season-proof-details code { display: block; overflow-wrap: anywhere; margin-top: 9px; font: 13px/1.5 var(--font-mono); color: var(--ink); }
+.season-rules { display: flex; flex-direction: column; gap: 14px; }
+.season-rules-row { display: flex; align-items: stretch; gap: 8px; }
+.season-rule-card { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 9px; }
+.season-rule-card > svg { color: var(--accent); }
+.season-rule-card strong { font-size: 17px; line-height: 1.25; }
+.season-rule-card > p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+.season-rule-card[data-changed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.season-rule-arrow { display: grid; place-items: center; align-self: center; color: var(--accent); }
+.season-stage-foot { font-size: 16px; line-height: 1.5; color: var(--ink); margin: 0; }
+.season-injection { display: flex; flex-direction: column; gap: 16px; }
+.season-slot { display: flex; flex-direction: column; gap: 8px; border-radius: 10px; padding: 18px; background: var(--surface); }
+.season-slot > span:first-child { font: 600 12px/1.3 var(--font-mono); color: var(--ink-soft); }
+.season-slot > strong { font-size: 22px; letter-spacing: -.03em; }
+.season-slot .ui-size { align-self: start; white-space: normal; }
+.season-process { display: flex; align-items: center; justify-content: space-between; gap: 5px; font-size: 15px; font-weight: 650; }
+.season-process svg { flex: none; color: var(--accent); }
+.season-bottom { display: flex; align-items: start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 38px; }
+.season-links { display: flex; gap: 22px; flex-wrap: wrap; }
+.season-links .ui-action-button { font-size: 15px; display: inline-flex; align-items: center; gap: 7px; }
+.season-episodes-list { min-width: 190px; color: var(--ink-soft); font-size: 15px; }
+.season-episodes-list summary { cursor: pointer; text-align: right; }
+.season-episodes-list > div { display: flex; flex-direction: column; gap: 5px; padding: 11px 0; }
+.season-episodes-list button { text-align: left; border: none; padding: 6px 8px; background: none; font-size: 15px; }
+.season-episodes-list button[aria-current="step"] { color: var(--accent); font-weight: 650; }
+.season-footer { width: min(100%,var(--series-width)); max-width: var(--series-width); margin: 0 auto; padding: 17px 30px 25px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 14px; color: var(--ink-soft); }
+.season-footer a:hover { color: var(--accent); }
+@media (max-width: 880px) {
+ .season-episode { grid-template-columns: minmax(0,1fr); }
+ .season-main { max-width: 730px; }
+ .season-stage { max-width: 680px; }
+}
+@media (max-width: 520px) {
+ .season-header { padding: 0 18px; height: 67px; }
+ .season-brand { font-size: 18px; gap: 7px; }
+ .season-brand img { width: 38px; }
+ .season-main { padding: 22px 18px 36px; }
+ .season-progress.ui-workflow-strip { margin-bottom: 27px; }
+ .season-episode { gap: 24px; }
+ .season-copy > h1 { font-size: clamp(31px,8.8vw,40px); line-height: 1.18; }
+ .season-description { margin-top: 14px; font-size: 18px; }
+ .season-chat { margin: 22px 0 17px; }
+ .season-message { padding: 13px 15px; }
+ .season-message p { font-size: 17px; }
+ .season-primary.ui-action-button { width: 100%; min-width: 0; font-size: 17px; }
+ .season-choice.ui-action-button { font-size: 16px; }
+ .season-stage { padding: 14px; border-radius: 12px; }
+ .season-post { padding: 16px; min-height: 165px; }
+ .season-post > p { font-size: 16px; }
+ .season-rules-row { flex-direction: column; }
+ .season-rule-arrow { transform: rotate(90deg); font-size: 18px; }
+ .season-bottom { gap: 20px; }
+ .season-episodes-list summary { text-align: left; }
+ .season-footer { padding: 17px 18px 25px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .season, .season * { scroll-behavior: auto; }
+}
