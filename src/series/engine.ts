@@ -106,7 +106,7 @@ export function playChoice(episode: EpisodeId, choice: ChoiceId): EpisodeResult 
           {channel:"Telegram",status:"готово",content:result.draft.intro,artifact:result.artifacts[0]},
           {channel:"Сайт",status:"готово",content:result.draft.intro,artifact:result.artifacts[1]},
         ],
-        writer:composed.names.writer,proof:composed.calls.map(x=>x.port).join(" → "),draft:result.draft,
+        writer:composed.names.writer,proof:composed.calls.map(x=>`${x.operation}:${x.implementation}`).join(" → "),draft:result.draft,
       };
     }
   }
