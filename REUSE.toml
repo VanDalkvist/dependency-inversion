@@ -29,6 +29,7 @@ path = [
   "src/player/guided.css",
   "src/player/guided-copy.ts",
   "docs/storyboards/AGENT_PUBLISHER_SCRIPT_V1.md",
+  "docs/storyboards/AGENT_PUBLISHER_SCRIPT_V2_DIP.md",
   "src/player/GuidedExperience.tsx",
   "src/player/FocusedVisual.tsx",
   "src/stories/di/assembly-scenes.ts",
