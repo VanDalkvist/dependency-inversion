@@ -22,13 +22,58 @@
   color: var(--ink);
   font-weight: 650;
 }
-@media (max-width: 600px) {
-  .has-lesson-nav .wordmark strong {
-    display: none;
-  }
-  .has-lesson-nav .wordmark {
-    gap: 0;
-  }
+/* The series identity stays visible, including when chapter navigation is present. */
+.lesson-screen .brand-lockup {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.lesson-screen .wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+}
+.lesson-screen .wordmark strong {
+  display: inline;
+  font: 750 23px/1 var(--font-sans);
+  letter-spacing: -1.3px;
+}
+.lesson-screen .brand-bang {
+  display: inline-block;
+  color: var(--accent);
+  transform-origin: bottom center;
+  transition: transform 180ms ease;
+}
+.lesson-screen .wordmark:hover .brand-bang {
+  transform: rotate(-12deg) scale(1.12);
+}
+.lesson-screen .brand-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 28px;
+  color: var(--ink-soft);
+  font: 500 10px/1 var(--font-sans);
+  border-radius: 2px;
+}
+.lesson-screen .brand-credit:hover { color: var(--ink); }
+.lesson-screen .brand-credit svg { transition: transform 180ms ease; }
+.lesson-screen .brand-credit:hover svg { transform: translate(1px, -1px); }
+@media (prefers-reduced-motion: reduce) {
+  .lesson-screen .brand-bang,
+  .lesson-screen .brand-credit svg { transition: none; }
+  .lesson-screen .wordmark:hover .brand-bang,
+  .lesson-screen .brand-credit:hover svg { transform: none; }
+}
+@media (max-width: 360px) {
+  .lesson-screen .brand-lockup { gap: 7px; }
+  .lesson-screen .wordmark strong { font-size: 20px; }
+  .lesson-screen .brand-credit { font-size: 9px; }
+  .lesson-screen .brand-credit svg { display: none; }
+  .lesson-nav a { min-width: 30px; padding: 3px 6px; }
 }
 .lesson-screen {
   height: 100vh;
@@ -49,9 +94,6 @@
 .lesson-screen .site-header {
   height: auto;
   min-height: 0;
-}
-.lesson-screen .brand-description {
-  font-size: 10px;
 }
 .lesson-screen .lesson-main {
   display: grid;
