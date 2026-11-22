@@ -1,171 +1,149 @@
 {
-  "schemaVersion": 3,
-  "format": "ioc-film-consumer-local-adaptation",
+  "schemaVersion": 5,
   "phase": "handoff",
-  "cycleId": "ioc-storytelling-2026-11-23-03",
-  "method": "game-tools/world-creative-loop adapted explanatory storytelling",
   "status": "COMPLETE",
   "runMode": "ONE_INVOCATION",
+  "cycleId": "aha-content-factory-season-2026-11-23-06",
   "repository": "VanDalkvist/dependency-inversion",
   "branch": "feat/ioc-creative-loop-ux-20261122",
   "pr": "https://github.com/VanDalkvist/dependency-inversion/pull/1",
   "prDraft": true,
   "mainMerged": false,
-  "sourceMemory": "docs/creative-loop/MEMORY.md",
-  "ownerFeedback": "OWNER_REJECTED_NEGATIVE_ABSTRACT_OPENING_AND_QUIZ_STORY",
+  "method": "game-tools/world-creative-loop adapted to educational series",
   "memoryReplay": {
-    "status": "READ",
-    "source": "docs/creative-loop/MEMORY.md and cycle-02 research/handoff",
+    "status": "READ_BEFORE_RESEARCH",
+    "source": "docs/creative-loop/MEMORY.md",
     "decisions": [
-      "SUPERSEDE abstract question-as-story",
-      "APPLY shell removal",
-      "APPLY genuine service state",
-      "APPLY shorter beginner path"
+      "APPLY concrete character/conflict",
+      "SUPERSEDE adding website as DIP proof",
+      "APPLY Vanya UI source",
+      "APPLY actual visual consequences"
     ]
   },
-  "job": "Show in one fictional news-editor story how an AI assistant's channel can be changed while a release stays the same",
-  "research": "docs/creative-loop/2026-11-23-storytelling-cycle-03.md",
-  "handoff": "docs/creative-loop/HANDOFF.md",
+  "job": "Progressively teach four distinct architectural ideas through one content-factory agent's realistic editing/publishing pain",
+  "research": "docs/creative-loop/2026-11-23-content-factory-season-06.md",
+  "webReviewSequence": "EP1_SCRIPT_REVIEW_THEN_EP2_SCRIPT_REVIEW_THEN_EP3_SCRIPT_REVIEW_THEN_EP4_SCRIPT_REVIEW",
+  "scripts": [
+    "docs/series/season-01/01-one-post.md",
+    "docs/series/season-01/02-both-channels.md",
+    "docs/series/season-01/03-who-sets-rules.md",
+    "docs/series/season-01/04-swap-writer.md"
+  ],
   "candidateCount": 12,
-  "criticMode": "adversarial-self-pass-not-independent",
+  "criticMode": "ADVERSARIAL_SELF_PASS_NOT_INDEPENDENT",
+  "targetExperiences": 4,
+  "deliveredExperiences": 4,
   "critic": {
     "accepted": [
       2,
-      5,
-      8,
+      4,
+      6,
       9,
-      10,
-      12
+      10
     ],
     "vetoed": [
       1,
       3,
-      6,
+      5,
       7,
+      8,
       11
     ],
     "reworked": [
-      4
+      12
     ]
   },
-  "targetExperiences": 1,
-  "deliveredExperiences": 1,
   "deliveries": [
     {
-      "id": "one-coherent-narrative",
-      "result": "Editor Anya's concrete released Telegram news issue, changed website requirement, failed coupling, shared publishing rule, same issue to website, and 5/6-beat reader journeys with actual source-backed DI run",
-      "sourceFiles": [
-        "src/player/guided-copy.ts",
-        "src/player/GuidedExperience.tsx",
-        "src/player/FocusedVisual.tsx",
-        "src/player/guided.css",
-        "src/stories/dip/index.ts",
-        "src/stories/di/index.ts"
-      ]
+      "id": "one-post",
+      "action": "reuse approved post",
+      "consequence": "one Saturday date on both browser-local artifacts",
+      "source": "src/series/engine.ts"
+    },
+    {
+      "id": "both-channels",
+      "action": "compose two publishers",
+      "consequence": "two receipts and site-only retry preserving Telegram result",
+      "source": "src/series/engine.ts"
+    },
+    {
+      "id": "rules",
+      "action": "move format rule to site adapter",
+      "consequence": "the same HTML fault changes adapter instead of high-level factory",
+      "source": "src/series/SeasonApp.tsx"
+    },
+    {
+      "id": "injection",
+      "action": "inject ready localWriter",
+      "consequence": "actual factory localWriter run with two artifacts",
+      "source": "src/series/engine.ts"
     }
   ],
-  "sourceUi": {
-    "repo": "VanDalkvist/vanya-ui",
-    "pinnedSha": "8a39e86fc276aa0b75726f308a00fdefd0b30934",
-    "actualComponents": [
-      "ActionButton",
-      "ThemeToggle",
-      "WorkflowStrip",
-      "CraftCard",
-      "Tag"
+  "staticReview": {
+    "method": "SOURCE_REVIEW_AND_REAL_TESTS",
+    "trace": "App → SeasonApp onClick → playChoice → Publisher and assembleFactory → receipts → visual stage",
+    "runtime": "No effect calls during React render, no duplicate new state owner in old films",
+    "entrypoint": "Vite /series/index.html uploaded to existing Worker; / and /di/ retained",
+    "completeness": "Real browser-local artifact results and actual local writer invocation; scripted fictional chat",
+    "findings": [
+      {
+        "severity": "P1",
+        "issue": "Effectful calls in React rendering",
+        "decision": "FIXED"
+      },
+      {
+        "severity": "P1",
+        "issue": "Website retry risked duplicate Telegram delivery",
+        "decision": "FIXED"
+      },
+      {
+        "severity": "P2",
+        "issue": "UI visual/manual human verification unavailable",
+        "decision": "UNVERIFIED"
+      }
     ],
-    "pseudoUi": false
-  },
-  "sourceEditorial": {
-    "skills": "N1arko/redaktura-skills",
-    "read": [
-      "redaktura/SKILL.md",
-      "ux-copy/SKILL.md",
-      "statya/SKILL.md",
-      "redaktura/references/neirotekst.md",
-      "redaktura/references/ritm.md"
-    ],
-    "copiedThirdPartyText": false
+    "architectureVerdict": "SOURCE_REVIEWED+TESTED",
+    "productVerdict": "SOURCE_REVIEWED_HUMAN_NOT_RUN"
   },
   "build": {
-    "sourceSha": "06ace1a5a3c91afe48bbfeb2531417acfc78b836",
-    "buildId": "ef6ace74-a19c-4f72-99bd-b7ea66ce9823",
-    "fullTests": "PASS_100_OF_100_IN_21_FILES",
-    "uiTests": "PASS_8_OF_8_JSDOM",
+    "sourceSha": "878a22feeb94eefc9efe11fb72d47c3f483e4c18",
+    "buildId": "d3c373ca-7fc8-47b3-b358-625ad435bd5f",
+    "tests": "PASS_114_OF_114_IN_23_FILES",
+    "uiTests": "PASS_15_OF_15",
     "typescript": "PASS",
-    "vite": "PASS",
-    "licensingSourceGuard": "PASS_23_RESERVED_AND_2_CC",
-    "vanyaPipeline": {
-      "inspect": "PASS",
-      "check": "PASS",
-      "verify": "PASS_NOT_BROWSER_VISUAL"
-    },
-    "chunkWarning": "MAIN_JS_GT_500KB_NONBLOCKING"
+    "vite": "PASS_3_HTML",
+    "licenseGuard": "PASS",
+    "vanyaInspect": "PASS",
+    "vanyaCheck": "PASS",
+    "vanyaVerify": "PASS"
   },
   "release": {
     "worker": "ioc",
-    "versionId": "4368966b-f000-4eaa-a5db-38b1ef0e4ba0",
+    "version": "5f0d26b0-65ad-4a23-a79f-50f426758566",
+    "url": "https://aha.vanya-arc.dev/series/",
     "domains": [
       "aha.vanya-arc.dev",
       "ioc.vanya-arc.dev"
     ],
-    "status": "DEPLOYED_MANUAL_CF_BUILD",
-    "mainMerged": false
+    "status": "DEPLOYED_MANUAL"
   },
-  "runCompletion": "COMPLETE_SOURCE_BUILD_DEPLOY_NOT_HUMAN_RAT",
-  "staticReview": "SOURCE_REVIEWED_WITH_FOUR_SEMANTIC_PROBES",
-  "findings": [
-    {
-      "severity": "P1",
-      "finding": "Abstract negative first sentence was not a story",
-      "resolution": "Concrete actor, event, interruption and consequence"
-    },
-    {
-      "severity": "P1",
-      "finding": "Source-linked React double hook dispatcher",
-      "resolution": "Same React runtime in remote build, tests PASS"
-    },
-    {
-      "severity": "P1",
-      "finding": "Missing portable UI contract/test",
-      "resolution": "UI_CONTRACT.md and test:ui, Vanya UI pipeline PASS"
-    },
-    {
-      "severity": "P1",
-      "finding": "Nine technical scenes forced on beginner",
-      "resolution": "Curated 6 DIP/5 DI journey with expert view preserved"
-    },
-    {
-      "severity": "P2_UNVERIFIED",
-      "finding": "Actual mobile visuals, readability, keyboard, focus, 200% zoom",
-      "resolution": "BROWSER_NOT_RUN_CF_429"
-    },
-    {
-      "severity": "P2_UNVERIFIED",
-      "finding": "Can novices explain and enjoy story",
-      "resolution": "HUMAN_RAT_NOT_RUN"
-    }
-  ],
-  "browserVisualReview": "BLOCKED_CF_BROWSER_RENDERING_429_NOT_RUN",
-  "humanComprehensionRAT": "NOT_RUN",
-  "artAcceptance": "NOT_CLAIMED",
-  "ownerReview": "PENDING",
-  "prStatus": "OPEN_DRAFT_UNMERGED",
+  "humanRAT": "NOT_RUN",
+  "browserVisualQA": "NOT_RUN",
+  "ownerAcceptance": "NOT_YET_OBSERVED",
   "learning": {
-    "decision": "UPDATED",
+    "memoryDecision": "UPDATED",
     "memory": "docs/creative-loop/MEMORY.md",
-    "rule": "Verify person-event-obstacle-choice-consequence using only scene headings before writing UI or tests",
-    "confidence": "SOURCE_AND_OWNER_OLD_FAILURE_ONLY"
+    "insights": [
+      "One distinct pain/effect per episode",
+      "Action owns adapter effects, never React render",
+      "Independent channel receipts and retry only failures",
+      "Tests should assert domain semantics, not text uniqueness"
+    ]
   },
   "toolExtraction": {
     "decision": "REUSE",
-    "tools": [
-      "Vanya UI",
-      "Sarycheva/Arkhipov original redaktura & ux-copy",
-      "Motion",
-      "game-tools creative loop",
-      "existing reducer"
-    ],
-    "newToolCreated": false
-  }
+    "reason": "existing actual factory, Motion, Vanya UI and creative loop enough; no second-use generic engine"
+  },
+  "runCompletion": "COMPLETE_SOURCE_CODE_AND_REMOTE_BUILD_DEPLOY_WITH_HUMAN_RAT_UNVERIFIED",
+  "handoff": "docs/creative-loop/HANDOFF.md"
 }
