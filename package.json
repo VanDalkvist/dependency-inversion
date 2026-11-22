@@ -9,7 +9,7 @@
     "test": "vitest run",
     "deploy": "npm --prefix ../cloudflare-deploy run deploy:ioc",
     "check:licensing": "node scripts/check-licensing.mjs",
-    "test:ui": "vitest run src/player/GuidedExperience.test.tsx"
+    "test:ui": "vitest run src/player/GuidedExperience.test.tsx src/series/SeasonApp.test.tsx"
   },
   "dependencies": {
     "@vanya/ui": "file:../vanya-ui",

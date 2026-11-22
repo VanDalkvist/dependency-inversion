@@ -10,7 +10,7 @@ path = [
   "scripts/**",
   ".gitignore", "README.md", "BRAND.md", "LICENSING.md", "THIRD_PARTY_NOTICES.md",
   "REUSE.toml", "package.json", "package-lock.json", "tsconfig.json", "vite.config.ts",
-  "index.html", "di/index.html"
+  "index.html", "di/index.html", "series/index.html"
 ]
 precedence = "closest"
 SPDX-FileCopyrightText = "2026 Vanya Afanasov"
@@ -28,6 +28,14 @@ path = [
   "src/player/layout.css",
   "src/player/guided.css",
   "src/player/guided-copy.ts",
+  "src/series/model.ts",
+  "src/series/engine.ts",
+  "src/series/SeasonApp.tsx",
+  "src/series/season.css",
+  "docs/series/season-01/01-one-post.md",
+  "docs/series/season-01/02-both-channels.md",
+  "docs/series/season-01/03-who-sets-rules.md",
+  "docs/series/season-01/04-swap-writer.md",
   "docs/storyboards/AGENT_PUBLISHER_SCRIPT_V1.md",
   "docs/storyboards/AGENT_PUBLISHER_SCRIPT_V2_DIP.md",
   "src/player/GuidedExperience.tsx",

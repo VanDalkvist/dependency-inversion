@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { dedupe: ["react", "react-dom"] },
   build: {
-    rolldownOptions: { input: { dip: "index.html", di: "di/index.html" } },
+    rolldownOptions: { input: { dip: "index.html", di: "di/index.html", series: "series/index.html" } },
   },
   server: {
     host: "0.0.0.0",

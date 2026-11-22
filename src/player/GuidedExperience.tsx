@@ -215,6 +215,7 @@ export default function GuidedExperience({ story, navigation, onExplore, initial
           <ActionButton size="md" variant="text" type="button" onClick={() => onExplore(state)}>
             Посмотреть схему и код
           </ActionButton>
+          <a href="/series/">Сериал «Фабрика Ани»</a>
           <LessonDetails conclusion={story.conclusion} sources={story.sources} />
           {otherLessons.map((item) => <a href={item.href} key={item.href}>{item.title}</a>)}
         </div>

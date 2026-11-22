@@ -1,16 +1,20 @@
 import { useEffect } from "react";
 import StoryPlayer from "./player/StoryPlayer";
+import SeasonApp from "./series/SeasonApp";
 import { lessonForPath, lessons } from "./lessons";
 // Composition root owns lesson selection; the player imports no concrete lesson.
 export default function App() {
-  const lesson = lessonForPath(window.location.pathname);
+  const isSeason = /^\\/series(?:\\/|$)/.test(window.location.pathname);
+  const lesson = isSeason ? undefined : lessonForPath(window.location.pathname);
   useEffect(() => {
+    if (isSeason) return;
     document.title = `${lesson?.title ?? "Урок не найден"} — Vanya Arc / Aha!`;
     if (lesson)
       document
         .querySelector('meta[name="description"]')
         ?.setAttribute("content", lesson.story.subtitle);
-  }, [lesson]);
+  }, [lesson, isSeason]);
+  if (isSeason) return <SeasonApp />;
   if (!lesson)
     return (
       <main>
