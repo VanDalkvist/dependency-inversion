@@ -257,7 +257,10 @@ function PlayerSession({ story, navigation }: PlayerProps) {
                 onAnswer={answer}
                 hasNext={state.index < story.scenes.length - 1}
                 onContinue={() => dispatch({ type: "continue" })}
-                onShowVisual={() => setPane("graph")}
+                onShowVisual={() => {
+                  dispatch({ type: "pause" });
+                  setPane("graph");
+                }}
                 onReadMore={() => dispatch({ type: "pause" })}
               />
             </div>
