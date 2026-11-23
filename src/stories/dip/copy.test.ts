@@ -4,8 +4,11 @@ import { runExperiment } from "./experiment";
 import { architecture } from "./graphs";
 
 describe("content factory explanation",()=>{
-  it("establishes the content factory and concrete workflow before introducing contracts",()=>{
-    expect(story.subtitle).toContain("фабрики контента");
+  it("introduces the familiar helper before revealing the factory and contracts",()=>{
+    expect(story.hook).toBe("Аня отправила выпуск в Telegram");
+    expect(story.hook).not.toMatch(/^(Как|Почему|Зачем) не /);
+    expect(story.guidedScenes).toEqual(["first","growth","invert","channel","directions","sandbox"]);
+    expect(story.subtitle).toContain("тот же выпуск понадобился на сайте");
     expect(story.scenes[0].body).toContain("Фабрика контента");
     expect(story.scenes[0].body).toContain("согласования");
     expect(story.scenes[0].body).toContain("Telegram");

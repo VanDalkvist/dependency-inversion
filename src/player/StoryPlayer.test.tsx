@@ -60,6 +60,7 @@ const story: StoryDefinition = {
 describe("player walking skeleton", () => {
   it("resets session state when a different story is supplied", () => {
     const view = render(<StoryPlayer story={story} />);
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     fireEvent.click(screen.getByRole("button", { name: "Следующая сцена" }));
     view.rerender(
       <StoryPlayer
@@ -72,6 +73,7 @@ describe("player walking skeleton", () => {
   });
   it("renders an unrelated injected story, navigates and replays it", async () => {
     render(<StoryPlayer story={story} />);
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
     expect(screen.getByRole("heading", { name: "Не DIP" })).toBeTruthy();
     expect(screen.getByText("Это независимая история.")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Следующая сцена" }));

@@ -1,0 +1,366 @@
+/* Aha! narrative reading surface.
+   Uses @vanya/ui WorkflowStrip, ActionButton, ThemeToggle, CraftCard, Tag.
+   CSS below owns narrative composition, not copies of UI component behavior. */
+.experience {
+  --story-width: 1140px;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.6;
+}
+.experience-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, var(--story-width));
+  height: 76px;
+  padding: 0 32px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+.experience-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  white-space: nowrap;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 650;
+  letter-spacing: -.045em;
+}
+.experience-brand img { display: block; width: 44px; height: 27px; }
+.experience-brand strong { color: var(--accent); font-weight: 750; }
+.experience-brand-slash { margin: 0 4px; color: var(--ink-soft); font-weight: 400; }
+.experience-header .experience-theme { display: inline-flex; align-items: center; }
+.experience-main {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  gap: 31px;
+  width: min(100%, var(--story-width));
+  padding: 30px 32px 42px;
+  margin: 0 auto;
+}
+/* Vanya UI supplies the semantics, progressbar and interaction contract. */
+.experience-progress.ui-workflow-strip {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  margin: 0;
+  padding: 0;
+  gap: 12px;
+  /* The page header owns the only separator. Vanya UI's generic
+     WorkflowStrip has a border-block default; suppress both edges here. */
+  border: 0;
+  background: transparent;
+}
+.experience-progress .ui-workflow-strip-leading {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 14px;
+  font-size: 14px;
+}
+.experience-progress .ui-workflow-strip-leading > strong {
+  white-space: nowrap;
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 650;
+}
+.experience-progress .ui-workflow-strip-status {
+  color: var(--ink-soft);
+  white-space: nowrap;
+  font-size: 14px;
+}
+.experience-progress .ui-workflow-strip-progress {
+  height: 4px;
+  flex: 1;
+  width: auto;
+  margin-left: 8px;
+}
+.experience-progress .ui-workflow-strip-progress > span { background: var(--accent); }
+.experience-beat {
+  display: grid;
+  grid-template-columns: minmax(0,1.08fr) minmax(320px, .92fr);
+  grid-template-areas:
+    "intro visual"
+    "decision visual"
+    "practice practice";
+  align-items: start;
+  gap: 26px 42px;
+  min-width: 0;
+}
+.experience-introduction { grid-area: intro; min-width: 0; }
+.experience-eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.experience-introduction h1 {
+  max-width: 660px;
+  margin: 0;
+  font-size: clamp(37px, 3.5vw, 52px);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+.experience-introduction h1:focus { outline: 0; }
+.experience-description {
+  max-width: 58ch;
+  margin-top: 21px;
+  font-size: clamp(18px,1.6vw,21px);
+  line-height: 1.63;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.experience-illustration { grid-area: visual; min-width: 0; }
+.experience-decision { grid-area: decision; min-width: 0; align-self: start; }
+.experience-decision h2 {
+  margin: 0 0 17px;
+  font-size: clamp(21px,2.2vw,25px);
+  line-height: 1.35;
+  letter-spacing: -.035em;
+  font-weight: 650;
+}
+.experience-options { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+.experience-option.ui-action-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 67px;
+  padding: 16px 20px;
+  border-radius: 9px;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 600;
+  white-space: normal;
+  text-align: left;
+}
+.experience-option svg { flex: none; color: var(--accent); }
+.experience-option[data-attempted="true"] { background: var(--accent-soft); }
+.experience-primary.ui-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 65px;
+  max-width: 100%;
+  min-width: min(100%, 330px);
+  border-radius: 9px;
+  padding: 14px 22px;
+  background: var(--accent);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 700;
+  text-decoration: none;
+}
+.experience .experience-primary.ui-action-button:hover:not(:disabled) {
+  background: var(--accent);
+  color: white;
+  filter: brightness(.94);
+}
+.experience-primary svg { flex: none; }
+.experience-feedback {
+  max-width: 58ch;
+  margin: 14px 0 0;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.experience-feedback.is-retry { padding: 13px 16px; background: var(--surface-inset); border-radius: 8px; }
+.experience-feedback.is-success { margin-bottom: 22px; font-weight: 500; }
+.experience-selected {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.experience-selected svg { color: var(--accent); }
+.experience-finish h2 { margin: 4px 0 12px; }
+.experience-finish p {
+  margin: 0 0 24px;
+  max-width: 58ch;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.experience-practice { grid-area: practice; width: 100%; min-width: 0; padding-top: 25px; border-top: 1px solid var(--border); }
+/* The scene is a prop in a narrative, not a diagram dashboard. The displayed
+   paper and channels use real Vanya UI CraftCard and Tag primitives. */
+.story-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  padding: 22px;
+  background: var(--surface-inset);
+  border-radius: 15px;
+  overflow: clip;
+}
+.story-visual-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.story-visual-eyebrow {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: .04em;
+}
+.story-visual-header .ui-size { font-size: 12px; line-height: 1.45; }
+.story-paper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 238px;
+  padding: 26px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 9px 22px -17px color-mix(in srgb, var(--ink) 38%, transparent);
+}
+.story-paper-top { display: flex; align-items: center; gap: 10px; color: var(--accent); }
+.story-paper-top span {
+  font: 600 12px/1.4 var(--font-mono);
+  letter-spacing: .06em;
+}
+.story-paper h3 {
+  margin: 0;
+  font-size: 29px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+.story-paper p {
+  max-width: 36ch;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.story-paper-stamp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.story-paper-stamp svg { flex: none; }
+.story-delivery { padding-top: 1px; }
+.story-delivery-line {
+  display: flex;
+  justify-content: center;
+  height: 22px;
+  margin-bottom: 6px;
+}
+.story-delivery-line > span { height: 100%; width: 2px; background: var(--accent); opacity: .6; border-radius: 99px; }
+.story-channel-list { display: flex; flex-direction: column; gap: 10px; }
+.story-channel-motion { width: 100%; }
+.story-channel {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 91px;
+  padding: 16px 18px;
+  border-radius: 9px;
+  background: var(--surface);
+}
+.story-channel > svg:first-child { flex: none; color: var(--accent); }
+.story-channel > div { min-width: 0; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.story-channel strong { font-size: 19px; line-height: 1.25; font-weight: 650; }
+.story-channel div span { font-size: 15px; line-height: 1.35; color: var(--ink-soft); }
+.story-channel-check { flex: none; color: var(--accent); }
+.story-channel-waiting { border-style: dashed; background: transparent; }
+.story-channel-ready { border-color: color-mix(in srgb, var(--accent) 30%, var(--border)); }
+.story-visual-consequence {
+  margin: 0;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.story-assistant-caption { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); font-size: 16px; line-height: 1.4; }
+.story-assistant-caption svg { color: var(--accent); flex: none; }
+.experience-secondary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 27px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+.experience-secondary .ui-action-button { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; }
+.experience-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px;
+  width: min(100%, var(--story-width));
+  margin: 0 auto;
+  padding: 20px 32px 28px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.experience-extra-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.experience-extra-links .ui-action-button { font-size: 14px; }
+.experience .lesson-details-button { padding: 6px 0; border: 0; background: transparent; color: var(--ink-soft); font-size: 14px; }
+.experience .lesson-details-button:hover { color: var(--ink); }
+@media (max-width: 880px) {
+  .experience-beat {
+    grid-template-columns: minmax(0,1fr);
+    grid-template-areas: "intro" "decision" "visual" "practice";
+    gap: 24px;
+  }
+  .experience-main { max-width: 720px; }
+  .experience-illustration { max-width: 650px; }
+  .experience-description { margin-top: 14px; }
+}
+@media (max-width: 520px) {
+  .experience-header { height: 68px; padding: 0 18px; }
+  .experience-brand { font-size: 18px; gap: 7px; }
+  .experience-brand img { width: 38px; }
+  .experience-main { padding: 24px 18px 34px; gap: 22px; }
+  .experience-introduction h1 { font-size: clamp(31px, 9vw, 40px); line-height: 1.18; }
+  .experience-description { font-size: 18px; line-height: 1.58; }
+  .experience-eyebrow { margin-bottom: 9px; font-size: 13px; }
+  .experience-decision h2 { font-size: 21px; margin-bottom: 13px; }
+  .experience-option.ui-action-button { min-height: 61px; padding: 13px 16px; font-size: 17px; }
+  .experience-primary.ui-action-button { width: 100%; min-width: 0; min-height: 60px; font-size: 17px; }
+  .experience-feedback { font-size: 17px; }
+  .story-visual { padding: 13px; gap: 12px; }
+  .story-paper { min-height: 200px; padding: 20px; }
+  .story-paper h3 { font-size: 25px; }
+  .story-paper p { font-size: 16px; }
+  .story-channel { min-height: 82px; padding: 13px 14px; }
+  .experience-footer { padding: 20px 18px 26px; }
+  .experience-progress .ui-workflow-strip-leading { gap: 9px; }
+  .experience-progress .ui-workflow-strip-progress { margin-left: 0; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .experience, .experience * { scroll-behavior: auto; }
+}

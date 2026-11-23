@@ -10,6 +10,10 @@ export default function Narration({
   answer,
   feedback,
   onAnswer,
+  hasNext,
+  onContinue,
+  onShowVisual,
+  onReadMore,
 }: {
   scene: StoryScene;
   playing: boolean;
@@ -17,6 +21,10 @@ export default function Narration({
   answer?: string;
   feedback: string | null;
   onAnswer: (id: string) => void;
+  hasNext: boolean;
+  onContinue: () => void;
+  onShowVisual: () => void;
+  onReadMore: () => void;
 }) {
   const [readingOriginal, setReadingOriginal] = useState(false);
   const [insightOpen, setInsightOpen] = useState(false);
@@ -31,7 +39,7 @@ export default function Narration({
         ) : answered ? (
           <>
             <Check size={13} />
-            Шаг завершён
+            Получилось!
           </>
         ) : (
           <>
@@ -42,7 +50,10 @@ export default function Narration({
         {scene.insight && (
           <button
             className="insight-button"
-            onClick={() => setInsightOpen(true)}
+            onClick={() => {
+              onReadMore();
+              setInsightOpen(true);
+            }}
           >
             <Info size={13} />
             Почему это важно
@@ -100,9 +111,22 @@ export default function Narration({
       {feedback && (
         <button
           className="feedback-switch"
-          onClick={() => setReadingOriginal(!readingOriginal)}
+          onClick={() => {
+            if (!readingOriginal) onReadMore();
+            setReadingOriginal(!readingOriginal);
+          }}
         >
           {readingOriginal ? "Показать ответ" : "Показать объяснение"}
+        </button>
+      )}
+      {answered && (
+        <button className="mobile-show-graph" onClick={onShowVisual}>
+          Посмотреть, что изменилось на схеме <ArrowRight size={15} />
+        </button>
+      )}
+      {answered && hasNext && (
+        <button className="scene-continue" onClick={onContinue}>
+          Дальше сейчас <ArrowRight size={16} />
         </button>
       )}
       <div className="narration-bottom">

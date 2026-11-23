@@ -4,13 +4,16 @@ import { injectionExperiment } from "./experiment";
 export const dependencyInjectionStory: StoryDefinition = {
   id: "dependency-injection",
   title: "Внедрение зависимостей",
+  hook: "Аня собирает помощника для новостей",
+  guidedScenes: ["root", "channel", "run", "swap", "sandbox"],
   subtitle:
-    "Продолжение фабрики контента: кто выбирает сервисы и как сценарий получает готовые зависимости.",
+    "У Ани уже есть новости и редактор. Она будет менять место публикации перед выпуском и запускать одного помощника с разными инструментами.",
+  purpose: "Ты соберёшь выпуск, заменишь канал и увидишь, почему сам процесс остался прежним.",
   topic: "dependency injection",
   chapters: [
-    { id: "choose", title: "Выбор сервисов" },
-    { id: "inject", title: "Передать и запустить" },
-    { id: "check", title: "Подмена и проверка" },
+    { id: "choose", title: "Собираем помощника" },
+    { id: "inject", title: "Запускаем выпуск" },
+    { id: "check", title: "Меняем канал" },
   ],
   viewLabels: { assembly: "Сборка", runtime: "Вызовы" },
   scenes: injectionScenes,

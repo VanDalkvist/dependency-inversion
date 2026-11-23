@@ -4,8 +4,11 @@ import { experiment } from "./experiment";
 export const dependencyInversionStory: StoryDefinition = {
   id: "dependency-inversion",
   title: "Инверсия зависимостей",
+  hook: "Аня отправила выпуск в Telegram",
+  guidedScenes: ["first", "growth", "invert", "channel", "directions", "sandbox"],
   subtitle:
-    "На примере фабрики контента: как менять источники, AI-редактора и каналы публикации, не переписывая сценарий выпуска.",
+    "К обеду тот же выпуск понадобился на сайте. Аня ищет способ подключать новые каналы и сохранять привычную работу помощника.",
+  purpose: "Ты увидишь разницу между жёсткой привязкой к сервису и заменяемым способом работы.",
   topic: "dependency inversion principle",
   viewLabels: { code: "Зависимости кода", runtime: "Порядок работы" },
   conclusion: {

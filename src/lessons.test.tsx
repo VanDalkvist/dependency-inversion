@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import App from "./App";
 beforeEach(() => {
   vi.stubGlobal("localStorage", { getItem: () => null, setItem() {} });
@@ -20,8 +20,9 @@ afterEach(() => {
 it.each(["/di/", "/di"])("loads the DI continuation directly at %s", (path) => {
   history.replaceState(null, "", path);
   render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   expect(
-    screen.getByRole("heading", { level: 1, name: "Внедрение зависимостей" }),
+    screen.getByRole("heading", { level: 1, name: "Аня собирает помощника для новостей" }),
   ).toBeTruthy();
   const link = screen.getByRole("link", {
     name: "DI — Внедрение зависимостей",
@@ -37,12 +38,13 @@ it.each(["/di/", "/di"])("loads the DI continuation directly at %s", (path) => {
 it("keeps the original lesson and external new-tab link", () => {
   history.replaceState(null, "", "/");
   render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   expect(
-    screen.getByRole("heading", { level: 1, name: "Инверсия зависимостей" }),
+    screen.getByRole("heading", { level: 1, name: "Аня отправила выпуск в Telegram" }),
   ).toBeTruthy();
   expect(
-    screen.getByRole("link", { name: "vanya-arc.dev" }).getAttribute("target"),
-  ).toBe("_blank");
+    screen.getByRole("link", { name: "Vanya Arc / Aha! — интерактивные истории" }).getAttribute("href"),
+  ).toBe("/");
   expect(
     screen
       .getByRole("link", { name: "DIP — Инверсия зависимостей" })

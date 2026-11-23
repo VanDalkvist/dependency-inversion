@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 5,
+  "phase": "handoff",
+  "status": "COMPLETE",
+  "runMode": "ONE_INVOCATION",
+  "cycleId": "aha-content-factory-season-2026-11-23-06",
+  "repository": "VanDalkvist/dependency-inversion",
+  "branch": "feat/ioc-creative-loop-ux-20261122",
+  "pr": "https://github.com/VanDalkvist/dependency-inversion/pull/1",
+  "prDraft": true,
+  "mainMerged": false,
+  "method": "game-tools/world-creative-loop adapted to educational series",
+  "memoryReplay": {
+    "status": "READ_BEFORE_RESEARCH",
+    "source": "docs/creative-loop/MEMORY.md",
+    "decisions": [
+      "APPLY concrete character/conflict",
+      "SUPERSEDE adding website as DIP proof",
+      "APPLY Vanya UI source",
+      "APPLY actual visual consequences"
+    ]
+  },
+  "job": "Progressively teach four distinct architectural ideas through one content-factory agent's realistic editing/publishing pain",
+  "research": "docs/creative-loop/2026-11-23-content-factory-season-06.md",
+  "webReviewSequence": "EP1_SCRIPT_REVIEW_THEN_EP2_SCRIPT_REVIEW_THEN_EP3_SCRIPT_REVIEW_THEN_EP4_SCRIPT_REVIEW",
+  "scripts": [
+    "docs/series/season-01/01-one-post.md",
+    "docs/series/season-01/02-both-channels.md",
+    "docs/series/season-01/03-who-sets-rules.md",
+    "docs/series/season-01/04-swap-writer.md"
+  ],
+  "candidateCount": 12,
+  "criticMode": "ADVERSARIAL_SELF_PASS_NOT_INDEPENDENT",
+  "targetExperiences": 4,
+  "deliveredExperiences": 4,
+  "critic": {
+    "accepted": [
+      2,
+      4,
+      6,
+      9,
+      10
+    ],
+    "vetoed": [
+      1,
+      3,
+      5,
+      7,
+      8,
+      11
+    ],
+    "reworked": [
+      12
+    ]
+  },
+  "deliveries": [
+    {
+      "id": "one-post",
+      "action": "reuse approved post",
+      "consequence": "one Saturday date on both browser-local artifacts",
+      "source": "src/series/engine.ts"
+    },
+    {
+      "id": "both-channels",
+      "action": "compose two publishers",
+      "consequence": "two receipts and site-only retry preserving Telegram result",
+      "source": "src/series/engine.ts"
+    },
+    {
+      "id": "rules",
+      "action": "move format rule to site adapter",
+      "consequence": "the same HTML fault changes adapter instead of high-level factory",
+      "source": "src/series/SeasonApp.tsx"
+    },
+    {
+      "id": "injection",
+      "action": "inject ready localWriter",
+      "consequence": "actual factory localWriter run with two artifacts",
+      "source": "src/series/engine.ts"
+    }
+  ],
+  "staticReview": {
+    "method": "SOURCE_REVIEW_AND_REAL_TESTS",
+    "trace": "App → SeasonApp onClick → playChoice → Publisher and assembleFactory → receipts → visual stage",
+    "runtime": "No effect calls during React render, no duplicate new state owner in old films",
+    "entrypoint": "Vite /series/index.html uploaded to existing Worker; / and /di/ retained",
+    "completeness": "Real browser-local artifact results and actual local writer invocation; scripted fictional chat",
+    "findings": [
+      {
+        "severity": "P1",
+        "issue": "Effectful calls in React rendering",
+        "decision": "FIXED"
+      },
+      {
+        "severity": "P1",
+        "issue": "Website retry risked duplicate Telegram delivery",
+        "decision": "FIXED"
+      },
+      {
+        "severity": "P2",
+        "issue": "UI visual/manual human verification unavailable",
+        "decision": "UNVERIFIED"
+      }
+    ],
+    "architectureVerdict": "SOURCE_REVIEWED+TESTED",
+    "productVerdict": "SOURCE_REVIEWED_HUMAN_NOT_RUN"
+  },
+  "build": {
+    "sourceSha": "878a22feeb94eefc9efe11fb72d47c3f483e4c18",
+    "buildId": "d3c373ca-7fc8-47b3-b358-625ad435bd5f",
+    "tests": "PASS_114_OF_114_IN_23_FILES",
+    "uiTests": "PASS_15_OF_15",
+    "typescript": "PASS",
+    "vite": "PASS_3_HTML",
+    "licenseGuard": "PASS",
+    "vanyaInspect": "PASS",
+    "vanyaCheck": "PASS",
+    "vanyaVerify": "PASS"
+  },
+  "release": {
+    "worker": "ioc",
+    "version": "5f0d26b0-65ad-4a23-a79f-50f426758566",
+    "url": "https://aha.vanya-arc.dev/series/",
+    "domains": [
+      "aha.vanya-arc.dev",
+      "ioc.vanya-arc.dev"
+    ],
+    "status": "DEPLOYED_MANUAL"
+  },
+  "humanRAT": "NOT_RUN",
+  "browserVisualQA": "NOT_RUN",
+  "ownerAcceptance": "NOT_YET_OBSERVED",
+  "learning": {
+    "memoryDecision": "UPDATED",
+    "memory": "docs/creative-loop/MEMORY.md",
+    "insights": [
+      "One distinct pain/effect per episode",
+      "Action owns adapter effects, never React render",
+      "Independent channel receipts and retry only failures",
+      "Tests should assert domain semantics, not text uniqueness"
+    ]
+  },
+  "toolExtraction": {
+    "decision": "REUSE",
+    "reason": "existing actual factory, Motion, Vanya UI and creative loop enough; no second-use generic engine"
+  },
+  "runCompletion": "COMPLETE_SOURCE_CODE_AND_REMOTE_BUILD_DEPLOY_WITH_HUMAN_RAT_UNVERIFIED",
+  "handoff": "docs/creative-loop/HANDOFF.md"
+}

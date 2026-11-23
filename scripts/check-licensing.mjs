@@ -44,7 +44,7 @@ if (pkg.license !== "SEE LICENSE IN LICENSING.md") {
 }
 
 const reserved = new Set(scope("LicenseRef-Aha-Film"));
-const cc = new Set(manifest.includes('SPDX-License-Identifier = "CC-BY-4.0"') ? scope("CC-BY-4.0") : []);
+const cc = new Set(scope("CC-BY-4.0"));
 const source = scope("MIT");
 if (!source.includes("src/**")) throw new Error("MIT engine scope is missing");
 if (!reserved.has("src/styles.css") || !reserved.has("src/player/layout.css")) {

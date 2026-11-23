@@ -146,12 +146,13 @@ export default function Stage({
           return (
             <motion.g
               key={node.id}
-              initial={{ opacity: 0, x: node.x, y: node.y }}
-              animate={{ opacity: 1, x: node.x, y: node.y }}
+              initial={{ opacity: reduced ? 1 : 0, scale: reduced ? 1 : 0.96, x: node.x, y: node.y }}
+              animate={{ opacity: 1, scale: 1, x: node.x, y: node.y }}
               exit={{ opacity: 0 }}
               transition={{
-                x: { type: "spring", stiffness: 150, damping: 24 },
-                y: { type: "spring", stiffness: 150, damping: 24 },
+                x: { type: "spring", stiffness: 170, damping: 24 },
+                y: { type: "spring", stiffness: 170, damping: 24 },
+                scale: { duration: reduced ? 0 : 0.22 },
                 opacity: {
                   duration: reduced ? 0 : 0.2,
                   delay: reduced ? 0 : (node.appearAfter ?? 0),

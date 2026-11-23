@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="65 45 620 300" role="img" aria-label="Aha!">
+  <style>
+    .ink { stop-color: #25211f; }
+    @media (prefers-color-scheme: dark) { .ink { stop-color: #f7f4ef; } }
+  </style>
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="97" y1="0" x2="595" y2="0">
+      <stop class="ink" offset="0%"/><stop class="ink" offset="38%"/>
+      <stop offset="60%" stop-color="#c55a2a"/><stop offset="100%" stop-color="#c55a2a"/>
+    </linearGradient>
+  </defs>
+  <path d="M 97 293 C 125 259, 140 248, 160 252 C 206 252, 223 319, 275 319 C 342 319, 373 149, 477 149 C 530 149, 564 182, 595 227" fill="none" stroke="url(#g)" stroke-width="33" stroke-linecap="round" stroke-linejoin="round"/>
+  <g stroke="#c55a2a" stroke-width="21" fill="none" stroke-linecap="round">
+    <path d="M 544 98 L 552 55"/><path d="M 600 113 L 629 75"/><path d="M 635 170 L 672 159"/>
+  </g>
+</svg>

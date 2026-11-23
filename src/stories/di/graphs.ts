@@ -45,6 +45,9 @@ function regions(
   phase: number,
   run: Observation | undefined,
 ): StageView["regions"] {
+  // Cold start: one recognizable helper, with no architecture regions yet.
+  if (phase === 0 && !context.answers.root && context.attempt !== "inside")
+    return [];
   return [
     {
       id: "application",
@@ -66,7 +69,7 @@ function regions(
           },
         ]
       : []),
-    {
+    ...(phase === 0 && context.attempt !== "inside" ? [] : [{
       id: "catalog",
       label:
         phase === 8
@@ -80,7 +83,7 @@ function regions(
       y: 20,
       width: 305,
       height: 490,
-    },
+    }]),
   ];
 }
 function note(phase: number, run: Observation | undefined) {
@@ -101,8 +104,23 @@ export function lessonView(context: StoryContext, phase: number): StageView {
     context.attempt ?? "",
   );
   const run = phase === 8 ? undefined : observation(context);
+  const firstFrame = phase === 0 && !context.answers.root && context.attempt !== "inside";
+  const helper = scenarioNode(context.attempt === "inside");
+  if (firstFrame) {
+    Object.assign(helper, {
+      x: 365,
+      y: 145,
+      width: 270,
+      height: 230,
+      label: "Помощник для выпуска",
+      subtitle: "Собирает новости и готовит пост",
+      body: ["Находит материалы", "Готовит черновик", "Отправляет публикацию"],
+      lines: undefined,
+      linesLabel: undefined,
+    });
+  }
   const nodes = [
-    scenarioNode(context.attempt === "inside"),
+    helper,
     ...assemblyNodes(context, phase, config),
   ];
   if (bad) nodes.push(warningNode(context.attempt!));

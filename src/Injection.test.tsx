@@ -6,6 +6,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import App from "./App";
 import { runInjectionExperiment } from "./stories/di/experiment";
@@ -25,8 +26,38 @@ afterEach(() => {
   cleanup();
   history.replaceState(null, "", "/");
 });
+it("keeps the mobile explanation visible and offers one obvious next action", async () => {
+  render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
+  fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
+  const reveal = screen.getByRole("button", { name: /Посмотреть, что изменилось на схеме/ });
+  expect(reveal).toBeTruthy();
+  fireEvent.click(reveal);
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("graph");
+  expect(screen.getByRole("button", { name: "Воспроизвести" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: /Текст/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Дальше сейчас" }));
+  await waitFor(() =>
+    expect(document.querySelector(".film")?.getAttribute("data-scene")).toBe("source"),
+  );
+  expect(document.querySelector(".film")?.getAttribute("data-pane")).toBe("text");
+  const narration = document.querySelector(".narration") as HTMLElement;
+  expect(within(narration).getByRole("button", { name: "Выбрать RSS" })).toBeTruthy();
+});
+it("does not advance underneath a deliberately opened explanation", () => {
+  render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
+  fireEvent.click(screen.getByRole("button", { name: "Подключать инструменты снаружи" }));
+  expect(screen.getByRole("button", { name: "Пауза" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Показать объяснение" }));
+  expect(screen.getByRole("button", { name: "Воспроизвести" })).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Дальше сейчас" })).toBeTruthy();
+});
 it("builds through clickable cards and carries selections into the sandbox", async () => {
   render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 2:/ }));
   fireEvent.click(
     document.querySelector('[data-node-id="source-aggregate"] .node-select')!,
@@ -60,6 +91,7 @@ it("builds through clickable cards and carries selections into the sandbox", asy
 });
 it("runs the configured factory and renders the actually captured Draft", async () => {
   render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть схему и код" }));
   fireEvent.click(screen.getByRole("button", { name: /Перейти к сцене 9:/ }));
   fireEvent.change(screen.getByLabelText("Источник материалов"), {
     target: { value: "aggregate" },

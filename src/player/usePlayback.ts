@@ -1,13 +1,12 @@
 import { useEffect, useReducer } from "react";
 import type { StoryDefinition } from "./contracts";
-import { createPlayback, playback } from "./playback";
+import { createPlayback, playback, type PlaybackState } from "./playback";
 import { presentScene } from "./interaction";
-export function usePlayback(story: StoryDefinition) {
+export function usePlayback(story: StoryDefinition, initialState?: PlaybackState | null) {
   const [state, dispatch] = useReducer(
     (s: ReturnType<typeof createPlayback>, e: Parameters<typeof playback>[2]) =>
       playback(story, s, e),
-    undefined,
-    createPlayback,
+    initialState ?? createPlayback(),
   );
   useEffect(() => {
     if (!state.playing) return;

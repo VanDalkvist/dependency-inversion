@@ -24,7 +24,7 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Production: https://ioc.vanya-arc.dev/; deployed source 53a2774; version 83a83c75-470c-46f3-bb38-b929196f55aa. HTML title and both JS/CSS hashes verified against the local production output.
 - Public Chrome: all 9 scenes at 1440px and 390px; no page/text overflow. Actual Publisher inversion and runtime view checked; 4 received materials → 3 selected → 2 local documents on approval; 0 documents on denial.
 - Author review only; no independent reviewer was spawned. No external model or publication calls were added. Existing unrelated workspace WIP preserved.
-- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/content-factory/.
+- Evidence: [local review evidence, not bundled].
 
 ## Scenario card — 2026-11-05
 
@@ -34,7 +34,7 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Public Chrome: all nine scenes plus seven resolved states at 1440px; all nine at 390px. No clipped SVG text, page overflow or raw API fields in the visible policy card. Inspector exposes the original API specifics and code; full inversion retains rules while showing MaterialSource / DraftWriter / Publisher.
 - Existing approval path still produces two local documents and none on denial. Light/dark captures retained.
 - Deployment source 71f3d9a; version 52723fd9-a963-44de-93ef-4dee2944c022. Both public entry assets exactly match the checked build.
-- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/scenario-card/. Author review only, no independent acceptance claim.
+- Evidence: [local review evidence, not bundled]. Author review only, no independent acceptance claim.
 
 ## Viewport player — 2026-11-05
 
@@ -45,7 +45,7 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - Verification: 49 tests PASS, production build PASS. Public browser checks covered 139 before/after/pane states at 1920×1080, 1440×900, 1366×768, 1280×720, 900×768, 390×844 and 375×667; no page scroll before the final scene, text clipping or offscreen transport.
 - Native Escape/focus return, runtime view, fullscreen, SVG keyboard inspection, and two approved / zero denied publication documents verified publicly. Reset removes the extra block and returns the page to one viewport.
 - Deployment: source e68f117, version d5e55b00-31ff-4ae7-a1c2-c0ca4d2f0385; public asset hashes match the production build.
-- Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/viewport/. The long browser matrix was split into bounded batches after the host RPC deadline stopped the first public run; the four completed public batches are the acceptance evidence.
+- Evidence: [local review evidence, not bundled]. The long browser matrix was split into bounded batches after the host RPC deadline stopped the first public run; the four completed public batches are the acceptance evidence.
 - Author review only; no independent reviewer was spawned. Extreme dimensions/zoom outside the listed matrix are not claimed as verified.
 
 ## Header new-tab link — 2026-11-05
@@ -57,9 +57,9 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 ## 2026-11-07 — DI continuation and interaction correction
 
 - Published /di/ alongside DIP; shared content-factory contracts/pipeline/adapters, native header links and private cloudflare-deploy ioc target. Source 18327e1, deployment fe56ce2c-454d-47be-bf26-d836f1dba05f.
-- Technical evidence: 67 passing tests and production build; public entry assets match local bytes. Chrome checked 98 DI and 139 DIP viewport states; approved recording Publisher captured Draft, denial invoked zero publishers, both channels produced actual local documents. Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/di/.
+- Technical evidence: 67 passing tests and production build; public entry assets match local bytes. Chrome checked 98 DI and 139 DIP viewport states; approved recording Publisher captured Draft, denial invoked zero publishers, both channels produced actual local documents. Evidence: [local review evidence, not bundled].
 - USER CORRECTION: technically working initial DI is not accepted as sufficiently visual or interactive. Do not equate passing tests/browser bounds with teaching acceptance.
-- Revision approved and published: clickable service cards move into ports; choices persist; wrong attempts alter the graph and can be corrected; actual runs show materials/Draft/documents; channel replacement and recording/denial are executable; sandbox settings and assembly stay synchronized. Source cde716c; deployment 5301ed8b-8973-498b-89a6-55d5da4fe8a3. Verification: 75 tests pass, production build passes, 96 viewport states at four sizes pass; full public browser journey and exact live JS/CSS byte comparison pass. Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/di-v2/. Author verification, not independent teaching acceptance.
+- Revision approved and published: clickable service cards move into ports; choices persist; wrong attempts alter the graph and can be corrected; actual runs show materials/Draft/documents; channel replacement and recording/denial are executable; sandbox settings and assembly stay synchronized. Source cde716c; deployment 5301ed8b-8973-498b-89a6-55d5da4fe8a3. Verification: 75 tests pass, production build passes, 96 viewport states at four sizes pass; full public browser journey and exact live JS/CSS byte comparison pass. Evidence: [local review evidence, not bundled]. Author verification, not independent teaching acceptance.
 - Review remains author-only. Preserve unrelated workspace changes. Previous technical receipts remain historical evidence, not product approval.
 
 ## 2026-11-07 — copy clarity and predictable diagram controls
@@ -67,9 +67,9 @@ Base: dbc242b. User approved editorial pipeline, with DIP focus and reusable sto
 - User correction: explain what each dependency gives the scenario and what to click; the same card must not unexpectedly switch between selection and inspection.
 - DI now uses explicit controls: selection is labelled «Выбрать», current choices «Выбрано», inactive services identify their step. The separate ⓘ control opens description/code; results have named «Открыть» buttons. Original DIP keeps its consistent inspector behavior.
 - Rewrote all ten DI steps around purpose → action → visible result. «Проверочный Publisher» is now «Запись выпуска»: it receives and saves the actual draft for checking. Draft/material/result dialogs show readable content immediately, including the actual captured argument and the empty denied run.
-- Verification: 78 tests, production build, 96 viewport states at four sizes; public choice/info/readable-result/denial journey and original DIP inspector pass. Live JS/CSS exactly match build e4ab0a9. Deployment 0bdafc4a-4933-429d-9f80-61350a8e6d3e; evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/di-clarity/. Author verification only.
+- Verification: 78 tests, production build, 96 viewport states at four sizes; public choice/info/readable-result/denial journey and original DIP inspector pass. Live JS/CSS exactly match build e4ab0a9. Deployment 0bdafc4a-4933-429d-9f80-61350a8e6d3e; evidence: [local review evidence, not bundled]. Author verification only.
 
 ## 2026-11-07 — remove approval from DI
 
 - User removed approval as a distracting business rule. DI now has nine scenes, three service selectors and a two-argument runFactory that always invokes the configured publishers. Removed the approval branch, scenario-card rule, code-example argument and unrelated teaching article. DIP retains its approval behavior; shared draft preparation is behavior-preserving.
-- Verified: 83 tests/build pass; all nine public DI scenes have no approval wording, configured publishers produce actual documents, 26 narrow-screen states pass, and the original DIP denial still produces zero documents. Deployed source 7150782, version 2ad1473e-6b18-4cdf-97da-a8c3985ee5ef; live assets match build. Evidence: /Users/vanya/.bb/thread-storage/thr_pq8ws4r4w8/di-no-approval/. Author verification.
+- Verified: 83 tests/build pass; all nine public DI scenes have no approval wording, configured publishers produce actual documents, 26 narrow-screen states pass, and the original DIP denial still produces zero documents. Deployed source 7150782, version 2ad1473e-6b18-4cdf-97da-a8c3985ee5ef; live assets match build. Evidence: [local review evidence, not bundled]. Author verification.
