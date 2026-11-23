@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "id": "aha",
+    "name": "aha! · интерактивные истории",
+    "kind": "experiment",
+    "description": "Короткие интерактивные истории, в которых человек через выбор и последствия разбирается в идеях организации работы с AI-агентами и инструментами. Первый сезон — «Фабрика Ани», четыре эпизода.",
+    "updatedAt": "2026-11-23",
+    "url": "https://aha.vanya-arc.dev/",
+    "icon": "lightbulb",
+    "links": {
+      "versions": [
+        {
+          "label": "aha! · первый сезон",
+          "url": "https://aha.vanya-arc.dev/series/",
+          "description": "Опубликованные четыре учебных эпизода «Фабрики Ани»; пользовательская понятность ещё не проверена.",
+          "status": "current"
+        },
+        {
+          "label": "DIP · технический фильм",
+          "url": "https://aha.vanya-arc.dev/",
+          "description": "Ранняя интерактивная история о принципе инверсии зависимостей.",
+          "status": "current"
+        },
+        {
+          "label": "DI · технический фильм",
+          "url": "https://aha.vanya-arc.dev/di/",
+          "description": "Отдельная интерактивная история о внедрении зависимостей.",
+          "status": "current"
+        }
+      ],
+      "resources": [
+        {
+          "label": "Исходники",
+          "url": "https://github.com/VanDalkvist/dependency-inversion",
+          "description": "Исходный репозиторий aha!, включая сцены и движок."
+        },
+        {
+          "label": "Сценарная библия",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md",
+          "description": "Обещание зрителю, драматургия, сценарии и критерий понимания."
+        },
+        {
+          "label": "Creative Loop 06",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/creative-loop/2026-11-23-content-factory-season-06.md",
+          "description": "Результаты исследований и доработок сезона."
+        },
+        {
+          "label": "Релиз и ограничения",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/README.md",
+          "description": "Публикация, проведённые тесты, ограничения реальных API и визуальной проверки."
+        }
+      ]
+    }
+  },
+  "enabledModules": [
+    "product",
+    "launch",
+    "work",
+    "demand"
+  ],
+  "modules": {
+    "product": {
+      "state": "active",
+      "summary": "Публичная серия интерактивных историй, предлагающих не читать объяснение абстрактного принципа, а попробовать решение на конкретной проблеме. Продуктовая гипотеза сформулирована, понимание новыми людьми ещё не проверено.",
+      "evidence": [
+        {
+          "label": "Продукт и публикация",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/README.md"
+        },
+        {
+          "label": "Обещание зрителю",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+        }
+      ],
+      "nextAction": {
+        "title": "Провести тест понимания первого эпизода с людьми вне разработки",
+        "owner": "me",
+        "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+      },
+      "data": {
+        "audience": "Гипотеза: любознательные люди, не обязательно разработчики, которым интересны понятные идеи об агентах и небольших инструментах.",
+        "valueProposition": "Через действия в короткой истории увидеть последствия выбора и самостоятельно понять принцип, прежде чем услышать его название.",
+        "offer": "Четыре бесплатных эпизода «Фабрики Ани». Платное предложение не определено.",
+        "price": null,
+        "website": "https://aha.vanya-arc.dev/",
+        "secondaryUrls": [
+          "https://aha.vanya-arc.dev/series/",
+          "https://aha.vanya-arc.dev/di/"
+        ]
+      }
+    },
+    "launch": {
+      "state": "active",
+      "summary": "Первый сезон из четырёх интерактивных эпизодов реализован и опубликован. Технические тесты проведены; реальный тест понимания, визуальный браузерный QA и спрос не подтверждены.",
+      "evidence": [
+        {
+          "label": "Публикация и тесты",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/README.md"
+        },
+        {
+          "label": "Человеческий критерий качества",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+        }
+      ],
+      "nextAction": {
+        "title": "Проверить, понимают ли 3 из 5 зрителей без подготовки смысл первого эпизода",
+        "owner": "me",
+        "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+      },
+      "data": {
+        "stages": {
+          "idea": "done",
+          "prototype": "current",
+          "demand": "planned",
+          "payment": "not-applicable",
+          "sale": "not-applicable"
+        },
+        "stageEvidence": {
+          "idea": "Определены зрительская работа, сюжет и критерий «ага» в сценарной библии.",
+          "prototype": "Четыре интерактивных эпизода и технические фильмы опубликованы; автоматические тесты есть. Браузерный визуальный QA и проверка понимания людьми не подтверждены.",
+          "demand": "Нет подтверждённого теста с неподготовленными зрителями или доказательств повторного использования. Начинать после проверки понятности первого опыта.",
+          "payment": "Монетизация пока не заявлена и способ оплаты не выбран.",
+          "sale": "Платное предложение не заявлено; продаж не подтверждено."
+        }
+      }
+    },
+    "work": {
+      "state": "active",
+      "summary": "Есть первый сезон и технический движок. Следующий продуктовый риск — способен ли новый зритель разобраться в проблеме и увидеть результат своего действия без объяснений автора.",
+      "evidence": [
+        {
+          "label": "Сценарная библия и тесты",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+        },
+        {
+          "label": "Исходники и ограничения",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/README.md"
+        }
+      ],
+      "nextAction": {
+        "title": "Дать первому неподготовленному зрителю пройти эпизод 1 и записать, что он понял",
+        "owner": "me",
+        "url": "https://aha.vanya-arc.dev/series/?episode=one-post"
+      },
+      "data": {
+        "sourceUrl": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md",
+        "tasks": [
+          {
+            "id": "AHA-01",
+            "title": "Опубликовать четыре эпизода первого сезона",
+            "state": "done",
+            "owner": "agent",
+            "url": "https://aha.vanya-arc.dev/series/"
+          },
+          {
+            "id": "AHA-02",
+            "title": "Провести проверку понимания с пятью неподготовленными зрителями (порог 3/5)",
+            "state": "planned",
+            "owner": "me",
+            "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+          },
+          {
+            "id": "AHA-03",
+            "title": "Проверить первый экран и эпизоды в реальном браузере, на мобильном и при 200% zoom",
+            "state": "planned",
+            "owner": "agent",
+            "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/README.md"
+          }
+        ]
+      }
+    },
+    "demand": {
+      "state": "planned",
+      "summary": "Пока проверяется не денежный спрос, а базовая ценность: понятны ли истории без помощи автора и хочется ли продолжать сезон. Подтверждённых зрительских тестов нет.",
+      "evidence": [
+        {
+          "label": "Критерии зрительской проверки",
+          "url": "https://github.com/VanDalkvist/dependency-inversion/blob/main/docs/series/season-01/SEASON_BIBLE.md"
+        }
+      ],
+      "nextAction": {
+        "title": "Провести 5 самостоятельных прохождений и зафиксировать ответы после эпизода",
+        "owner": "me",
+        "url": "https://aha.vanya-arc.dev/series/"
+      },
+      "data": {
+        "hypothesis": "Неподготовленный зритель через короткий интерактивный конфликт понимает полезную идею об устройстве инструмента и хочет открыть следующий эпизод.",
+        "segment": "Люди, которым интересны AI-агенты и инструменты, включая не-разработчиков.",
+        "tests": []
+      }
+    }
+  },
+  "moduleRefs": [
+    "https://github.com/VanDalkvist/knopka-bablo/blob/main/app/modules/design.json",
+    "https://github.com/VanDalkvist/knopka-bablo/blob/main/app/modules/licenses.json"
+  ]
+}
